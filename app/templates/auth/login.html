@@ -1,51 +1,311 @@
 {% extends "base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login WestLooks{% endblock %}
 
 {% block content %}
 
-<div class="row justify-content-center">
+<style>
+    .login-west-page{
+        min-height:auto;
+        display:flex;
+        align-items:flex-start;
+        justify-content:center;
+        padding:34px 16px 70px;
+        position:relative;
+        overflow:hidden;
+        background:
+            radial-gradient(circle at 70% 50%, rgba(212,175,55,.14), transparent 35%),
+            #050505;
+        border-radius:28px;
+    }
 
-    <div class="col-md-4">
+    .login-west-page::before{
+        content:"";
+        position:absolute;
+        width:520px;
+        height:520px;
+        border-radius:50%;
+        right:8%;
+        top:50%;
+        transform:translateY(-50%);
+        background:radial-gradient(circle, rgba(212,175,55,.22), transparent 65%);
+        filter:blur(4px);
+        pointer-events:none;
+    }
 
-        <div class="card shadow">
+    .login-west-page::after{
+        content:"WL";
+        position:absolute;
+        left:8%;
+        top:50%;
+        transform:translateY(-50%);
+        font-size:210px;
+        font-weight:950;
+        color:rgba(212,175,55,.04);
+        letter-spacing:-18px;
+        pointer-events:none;
+    }
 
-            <div class="card-body">
+    .login-west-card{
+        width:100%;
+        max-width:440px;
+        position:relative;
+        z-index:2;
+        background:linear-gradient(145deg,#050505,#0b1120);
+        border:1px solid rgba(212,175,55,.30);
+        border-radius:30px;
+        padding:28px 34px;
+        color:#fff;
+        box-shadow:
+            0 28px 70px rgba(0,0,0,.48),
+            0 0 48px rgba(212,175,55,.12);
+    }
 
-                <h3 class="text-center mb-4">
-                    Login WestLooks
-                </h3>
+    .login-logo-circle{
+        width:78px;
+        height:78px;
+        border-radius:50%;
+        margin:0 auto 14px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border:1px solid rgba(212,175,55,.45);
+        background:
+            radial-gradient(circle, rgba(212,175,55,.18), transparent 65%),
+            #050505;
+        box-shadow:0 0 35px rgba(212,175,55,.18);
+    }
 
-                <form method="POST">
+    .login-logo-circle img{
+        width:58px;
+        height:58px;
+        object-fit:contain;
+        filter:drop-shadow(0 0 12px rgba(246,226,122,.35));
+    }
 
-                    <div class="mb-3">
-                        <label>E-mail</label>
-                        <input
-                            type="email"
-                            name="email"
-                            class="form-control"
-                            required>
-                    </div>
+    .login-west-card h3{
+        text-align:center;
+        margin:0;
+        font-size:31px;
+        font-weight:950;
+        letter-spacing:-.5px;
+    }
 
-                    <div class="mb-3">
-                        <label>Senha</label>
-                        <input
-                            type="password"
-                            name="senha"
-                            class="form-control"
-                            required>
-                    </div>
+    .login-west-card h3 span{
+        color:#d4af37;
+    }
 
-                    <button
-                        type="submit"
-                        class="btn btn-dark w-100">
-                        Entrar
-                    </button>
+    .login-subtitle{
+        text-align:center;
+        color:rgba(255,255,255,.62);
+        font-size:14px;
+        font-weight:650;
+        margin:10px 0 24px;
+    }
 
-                </form>
+    .login-divider{
+        width:150px;
+        height:1px;
+        margin:0 auto 24px;
+        background:linear-gradient(90deg, transparent, #d4af37, transparent);
+        position:relative;
+    }
 
+    .login-divider::after{
+        content:"✦";
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%,-50%);
+        color:#f6e27a;
+        background:#0b0b0b;
+        padding:0 8px;
+        font-size:13px;
+    }
+
+    .login-field{
+        margin-bottom:17px;
+    }
+
+    .login-field label{
+        color:#fff;
+        font-weight:850;
+        font-size:14px;
+        margin-bottom:8px;
+        display:block;
+    }
+
+    .login-input-wrap{
+        position:relative;
+    }
+
+    .login-input-wrap i{
+        position:absolute;
+        left:16px;
+        top:50%;
+        transform:translateY(-50%);
+        color:#d4af37;
+        font-size:18px;
+        pointer-events:none;
+    }
+
+    .login-input-wrap input{
+        width:100%;
+        height:54px;
+        border-radius:16px;
+        border:1px solid rgba(255,255,255,.10);
+        background:rgba(255,255,255,.03);
+        color:#fff;
+        padding:0 16px 0 46px;
+        font-weight:650;
+        outline:none;
+        transition:.2s;
+    }
+
+    .login-input-wrap input::placeholder{
+        color:rgba(255,255,255,.35);
+    }
+
+    .login-input-wrap input:focus{
+        border-color:rgba(212,175,55,.75);
+        box-shadow:0 0 0 4px rgba(212,175,55,.12);
+        background:rgba(255,255,255,.07);
+    }
+
+    .login-btn{
+        width:100%;
+        height:56px;
+        border:0;
+        border-radius:17px;
+        margin-top:8px;
+        background:linear-gradient(135deg,#d4af37,#f6e27a);
+        color:#111827;
+        font-size:16px;
+        font-weight:950;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        box-shadow:0 16px 34px rgba(212,175,55,.20);
+        transition:.2s ease;
+    }
+
+    .login-btn:hover{
+        transform:translateY(-2px);
+        box-shadow:0 20px 44px rgba(212,175,55,.28);
+    }
+
+    .login-secure{
+        margin-top:20px;
+        text-align:center;
+        color:rgba(255,255,255,.42);
+        font-size:13px;
+        font-weight:650;
+    }
+
+    .login-secure i{
+        color:rgba(255,255,255,.55);
+        margin-right:6px;
+    }
+
+    @media(max-width:768px){
+        .login-west-page{
+            min-height:auto;
+            padding:24px 10px 50px;
+            align-items:flex-start;
+            border-radius:22px;
+        }
+
+        .login-west-page::before{
+            width:360px;
+            height:360px;
+            right:-120px;
+            top:42%;
+        }
+
+        .login-west-page::after{
+            display:none;
+        }
+
+        .login-west-card{
+            max-width:100%;
+            border-radius:26px;
+            padding:28px 20px;
+            margin-top:0;
+        }
+
+        .login-logo-circle{
+            width:86px;
+            height:86px;
+        }
+
+        .login-logo-circle img{
+            width:64px;
+            height:64px;
+        }
+
+        .login-west-card h3{
+            font-size:28px;
+        }
+    }
+</style>
+
+<div class="login-west-page">
+
+    <div class="login-west-card">
+
+        <div class="login-logo-circle">
+            <img
+                src="{{ url_for('static', filename='img/wl_gold.png') }}"
+                alt="WestLooks">
+        </div>
+
+        <h3>Login West<span>Looks</span></h3>
+
+        <p class="login-subtitle">
+            Acesse o painel de administração da loja
+        </p>
+
+        <div class="login-divider"></div>
+
+        <form method="POST">
+
+            <div class="login-field">
+                <label>E-mail</label>
+
+                <div class="login-input-wrap">
+                    <i class="bi bi-person"></i>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Digite seu e-mail"
+                        required>
+                </div>
             </div>
 
+            <div class="login-field">
+                <label>Senha</label>
+
+                <div class="login-input-wrap">
+                    <i class="bi bi-lock"></i>
+                    <input
+                        type="password"
+                        name="senha"
+                        placeholder="Digite sua senha"
+                        required>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Entrar
+                <i class="bi bi-arrow-right"></i>
+            </button>
+
+        </form>
+
+        <div class="login-secure">
+            <i class="bi bi-lock-fill"></i>
+            Acesso restrito e protegido
         </div>
 
     </div>
