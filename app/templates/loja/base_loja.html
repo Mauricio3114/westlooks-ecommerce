@@ -789,31 +789,38 @@
 
         <nav class="wl-menu" id="wlMenu">
             <a href="{{ url_for('loja.home') }}">
-                <i class="bi bi-house-door"></i> Início
+                <i class="bi bi-house-door"></i>
+                Início
             </a>
 
-            <a href="#">
-                <i class="bi bi-stars"></i> Essential
+            <a href="{{ url_for('loja.categoria', slug='linha-essential') }}">
+                <i class="bi bi-stars"></i>
+                Essential
             </a>
 
-            <a href="#">
-                <i class="bi bi-gem"></i> Minimal
+            <a href="{{ url_for('loja.categoria', slug='linha-minimal') }}">
+                <i class="bi bi-gem"></i>
+                Minimal
             </a>
 
-            <a href="#">
-                <i class="bi bi-lightning-charge"></i> Sneaker
+            <a href="{{ url_for('loja.categoria', slug='linha-sneaker') }}">
+                <i class="bi bi-lightning-charge"></i>
+                Sneaker
             </a>
 
-            <a href="#">
-                <i class="bi bi-bag-heart"></i> Casual
+            <a href="{{ url_for('loja.categoria', slug='linha-casual') }}">
+                <i class="bi bi-bag"></i>
+                Casual
             </a>
 
             <a href="https://wa.me/5585996965533" target="_blank">
-                <i class="bi bi-whatsapp"></i> Contato
+                <i class="bi bi-whatsapp"></i>
+                Contato
             </a>
 
             <a href="{{ url_for('loja.consultar_pedido') }}">
-                <i class="bi bi-search-heart"></i> Pedido
+                <i class="bi bi-search"></i>
+                Pedido
             </a>
         </nav>
 

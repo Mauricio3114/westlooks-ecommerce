@@ -10,16 +10,17 @@
 }
 
 .produto-box{
-    background:#fff;
-    border:1px solid rgba(212,175,55,.22);
+    background:linear-gradient(135deg,#050505,#111827);
+    border:1px solid rgba(212,175,55,.35);
     border-radius:34px;
     padding:34px;
-    box-shadow:0 24px 70px rgba(15,23,42,.10);
+    color:#fff;
+    box-shadow:0 28px 80px rgba(0,0,0,.35);
 }
 
 .produto-galeria{
-    background:linear-gradient(180deg,#fff,#fffefa);
-    border:1px solid rgba(212,175,55,.22);
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(212,175,55,.25);
     border-radius:30px;
     padding:18px;
     position:relative;
@@ -30,7 +31,7 @@
     position:relative;
     height:520px;
     border-radius:26px;
-    background:#f8fafc;
+    background:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -51,34 +52,24 @@
     width:46px;
     height:46px;
     border-radius:50%;
-    border:1px solid rgba(212,175,55,.35);
-    background:#fff;
-    color:#0f172a;
+    border:1px solid rgba(212,175,55,.45);
+    background:rgba(5,5,5,.82);
+    color:#f6e27a;
     display:grid;
     place-items:center;
     font-size:24px;
     cursor:pointer;
     z-index:5;
-    box-shadow:0 10px 26px rgba(15,23,42,.16);
+    box-shadow:0 10px 26px rgba(0,0,0,.30);
 }
 
-.galeria-seta:hover{
-    background:#0f172a;
-    color:#d4af37;
-}
-
-.galeria-prev{
-    left:16px;
-}
-
-.galeria-next{
-    right:16px;
-}
+.galeria-prev{ left:16px; }
+.galeria-next{ right:16px; }
 
 .thumbs{
     display:flex;
     gap:12px;
-    margin-top:0px;
+    margin-top:14px;
     overflow-x:auto;
     padding-bottom:4px;
 }
@@ -88,7 +79,7 @@
     height:84px;
     border-radius:18px;
     border:2px solid transparent;
-    background:#f8fafc;
+    background:#fff;
     padding:6px;
     cursor:pointer;
     flex:0 0 auto;
@@ -114,8 +105,9 @@
     display:inline-flex;
     align-items:center;
     gap:8px;
-    background:#111827;
-    color:#d4af37;
+    background:rgba(212,175,55,.12);
+    color:#f6e27a;
+    border:1px solid rgba(212,175,55,.35);
     padding:9px 15px;
     border-radius:999px;
     font-size:13px;
@@ -126,7 +118,7 @@
 .produto-titulo{
     font-size:44px;
     font-weight:950;
-    color:#111827;
+    color:#fff;
     line-height:1.05;
     margin-bottom:12px;
 }
@@ -136,6 +128,10 @@
     font-size:18px;
     margin-bottom:16px;
     font-weight:800;
+}
+
+.produto-stars span{
+    color:rgba(255,255,255,.55) !important;
 }
 
 .preco-antigo{
@@ -153,7 +149,7 @@
 }
 
 .parcelamento{
-    color:#64748b;
+    color:rgba(255,255,255,.65);
     font-size:15px;
     font-weight:700;
     margin-bottom:25px;
@@ -162,7 +158,7 @@
 .section-mini-title{
     font-weight:950;
     margin-bottom:12px;
-    color:#111827;
+    color:#fff;
 }
 
 .numeracoes{
@@ -174,11 +170,12 @@
 
 .num-box{
     cursor:pointer;
-    border:2px solid #111827;
+    border:2px solid rgba(212,175,55,.35);
     border-radius:14px;
     padding:11px 16px;
     font-weight:950;
-    background:#fff;
+    background:rgba(255,255,255,.04);
+    color:#fff;
     min-width:54px;
     text-align:center;
     transition:.2s ease;
@@ -186,12 +183,13 @@
 
 .num-box:hover{
     transform:translateY(-2px);
+    border-color:#d4af37;
 }
 
 .num-box.ativo{
-    background:#111827;
-    color:#d4af37;
-    border-color:#d4af37;
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    color:#050505;
+    border-color:#f6e27a;
 }
 
 .produto-beneficios{
@@ -202,13 +200,14 @@
 }
 
 .beneficio{
-    background:#f9fafb;
-    border:1px solid #e5e7eb;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(212,175,55,.22);
     border-radius:18px;
     padding:14px;
     text-align:center;
     font-weight:900;
     font-size:13px;
+    color:#fff;
 }
 
 .beneficio i{
@@ -219,8 +218,8 @@
 }
 
 .btn-carrinho-produto{
-    background:#111827;
-    color:#fff;
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    color:#050505;
     border:none;
     border-radius:18px;
     padding:17px 24px;
@@ -230,21 +229,98 @@
     text-align:center;
     font-size:18px;
     width:100%;
+    box-shadow:0 18px 38px rgba(212,175,55,.18);
 }
 
 .btn-carrinho-produto:hover{
-    background:#020617;
+    color:#050505;
+    transform:translateY(-2px);
+}
+
+.suporte-produto{
+    margin-top:12px;
+    display:block;
+    text-align:center;
+    color:#f6e27a;
+    font-weight:850;
+    text-decoration:none;
 }
 
 .descricao-box{
-    background:#f9fafb;
-    border:1px solid #e5e7eb;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(212,175,55,.22);
     border-radius:24px;
     padding:22px;
     margin-top:24px;
 }
 
+.descricao-box h5{
+    color:#fff;
+}
+
+.descricao-box p{
+    color:rgba(255,255,255,.68) !important;
+}
+
+.relacionados-box{
+    margin-top:32px;
+}
+
+.relacionados-box h3{
+    font-size:30px;
+    font-weight:950;
+    margin-bottom:20px;
+}
+
+.relacionados-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.relacionado-card{
+    background:#d0d0d0;
+    border:1px solid rgba(212,175,55,.42);
+    border-radius:24px;
+    padding:14px;
+    text-decoration:none;
+    color:#050505;
+}
+
+.relacionado-img{
+    height:180px;
+    background:#fff;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+    overflow:hidden;
+}
+
+.relacionado-img img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.relacionado-card strong{
+    display:block;
+    font-weight:950;
+    line-height:1.2;
+}
+
+.relacionado-card span{
+    color:#16a34a;
+    font-weight:950;
+    font-size:20px;
+}
+
 @media(max-width:768px){
+    .produto-page{
+        margin:24px 0 55px;
+    }
+
     .produto-box{
         padding:18px;
         border-radius:26px;
@@ -255,18 +331,22 @@
     }
 
     .produto-info{
-        padding:20px 0 0;
+        padding:22px 0 0;
     }
 
     .produto-titulo{
-        font-size:30px;
+        font-size:31px;
     }
 
     .preco-atual{
-        font-size:34px;
+        font-size:36px;
     }
 
     .produto-beneficios{
+        grid-template-columns:1fr;
+    }
+
+    .relacionados-grid{
         grid-template-columns:1fr;
     }
 }
@@ -285,9 +365,11 @@
                                 <i class="bi bi-chevron-left"></i>
                             </button>
 
+                            {% set principal = produto.imagens|selectattr('principal', 'equalto', True)|list %}
+
                             <img
                                 id="imagemPrincipal"
-                                src="{{ url_for('static', filename='uploads/' ~ produto.imagens[0].imagem) }}"
+                                src="{% if principal %}{{ url_for('static', filename='uploads/' ~ principal[0].imagem) }}{% else %}{{ url_for('static', filename='uploads/' ~ produto.imagens[0].imagem) }}{% endif %}"
                                 class="produto-foto-principal"
                                 alt="{{ produto.nome }}">
 
@@ -338,7 +420,7 @@
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
-                    <span class="text-muted ms-2">Produto premium WestLooks</span>
+                    <span class="ms-2">Produto premium WestLooks</span>
                 </div>
 
                 {% if produto.preco_promocional and produto.preco_promocional > 0 %}
@@ -349,7 +431,7 @@
                 {% endif %}
 
                 <div class="parcelamento">
-                    Consulte disponibilidade, entrega e formas de pagamento pelo WhatsApp.
+                    Compra realizada pela loja. WhatsApp disponível apenas para suporte.
                 </div>
 
                 <h5 class="section-mini-title">Escolha sua numeração</h5>
@@ -374,11 +456,11 @@
                     </div>
                     <div class="beneficio">
                         <i class="bi bi-shield-check"></i>
-                        Produto selecionado
+                        Compra segura
                     </div>
                     <div class="beneficio">
-                        <i class="bi bi-whatsapp"></i>
-                        Atendimento rápido
+                        <i class="bi bi-gem"></i>
+                        Produto selecionado
                     </div>
                 </div>
 
@@ -398,15 +480,61 @@
                     {% endif %}
                 </form>
 
+                <a
+                    href="https://wa.me/5585996965533?text=Olá,%20preciso%20de%20suporte%20sobre%20o%20produto%20{{ produto.nome }}"
+                    target="_blank"
+                    class="suporte-produto">
+                    <i class="bi bi-whatsapp"></i>
+                    Precisa de ajuda? Fale com o suporte
+                </a>
+
             </div>
         </div>
 
         <div class="descricao-box">
             <h5 class="fw-bold">Descrição do produto</h5>
-            <p class="text-muted mb-0">
+            <p class="mb-0">
                 {{ produto.descricao or "Produto WestLooks com estilo, conforto e qualidade para acompanhar sua rotina." }}
             </p>
         </div>
+
+        {% if relacionados %}
+        <div class="relacionados-box">
+            <h3>Você também pode gostar</h3>
+
+            <div class="relacionados-grid">
+                {% for item in relacionados %}
+                <a href="{{ url_for('loja.detalhe_produto', slug=item.slug) }}" class="relacionado-card">
+
+                    {% if item.imagens and item.imagens|length > 0 %}
+                        {% set principal_rel = item.imagens|selectattr('principal', 'equalto', True)|list %}
+                        <div class="relacionado-img">
+                            {% if principal_rel %}
+                                <img src="{{ url_for('static', filename='uploads/' ~ principal_rel[0].imagem) }}" alt="{{ item.nome }}">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='uploads/' ~ item.imagens[0].imagem) }}" alt="{{ item.nome }}">
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="relacionado-img">
+                            <i class="bi bi-bag-heart" style="font-size:50px;color:#d4af37;"></i>
+                        </div>
+                    {% endif %}
+
+                    <strong>{{ item.nome }}</strong>
+
+                    {% if item.preco_promocional and item.preco_promocional > 0 %}
+                        <span>R$ {{ item.preco_promocional }}</span>
+                    {% else %}
+                        <span>R$ {{ item.preco }}</span>
+                    {% endif %}
+
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 </div>
 

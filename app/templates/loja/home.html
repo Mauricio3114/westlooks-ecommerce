@@ -1319,22 +1319,22 @@ main,
 
         <div class="categorias-v2">
             {% for categoria in categorias %}
-            <div class="categoria-v2">
+            <a href="{{ url_for('loja.categoria', slug=categoria.slug) }}" class="categoria-v2 text-decoration-none">
                 <div class="cat-icon">
                     <i class="bi bi-bag"></i>
                 </div>
                 <strong>{{ categoria.nome }}</strong>
                 <small>Clássicos do dia a dia</small>
-            </div>
+            </a>
             {% endfor %}
 
-            <div class="categoria-v2">
+            <a href="{{ url_for('loja.home') }}#produtos" class="categoria-v2 text-decoration-none">
                 <div class="cat-icon">
                     <i class="bi bi-grid"></i>
                 </div>
                 <strong>Todos</strong>
                 <small>Ver todos</small>
-            </div>
+            </a>
         </div>
     </section>
 
