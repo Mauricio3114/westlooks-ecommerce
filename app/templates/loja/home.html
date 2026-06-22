@@ -1061,6 +1061,39 @@ main,
         bottom:12px;
     }
 }
+
+.busca-westlooks{
+    margin:30px 0;
+}
+
+.busca-westlooks form{
+    display:flex;
+    background:#111827;
+    border:1px solid rgba(212,175,55,.35);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.busca-westlooks input{
+    flex:1;
+    border:none;
+    background:transparent;
+    color:#fff;
+    padding:18px;
+    font-size:16px;
+}
+
+.busca-westlooks input:focus{
+    outline:none;
+}
+
+.busca-westlooks button{
+    width:70px;
+    border:none;
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    color:#050505;
+    font-size:20px;
+}
 </style>
 
 <div class="home-v2">
@@ -1224,6 +1257,23 @@ main,
         </div>
 
     </section>
+
+    </section>
+
+    <div class="busca-westlooks">
+        <form method="GET" action="/">
+            <input
+                type="text"
+                name="q"
+                placeholder="Buscar calçados..."
+                value="{{ busca or '' }}"
+            >
+
+            <button type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+    </div>
 
     <div class="beneficios-v2">
         <div class="beneficio-v2">

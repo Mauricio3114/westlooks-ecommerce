@@ -38,12 +38,29 @@ def home():
         Categoria.ordem.asc()
     ).all()
 
+    busca = request.args.get("q", "").strip()
+
+    if busca:
+        produtos = Produto.query.filter(
+            Produto.ativo == True,
+            Produto.nome.ilike(f"%{busca}%")
+        ).order_by(
+            Produto.data_cadastro.desc()
+        ).all()
+    else:
+        produtos = Produto.query.filter_by(
+            ativo=True
+        ).order_by(
+            Produto.data_cadastro.desc()
+        ).limit(12).all()
+
     return render_template(
         "loja/home.html",
         produtos=produtos,
         destaques=destaques,
         lancamentos=lancamentos,
-        categorias=categorias
+        categorias=categorias,
+        busca=busca
     )
 
 
