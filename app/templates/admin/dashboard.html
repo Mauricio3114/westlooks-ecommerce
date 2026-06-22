@@ -1,0 +1,657 @@
+{% extends "base.html" %}
+
+{% block title %} Administrativo | WestLooks{% endblock %}
+{% block page_title %}CENTRAL ADMINISTRATIVO WESTLOOKS{% endblock %}
+{% block page_subtitle %}Gestão completa de vendas, estoque, pedidos e operação da loja{% endblock %}
+
+{% block content %}
+
+<style>
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:22px;
+}
+
+.metric-card{
+    background:#fff;
+    border:1px solid rgba(212,175,55,.25);
+    border-left:6px solid #d4af37;
+    border-radius:26px;
+    padding:22px;
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+    position:relative;
+    overflow:hidden;
+    transition:.25s;
+}
+
+.metric-card::after{
+    content:"";
+    position:absolute;
+    width:85px;
+    height:85px;
+    border-radius:50%;
+    background:rgba(212,175,55,.12);
+    right:-25px;
+    top:-25px;
+}
+
+.metric-card:hover{
+    transform:translateY(-4px);
+    border-color:#d4af37;
+    box-shadow:0 0 25px rgba(212,175,55,.16), 0 16px 40px rgba(15,23,42,.08);
+}
+
+.metric-icon{
+    width:54px;
+    height:54px;
+    border-radius:17px;
+    display:grid;
+    place-items:center;
+    background:#0f172a;
+    color:#facc15;
+    font-size:25px;
+    margin-bottom:16px;
+    box-shadow:0 10px 25px rgba(15,23,42,.15);
+}
+
+.metric-label{
+    color:#64748b;
+    font-weight:800;
+    font-size:14px;
+}
+
+.metric-value{
+    font-size:34px;
+    font-weight:700;
+    color:#111827;
+    letter-spacing:-1px;
+    line-height:1.1;
+    margin:10px 0;
+    white-space:nowrap;
+}
+
+.metric-small{
+    color:#6b7280;
+    font-size:13px;
+}
+
+.status-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    margin-bottom:22px;
+}
+
+.status-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:22px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 12px 30px rgba(15,23,42,.07);
+}
+
+.status-card h3{
+    margin:0;
+    font-size:34px;
+    font-weight:800;
+    color:#111827;
+}
+
+.status-card span{
+    color:#6b7280;
+    font-weight:800;
+    font-size:13px;
+}
+
+.status-card.aguardando{border-left:5px solid #f59e0b;}
+.status-card.pago{border-left:5px solid #22c55e;}
+.status-card.preparando{border-left:5px solid #3b82f6;}
+.status-card.enviado{border-left:5px solid #8b5cf6;}
+.status-card.entregue{border-left:5px solid #10b981;}
+
+.premium-panel{
+    background:rgba(255,255,255,.94);
+    border:1px solid #e5e7eb;
+    border-radius:28px;
+    padding:24px;
+    box-shadow:0 18px 45px rgba(15,23,42,.10);
+}
+
+.action-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.action-card{
+    text-decoration:none;
+    color:#111827;
+    background:linear-gradient(135deg,#ffffff,#f8f7f1);
+    border:1px solid #e5e7eb;
+    border-radius:24px;
+    padding:20px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    transition:.2s;
+}
+
+.action-card:hover{
+    transform:translateY(-3px);
+    color:#111827;
+    box-shadow:0 16px 35px rgba(15,23,42,.12);
+}
+
+.action-card i{
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    background:#111827;
+    color:#d4af37;
+    font-size:22px;
+}
+
+.action-title{font-weight:900;}
+.action-subtitle{font-size:13px;color:#6b7280;}
+
+@media(max-width:991px){
+    .dashboard-grid{grid-template-columns:repeat(2,1fr);}
+    .action-grid{grid-template-columns:1fr;}
+}
+
+@media(max-width:520px){
+    .dashboard-grid{grid-template-columns:1fr;}
+    .status-grid{grid-template-columns:1fr;}
+}
+
+.dashboard-badge{
+    background:linear-gradient(
+        135deg,
+        #facc15,
+        #d4af37
+    );
+
+    color:#111827;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    margin-left:10px;
+}
+
+.page-header h1,
+.page-title{
+
+    font-family:'Poppins',sans-serif;
+
+    font-size:28px;
+
+    font-weight:500;
+
+    letter-spacing:-1px;
+
+    color:#0f172a;
+
+    margin:0;
+
+    line-height:1.1;
+}
+
+.page-subtitle,
+.page-header p{
+
+    font-size:15px;
+
+    font-weight:400;
+
+    color:#64748b;
+
+    margin-top:6px;
+}
+
+.charts-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+    margin-bottom:22px;
+}
+
+.chart-card{
+    background:#fff;
+    border:1px solid rgba(212,175,55,.25);
+    border-left:6px solid #0f172a;
+    border-radius:28px;
+    padding:24px;
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+}
+
+.chart-card h4{
+    font-weight:800;
+    margin-bottom:18px;
+    color:#111827;
+}
+
+.chart-card canvas{
+    max-height:320px;
+}
+
+@media(max-width:900px){
+    .charts-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+.page-header{
+    background:#fff !important;
+    border:1px solid rgba(212,175,55,.25) !important;
+    border-left:6px solid #0f172a !important;
+    border-radius:28px !important;
+    box-shadow:0 12px 30px rgba(15,23,42,.06) !important;
+}
+
+.premium-panel{
+    border:1px solid rgba(212,175,55,.25) !important;
+    border-left:6px solid #0f172a !important;
+    border-radius:28px !important;
+    box-shadow:0 12px 30px rgba(15,23,42,.06) !important;
+}
+
+.pedido-dashboard-row{
+    background:#fff;
+    border:1px solid rgba(212,175,55,.22) !important;
+    border-left:5px solid #d4af37 !important;
+    border-radius:20px !important;
+    padding:16px !important;
+    transition:.2s;
+}
+
+.pedido-dashboard-row:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 28px rgba(15,23,42,.08);
+}
+
+.pedido-valor-destaque{
+    background:#dcfce7;
+    color:#047857;
+    font-weight:900;
+    padding:10px 18px;
+    border-radius:999px;
+    min-width:140px;
+    text-align:center;
+}
+
+.pedido-dashboard-row strong{
+    font-size:16px;
+}
+
+.pedido-dashboard-row small{
+    font-size:12px;
+}
+
+.pedido-dashboard-row .text-muted{
+    font-size:15px;
+    font-weight:500;
+}
+
+.pedido-dashboard-row:hover{
+
+    transform:translateY(-2px);
+
+    border-left:5px solid #0f172a !important;
+
+    box-shadow:
+        0 15px 35px rgba(15,23,42,.08);
+}
+</style>
+
+<div class="dashboard-grid">
+
+    <div class="metric-card">
+        <div class="metric-icon">
+            <i class="bi bi-calendar-day"></i>
+        </div>
+        <div class="metric-label">Vendas Hoje</div>
+        <div class="metric-value">
+            R$ {{ "%.2f"|format(vendas_hoje) }}
+        </div>
+        <div class="metric-small">Faturamento do dia</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-icon">
+            <i class="bi bi-cash-stack"></i>
+        </div>
+        <div class="metric-label">Vendas do Mês</div>
+        <div class="metric-value">
+            R$ {{ "%.2f"|format(vendas_mes) }}
+        </div>
+        <div class="metric-small">Pedidos pagos no mês</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-icon">
+            <i class="bi bi-graph-up-arrow"></i>
+        </div>
+        <div class="metric-label">Faturamento Total</div>
+        <div class="metric-value">
+            R$ {{ "%.2f"|format(vendas_total) }}
+        </div>
+        <div class="metric-small">Pedidos pagos/finalizados</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-icon">
+            <i class="bi bi-percent"></i>
+        </div>
+        <div class="metric-label">Ticket Médio</div>
+        <div class="metric-value">
+            R$ {{ "%.2f"|format(ticket_medio) }}
+        </div>
+        <div class="metric-small">Média por pedido pago</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-icon">
+            <i class="bi bi-receipt"></i>
+        </div>
+        <div class="metric-label">Pedidos</div>
+        <div class="metric-value">{{ total_pedidos }}</div>
+        <div class="metric-small">Pedidos registrados</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-icon">
+            <i class="bi bi-bag"></i>
+        </div>
+        <div class="metric-label">Produtos</div>
+        <div class="metric-value">{{ total_produtos }}</div>
+        <div class="metric-small">Produtos cadastrados</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-icon">
+            <i class="bi bi-box-seam"></i>
+        </div>
+        <div class="metric-label">Estoque</div>
+        <div class="metric-value">{{ total_estoque }}</div>
+        <div class="metric-small">Pares disponíveis</div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+        </div>
+        <div class="metric-label">Estoque Baixo</div>
+        <div class="metric-value">{{ estoque_baixo }}</div>
+        <div class="metric-small">{{ produtos_zerados }} zerados</div>
+    </div>
+
+</div>
+
+<div class="status-grid">
+
+    <div class="status-card aguardando">
+        <h3>{{ aguardando }}</h3>
+        <span>Aguardando</span>
+    </div>
+
+    <div class="status-card pago">
+        <h3>{{ pagos }}</h3>
+        <span>Pagos</span>
+    </div>
+
+    <div class="status-card preparando">
+        <h3>{{ preparando }}</h3>
+        <span>Preparando</span>
+    </div>
+
+    <div class="status-card enviado">
+        <h3>{{ enviados }}</h3>
+        <span>Enviados</span>
+    </div>
+
+    <div class="status-card entregue">
+        <h3>{{ entregues }}</h3>
+        <span>Entregues</span>
+    </div>
+
+</div>
+
+<div class="premium-panel mb-4">
+
+    <h4 class="fw-bold mb-3">
+        🏆 Produtos Mais Vendidos
+    </h4>
+
+    {% for produto in produtos_mais_vendidos %}
+
+        <div class="d-flex justify-content-between align-items-center border rounded-4 p-3 mb-2 flex-wrap gap-2">
+
+            <div>
+                <strong>{{ produto.nome }}</strong><br>
+                <span class="text-muted">
+                    Ranking de vendas
+                </span>
+            </div>
+
+            <div class="fw-bold">
+                {{ produto.quantidade or 0 }} vendidos
+            </div>
+
+            <div class="fw-bold text-success">
+                R$ {{ "%.2f"|format(produto.total or 0) }}
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <p class="text-muted mb-0">
+            Nenhuma venda registrada ainda.
+        </p>
+
+    {% endfor %}
+
+</div>
+
+<div class="premium-panel mb-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-bold mb-1">Últimos Pedidos</h4>
+            <p class="text-muted mb-0">Pedidos mais recentes da loja</p>
+        </div>
+
+        <a href="/admin/pedidos/" class="btn btn-dark rounded-4">
+            Ver todos
+        </a>
+    </div>
+
+    {% for pedido in pedidos_recentes %}
+
+        <div class="pedido-dashboard-row d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+
+            <div>
+                <strong>
+                    📦 Pedido #{{ pedido.id }}
+                </strong>
+
+                <br>
+
+                <span class="text-muted">
+                    {{ pedido.cliente.nome if pedido.cliente else "Cliente não informado" }}
+                </span>
+
+                <br>
+
+                <small class="text-muted">
+                    {{ pedido.data_pedido.strftime('%d/%m/%Y %H:%M') if pedido.data_pedido else '' }}
+                    •
+                    {{ pedido.itens|length }} item(ns)
+                </small>
+            </div>
+
+            <div>
+                {% if pedido.status == "aguardando_pagamento" %}
+                    <span class="badge rounded-pill bg-warning text-dark">
+                        Aguardando
+                    </span>
+
+                {% elif pedido.status == "pago" %}
+                    <span class="badge rounded-pill bg-success">
+                        Pago
+                    </span>
+
+                {% elif pedido.status == "preparando" %}
+                    <span class="badge rounded-pill bg-primary">
+                        Preparando
+                    </span>
+
+                {% elif pedido.status == "enviado" %}
+                    <span class="badge rounded-pill"
+                          style="background:#8b5cf6;">
+                        Enviado
+                    </span>
+
+                {% elif pedido.status == "entregue" %}
+                    <span class="badge rounded-pill"
+                          style="background:#10b981;">
+                        Entregue
+                    </span>
+
+                {% elif pedido.status == "cancelado" %}
+                    <span class="badge rounded-pill bg-danger">
+                        Cancelado
+                    </span>
+
+                {% else %}
+                    <span class="badge bg-secondary">
+                        {{ pedido.status }}
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="pedido-valor-destaque">
+                R$ {{ "%.2f"|format(pedido.valor_total) }}
+            </div>
+
+            <a href="{{ url_for('pedidos.detalhe', pedido_id=pedido.id) }}" class="btn btn-sm btn-dark rounded-4">
+                Ver
+            </a>
+
+        </div>
+
+    {% else %}
+
+        <p class="text-muted mb-0">
+            Nenhum pedido registrado ainda.
+        </p>
+
+    {% endfor %}
+
+</div>
+
+<div class="charts-grid">
+
+    <div class="chart-card">
+        <h4>Status dos Pedidos</h4>
+        <canvas id="graficoStatus"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h4>Resumo Operacional</h4>
+        <canvas id="graficoOperacao"></canvas>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctxStatus = document.getElementById('graficoStatus');
+
+new Chart(ctxStatus, {
+    type: 'doughnut',
+    data: {
+        labels: [
+            'Aguardando',
+            'Pagos',
+            'Preparando',
+            'Enviados',
+            'Entregues'
+        ],
+        datasets: [{
+            data: {{ grafico_status|tojson }},
+            backgroundColor: [
+                '#f59e0b',
+                '#22c55e',
+                '#3b82f6',
+                '#8b5cf6',
+                '#10b981'
+            ],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+const ctxOperacao = document.getElementById('graficoOperacao');
+
+new Chart(ctxOperacao, {
+    type: 'bar',
+    data: {
+        labels: [
+            'Pedidos',
+            'Produtos',
+            'Estoque',
+            'Est. Baixo'
+        ],
+        datasets: [{
+            label: 'Quantidade',
+            data: [
+                {{ total_pedidos }},
+                {{ total_produtos }},
+                {{ total_estoque }},
+                {{ estoque_baixo }}
+            ],
+            backgroundColor: [
+                '#0f172a',
+                '#d4af37',
+                '#10b981',
+                '#ef4444'
+            ],
+            borderRadius: 12
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

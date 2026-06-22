@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% if produto %}
+    {% set titulo = "Editar Produto" %}
+{% else %}
+    {% set titulo = "Novo Produto" %}
+{% endif %}
+
+{% block title %}{{ titulo }}{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+{% block page_subtitle %}Cadastro profissional de produtos WestLooks{% endblock %}
+
+{% block content %}
+
+<style>
+
+.upload-card-principal,
+.upload-card-galeria{
+    background:#fff;
+    border:2px dashed #d4af37;
+    border-radius:24px;
+    padding:30px;
+    text-align:center;
+    min-height:150px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    transition:.3s;
+}
+
+.upload-card-principal:hover,
+.upload-card-galeria:hover{
+    background:#fffdf6;
+    transform:translateY(-2px);
+}
+
+.upload-card-principal i,
+.upload-card-galeria i{
+    font-size:48px;
+    color:#d4af37;
+    margin-bottom:12px;
+}
+
+.upload-card-principal h6,
+.upload-card-galeria h6{
+    font-weight:900;
+    font-size:18px;
+}
+
+.upload-card-principal small,
+.upload-card-galeria small{
+    color:#64748b;
+    max-width:320px;
+}
+
+.upload-info{
+    margin-top:12px;
+    font-size:13px;
+    color:#94a3b8;
+    font-weight:700;
+}
+
+</style>
+
+<div class="wl-card">
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <div class="row g-4">
+
+            <div class="col-md-8">
+
+                <label class="form-label fw-bold">
+                    Nome do Produto
+                </label>
+
+                <input
+                    type="text"
+                    name="nome"
+                    class="form-control form-control-lg"
+                    required
+                    value="{{ produto.nome if produto else '' }}">
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="form-label fw-bold">
+                    Categoria
+                </label>
+
+                <select
+                    name="categoria_id"
+                    class="form-select form-select-lg"
+                    required>
+
+                    <option value="">
+                        Selecione uma linha
+                    </option>
+
+                    {% for categoria in categorias %}
+
+                    <option
+                        value="{{ categoria.id }}"
+                        {% if produto and produto.categoria_id == categoria.id %}
+                        selected
+                        {% endif %}>
+
+                        {{ categoria.nome }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="form-label fw-bold">
+                    Marca
+                </label>
+
+                <input
+                    type="text"
+                    name="marca"
+                    class="form-control"
+                    value="{{ produto.marca if produto else '' }}">
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="form-label fw-bold">
+                    Referência
+                </label>
+
+                <input
+                    type="text"
+                    name="referencia"
+                    class="form-control"
+                    value="{{ produto.referencia if produto else '' }}">
+
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-lg-4">
+
+                    <label class="form-label fw-bold">
+                        Foto Principal
+                    </label>
+
+                    <div class="upload-card-principal">
+
+                        <i class="bi bi-camera-fill"></i>
+
+                        <h6>Imagem Principal</h6>
+
+                        <small>
+                            Essa foto aparecerá na loja,
+                            categorias e destaques.
+                        </small>
+
+                        <input
+                            type="file"
+                            name="foto_principal"
+                            class="form-control mt-3"
+                            accept="image/*">
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-8">
+
+                    <label class="form-label fw-bold">
+                        Galeria de Fotos
+                    </label>
+
+                    <div class="upload-card-galeria">
+
+                        <i class="bi bi-images"></i>
+
+                        <h6>
+                            Fotos Extras do Produto
+                        </h6>
+
+                        <small>
+                            Adicione várias fotos mostrando
+                            detalhes, ângulos e uso do produto.
+                        </small>
+
+                        <input
+                            type="file"
+                            name="fotos_extras"
+                            multiple
+                            class="form-control mt-3"
+                            accept="image/*">
+
+                        <div class="upload-info">
+                            JPG • PNG • WEBP • Múltiplas imagens
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12">
+
+                <label class="form-label fw-bold">
+                    Descrição
+                </label>
+
+                <textarea
+                    name="descricao"
+                    rows="6"
+                    class="form-control">{{ produto.descricao if produto else '' }}</textarea>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <label class="form-label fw-bold">
+                    Peso (kg)
+                </label>
+
+                <input
+                    type="number"
+                    step="0.001"
+                    name="peso"
+                    class="form-control"
+                    value="{{ produto.peso if produto else '' }}">
+
+            </div>
+
+            <div class="col-md-3">
+
+                <label class="form-label fw-bold">
+                    Altura
+                </label>
+
+                <input
+                    type="number"
+                    step="0.01"
+                    name="altura"
+                    class="form-control"
+                    value="{{ produto.altura if produto else '' }}">
+
+            </div>
+
+            <div class="col-md-3">
+
+                <label class="form-label fw-bold">
+                    Largura
+                </label>
+
+                <input
+                    type="number"
+                    step="0.01"
+                    name="largura"
+                    class="form-control"
+                    value="{{ produto.largura if produto else '' }}">
+
+            </div>
+
+            <div class="col-md-3">
+
+                <label class="form-label fw-bold">
+                    Comprimento
+                </label>
+
+                <input
+                    type="number"
+                    step="0.01"
+                    name="comprimento"
+                    class="form-control"
+                    value="{{ produto.comprimento if produto else '' }}">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <div class="form-check form-switch">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="ativo"
+                        {% if not produto or produto.ativo %}
+                        checked
+                        {% endif %}>
+                    <label class="form-check-label">
+                        Ativo
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <div class="form-check form-switch">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="destaque"
+                        {% if produto and produto.destaque %}
+                        checked
+                        {% endif %}>
+                    <label class="form-check-label">
+                        Destaque
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <div class="form-check form-switch">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="lancamento"
+                        {% if produto and produto.lancamento %}
+                        checked
+                        {% endif %}>
+                    <label class="form-check-label">
+                        Lançamento
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="form-check form-switch">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="mais_vendido"
+                        {% if produto and produto.mais_vendido %}
+                        checked
+                        {% endif %}>
+                    <label class="form-check-label">
+                        Mais Vendido
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="form-check form-switch">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="frete_gratis"
+                        {% if produto and produto.frete_gratis %}
+                        checked
+                        {% endif %}>
+                    <label class="form-check-label">
+                        Frete Grátis
+                    </label>
+                </div>
+
+            </div>
+
+            {% if produto and produto.imagens %}
+
+            <div class="col-12">
+
+                <hr>
+
+                <h5>
+                    Fotos do Produto
+                </h5>
+
+                <div class="row g-3">
+
+                    {% for foto in produto.imagens %}
+
+                    <div class="col-md-3">
+
+                        <div class="card">
+
+                            <img
+                                src="{{ url_for('static', filename='uploads/' ~ foto.imagem) }}"
+                                style="
+                                    width:100%;
+                                    height:220px;
+                                    object-fit:cover;
+                                ">
+
+                            <div class="card-body text-center">
+
+                                {% if foto.principal %}
+                                <span class="badge bg-success">
+                                    Principal
+                                </span>
+                                {% endif %}
+
+                                <br><br>
+
+                                <a
+                                    href="{{ url_for('produtos.excluir_imagem', id=foto.id) }}"
+                                    class="btn btn-danger btn-sm">
+
+                                    Excluir
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+            <div class="col-12">
+
+                <hr>
+
+                <button
+                    type="submit"
+                    class="wl-btn-gold">
+
+                    <i class="bi bi-check-circle"></i>
+                    Salvar Produto
+
+                </button>
+
+                <a
+                    href="{{ url_for('produtos.listar') }}"
+                    class="btn btn-dark rounded-4">
+
+                    Voltar
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

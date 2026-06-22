@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+
+{% block title %}Pedidos | WestLooks{% endblock %}
+{% block page_title %}Pedidos{% endblock %}
+{% block page_subtitle %}Gerencie vendas, pagamentos e entregas{% endblock %}
+
+{% block content %}
+
+<style>
+
+.resumo-card{
+    background:#fff;
+
+    border:1px solid rgba(212,175,55,.25);
+
+    border-left:6px solid #d4af37;
+
+    border-radius:26px;
+
+    padding:24px;
+
+    text-align:center;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+
+    transition:.25s;
+}
+
+.resumo-card:hover{
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 25px rgba(212,175,55,.12),
+        0 16px 35px rgba(15,23,42,.08);
+}
+
+.resumo-card small{
+
+    color:#64748b;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    text-transform:none;
+}
+
+.resumo-card h2{
+
+    margin-top:12px;
+    margin-bottom:0;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:#0f172a;
+
+    letter-spacing:-0.5px;
+
+    line-height:1.1;
+}
+
+.filtro-card{
+    margin-bottom:24px;
+}
+
+.pedido-card{
+
+    background:#fff;
+
+    border:1px solid rgba(212,175,55,.25);
+
+    border-left:6px solid #d4af37;
+
+    border-radius:26px;
+
+    padding:22px;
+
+    margin-bottom:16px;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+
+    transition:.25s;
+}
+
+.pedido-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 25px rgba(212,175,55,.12),
+        0 16px 35px rgba(15,23,42,.08);
+}
+
+.pedido-numero{
+    font-size:18px;
+
+    font-weight:800;
+
+    color:#111827;
+}
+
+.pedido-cliente{
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#111827;
+}
+
+.pedido-total{
+
+    background:#dcfce7;
+
+    border:1px solid #bbf7d0;
+
+    color:#047857;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    padding:10px 20px;
+
+    border-radius:999px;
+
+    letter-spacing:-0.3px;
+}
+
+.status-badge{
+
+    border-radius:999px;
+
+    padding:9px 16px;
+
+    font-weight:900;
+
+    font-size:12px;
+
+    display:inline-block;
+}
+
+.status-aguardando_pagamento{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status-pago{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-preparando{
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+.status-enviado{
+    background:#ede9fe;
+    color:#5b21b6;
+}
+
+.status-entregue{
+    background:#ccfbf1;
+    color:#115e59;
+}
+
+.status-cancelado{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.btn-premium{
+
+    background:#111827;
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:999px;
+
+    padding:12px 22px;
+
+    font-weight:800;
+
+    text-decoration:none;
+
+    transition:.2s;
+}
+
+.btn-premium:hover{
+
+    color:#fff;
+
+    background:#0f172a;
+
+    transform:translateY(-2px);
+}
+
+.form-select{
+
+    border-radius:16px !important;
+
+    border:1px solid rgba(212,175,55,.25);
+}
+
+@media(max-width:768px){
+
+    .pedido-actions,
+    .pedido-actions a{
+        width:100%;
+    }
+
+    .pedido-total{
+        width:100%;
+        text-align:center;
+    }
+
+    .resumo-card h2{
+        font-size:32px;
+    }
+}
+
+</style>
+
+<div class="row mb-4 g-4">
+
+    <div class="col-md-4">
+        <div class="resumo-card">
+            <small>Total de Pedidos</small>
+            <h2>{{ total_pedidos }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="resumo-card">
+            <small>Total Vendido</small>
+            <h2>R$ {{ "%.2f"|format(total_vendido) }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="resumo-card">
+            <small>Ticket Médio</small>
+            <h2>R$ {{ "%.2f"|format(ticket_medio) }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<div class="pedido-card filtro-card">
+
+    <form method="GET">
+        <div class="row g-3 align-items-center">
+
+            <div class="col-md-4">
+                <select name="status" class="form-select rounded-4">
+                    <option value="">Todos os Status</option>
+                    <option value="aguardando_pagamento">Aguardando Pagamento</option>
+                    <option value="pago">Pago</option>
+                    <option value="preparando">Preparando</option>
+                    <option value="enviado">Enviado</option>
+                    <option value="entregue">Entregue</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn-premium w-100">
+                    Filtrar
+                </button>
+            </div>
+
+            <div class="col-md-3">
+                <a href="/admin/pedidos/" class="btn btn-outline-dark rounded-4 w-100">
+                    Limpar
+                </a>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+{% for pedido in pedidos %}
+
+<div class="pedido-card">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <div>
+            <div class="pedido-numero">
+                📦 Pedido #{{ pedido.id }}
+            </div>
+
+            <div class="pedido-cliente">
+                {{ pedido.cliente.nome if pedido.cliente else "Cliente não informado" }}
+            </div>
+
+            <div class="text-muted">
+                {{ pedido.cliente.telefone if pedido.cliente else "" }}
+            </div>
+
+            <small class="text-muted">
+                {{ pedido.data_pedido.strftime('%d/%m/%Y %H:%M') if pedido.data_pedido else '' }}
+                •
+                {{ pedido.itens|length }} item(ns)
+            </small>
+        </div>
+
+        <div>
+            <span class="status-badge status-{{ pedido.status }}">
+                {% if pedido.status == "aguardando_pagamento" %}
+                    Aguardando Pagamento
+                {% elif pedido.status == "pago" %}
+                    Pago
+                {% elif pedido.status == "preparando" %}
+                    Preparando
+                {% elif pedido.status == "enviado" %}
+                    Enviado
+                {% elif pedido.status == "entregue" %}
+                    Entregue
+                {% elif pedido.status == "cancelado" %}
+                    Cancelado
+                {% else %}
+                    {{ pedido.status }}
+                {% endif %}
+            </span>
+        </div>
+
+        <div class="pedido-total">
+            R$ {{ "%.2f"|format(pedido.valor_total) }}
+        </div>
+
+        <div class="pedido-actions">
+            <a href="{{ url_for('pedidos.detalhe', pedido_id=pedido.id) }}"
+               class="btn-premium">
+                Ver Pedido
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="pedido-card text-center py-5">
+    <i class="bi bi-receipt" style="font-size:60px;color:#d4af37;"></i>
+    <h3 class="fw-bold mt-3">Nenhum pedido encontrado</h3>
+    <p class="text-muted">Os pedidos da loja aparecerão aqui.</p>
+</div>
+
+{% endfor %}
+
+{% endblock %}

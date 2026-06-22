@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% if categoria %}
+    {% set titulo = "Editar Categoria" %}
+{% else %}
+    {% set titulo = "Nova Categoria" %}
+{% endif %}
+
+{% block title %}{{ titulo }} | WestLooks{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+{% block page_subtitle %}Organize melhor os produtos da sua loja{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-10">
+
+        <div class="wl-card">
+
+            <form method="POST" enctype="multipart/form-data">
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">
+                            Nome da Categoria
+                        </label>
+
+                        <select
+                            name="nome"
+                            class="form-select form-select-lg"
+                            required>
+
+                            <option value="">Selecione uma linha</option>
+
+                            {% set categorias_padrao = [
+                                "Linha Essential",
+                                "Linha Minimal",
+                                "Linha Sneaker",
+                                "Linha Basic",
+                                "Linha Casual",
+                                "Slip On Confort",
+                                "Slip On",
+                                "Sider",
+                                "Linha Derby",
+                                "Mule"
+                            ] %}
+
+                            {% for nome_padrao in categorias_padrao %}
+                                <option
+                                    value="{{ nome_padrao }}"
+                                    {% if categoria and categoria.nome == nome_padrao %}selected{% endif %}>
+                                    {{ nome_padrao }}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">
+                            Ordem
+                        </label>
+
+                        <input
+                            type="number"
+                            name="ordem"
+                            class="form-control form-control-lg"
+                            value="{{ categoria.ordem if categoria else 0 }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">
+                            Imagem
+                        </label>
+
+                        <input
+                            type="file"
+                            name="imagem"
+                            class="form-control form-control-lg">
+                    </div>
+
+                    <div class="col-12">
+
+                        <label class="form-label fw-bold">
+                            Descrição
+                        </label>
+
+                        <textarea
+                            name="descricao"
+                            rows="4"
+                            class="form-control">{{ categoria.descricao if categoria else '' }}</textarea>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="ativo"
+                                {% if categoria and categoria.ativo %}checked{% endif %}
+                                {% if not categoria %}checked{% endif %}>
+
+                            <label class="form-check-label">
+                                Categoria ativa
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="destaque"
+                                {% if categoria and categoria.destaque %}checked{% endif %}>
+
+                            <label class="form-check-label">
+                                Categoria destaque
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    {% if categoria and categoria.imagem %}
+
+                    <div class="col-12">
+
+                        <label class="form-label fw-bold">
+                            Imagem Atual
+                        </label>
+
+                        <br>
+
+                        <img
+                            src="{{ url_for('static', filename='uploads/' ~ categoria.imagem) }}"
+                            style="
+                                width:220px;
+                                border-radius:20px;
+                                border:1px solid #ddd;
+                            ">
+
+                    </div>
+
+                    {% endif %}
+
+                    <div class="col-12">
+
+                        <hr>
+
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            <button
+                                type="submit"
+                                class="wl-btn-gold">
+
+                                <i class="bi bi-check-circle"></i>
+                                Salvar Categoria
+
+                            </button>
+
+                            <a
+                                href="{{ url_for('categorias.listar') }}"
+                                class="btn btn-dark rounded-4">
+
+                                Voltar
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

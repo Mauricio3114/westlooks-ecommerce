@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WestLooks{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+    :root{
+        --gold:#d4af37;
+        --gold-light:#f6e27a;
+        --dark:#050505;
+        --dark-2:#111111;
+        --card:#1f1f1f;
+        --card-2:#252525;
+        --bg:#181818;
+        --text:#ffffff;
+        --muted:#cfcfcf;
+    }
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    html,
+    body{
+        overflow-x:hidden;
+    }
+
+    body{
+        background:var(--bg);
+        font-family:Segoe UI, sans-serif;
+        color:var(--text);
+    }
+
+    .topbar-west{
+        background:#050505;
+        color:#fff;
+        border-bottom:1px solid var(--gold);
+        font-size:13px;
+        font-weight:800;
+    }
+
+    .topbar-inner{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:14px;
+        padding:8px 0;
+        flex-wrap:wrap;
+    }
+
+    .topbar-left,
+    .topbar-right{
+        display:flex;
+        align-items:center;
+        gap:22px;
+        flex-wrap:wrap;
+    }
+
+    .topbar-west i{
+        color:var(--gold);
+    }
+
+    .navbar-west{
+        background:#050505;
+        padding:8px 0;
+        box-shadow:0 10px 28px rgba(0,0,0,.35);
+        position:sticky;
+        top:0;
+        z-index:999;
+        border-bottom:1px solid rgba(212,175,55,.22);
+    }
+
+    .navbar-west .container{
+        max-width:100%;
+        padding-left:34px;
+        padding-right:34px;
+    }
+
+    .logo-west{
+        display:flex;
+        align-items:center;
+        text-decoration:none;
+        margin-left:50px;
+    }
+
+    .logo-west img{
+        height:95px;
+        width:auto;
+        object-fit:contain;
+        filter:drop-shadow(0 0 18px rgba(212,175,55,.25));
+    }
+
+    .menu-west{
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+
+    .menu-west a{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        padding:10px 14px;
+        border:1px solid rgba(212,175,55,.28);
+        border-radius:16px;
+        color:#fff;
+        font-size:14px;
+        font-weight:900;
+        text-decoration:none;
+        transition:.3s;
+        background:#111;
+    }
+
+    .menu-west a i{
+        color:var(--gold);
+        font-size:14px;
+    }
+
+    .menu-west a:hover{
+        background:rgba(212,175,55,.12);
+        color:var(--gold-light);
+        transform:translateY(-2px);
+    }
+
+    .cart-btn{
+        background:#050505;
+        color:#fff;
+        border:1px solid var(--gold);
+        border-radius:22px;
+        padding:12px 16px;
+        min-width:145px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        text-decoration:none;
+        position:relative;
+        box-shadow:0 10px 25px rgba(212,175,55,.18);
+        transition:.3s;
+    }
+
+    .cart-btn:hover{
+        transform:translateY(-3px);
+        color:#fff;
+        box-shadow:0 15px 35px rgba(212,175,55,.28);
+    }
+
+    .cart-btn i{
+        font-size:25px;
+        color:var(--gold);
+    }
+
+    .cart-info{
+        display:flex;
+        flex-direction:column;
+        line-height:1.1;
+    }
+
+    .cart-title{
+        font-size:15px;
+        font-weight:900;
+    }
+
+    .cart-value{
+        font-size:13px;
+        color:var(--gold);
+        font-weight:800;
+    }
+
+    .cart-badge{
+        position:absolute;
+        top:-8px;
+        right:-4px;
+        width:32px;
+        height:32px;
+        border-radius:50%;
+        background:linear-gradient(135deg,var(--gold),var(--gold-light));
+        color:#050505;
+        font-weight:900;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 6px 18px rgba(212,175,55,.4);
+    }
+
+    .page-container{
+        max-width:1220px;
+        margin:0 auto;
+        padding:0 14px;
+        background:transparent;
+    }
+
+    .btn-gold,
+    .wl-btn-gold{
+        background:linear-gradient(135deg,var(--gold),var(--gold-light));
+        border:none;
+        color:#111827;
+        font-weight:950;
+        border-radius:18px;
+        padding:14px 24px;
+        text-decoration:none;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:8px;
+        transition:.2s ease;
+    }
+
+    .btn-gold:hover,
+    .wl-btn-gold:hover{
+        color:#111827;
+        transform:translateY(-2px);
+    }
+
+    .whatsapp-float{
+        position:fixed;
+        right:25px;
+        bottom:25px;
+        width:68px;
+        height:68px;
+        border-radius:50%;
+        background:#25D366;
+        color:white;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:34px;
+        text-decoration:none;
+        z-index:9999;
+        box-shadow:0 18px 38px rgba(0,0,0,.28);
+        transition:.2s ease;
+    }
+
+    .whatsapp-float:hover{
+        color:#fff;
+        transform:scale(1.06);
+    }
+
+    .footer-west{
+        margin-top:70px;
+        background:linear-gradient(135deg,#050505,#0b0b0b);
+        color:white;
+        padding:56px 0 26px;
+        border-top:2px solid rgba(212,175,55,.55);
+    }
+
+    .footer-logo-img{
+        width:150px;
+        height:auto;
+        object-fit:contain;
+        filter:drop-shadow(0 0 12px rgba(212,175,55,.35));
+        margin-top:-10px;
+        margin-bottom:8px;
+        display:block;
+    }
+
+    .footer-west h5{
+        font-size:15px;
+        font-weight:950;
+        color:var(--gold-light);
+        margin-bottom:16px;
+        text-transform:uppercase;
+    }
+
+    .footer-west p,
+    .footer-west a{
+        color:rgba(255,255,255,.76);
+        text-decoration:none;
+        font-weight:600;
+        margin-bottom:8px;
+        display:block;
+    }
+
+    .footer-west a:hover{
+        color:var(--gold-light);
+    }
+
+    .footer-bottom{
+        border-top:1px solid rgba(255,255,255,.12);
+        margin-top:34px;
+        padding-top:18px;
+        display:flex;
+        justify-content:space-between;
+        gap:16px;
+        flex-wrap:wrap;
+        color:rgba(255,255,255,.58);
+        font-size:13px;
+        font-weight:600;
+    }
+
+    .topbar-west a,
+    .footer-west a{
+        color:inherit;
+        text-decoration:none;
+        transition:.3s;
+    }
+
+    .topbar-west a:hover,
+    .footer-west a:hover{
+        color:var(--gold);
+    }
+
+    .wl-navbar{
+        width:100%;
+        background:#050505;
+        border-bottom:1px solid rgba(212,175,55,.25);
+        position:sticky;
+        top:0;
+        z-index:999;
+    }
+
+    .wl-nav-container{
+        max-width:1200px;
+        margin:0 auto;
+        padding:14px 18px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:18px;
+    }
+
+    .wl-brand img{
+        height:100px;
+        display:block;
+        filter:drop-shadow(0 0 18px rgba(212,175,55,.28));
+    }
+
+    .wl-menu{
+        display:flex;
+        align-items:center;
+        gap:8px;
+    }
+
+    .wl-menu a{
+        color:#fff;
+        text-decoration:none;
+        font-weight:900;
+        font-size:14px;
+        padding:8px 12px 10px;
+        border:none;
+        border-bottom:1px solid var(--gold);
+        border-radius:0 0 14px 14px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:5px;
+        transition:.25s;
+    }
+
+    .wl-menu a i{
+        color:#fff;
+        font-size:20px;
+    }
+
+    .wl-menu a:hover{
+        background:rgba(212,175,55,.13);
+        color:var(--gold-light);
+    }
+
+    .wl-cart-top{
+        background:linear-gradient(135deg,var(--gold),var(--gold-light));
+        color:#050505;
+        text-decoration:none;
+        font-weight:900;
+        padding:11px 16px;
+        border-radius:999px;
+        display:flex;
+        align-items:center;
+        gap:7px;
+        box-shadow:0 10px 25px rgba(212,175,55,.25);
+    }
+
+    .wl-menu-toggle{
+        display:none;
+        background:linear-gradient(135deg,var(--gold),var(--gold-light));
+        color:#050505;
+        border:0;
+        width:46px;
+        height:46px;
+        border-radius:14px;
+        font-size:26px;
+        align-items:center;
+        justify-content:center;
+    }
+
+    /* ESCURECER ÁREAS DA HOME SEM MEXER NO LAYOUT */
+    .benefit-card,
+    .category-card,
+    .produto-card,
+    .product-card,
+    .card-produto,
+    .wl-card,
+    .card{
+        background:linear-gradient(135deg,#202020,#171717) !important;
+        border:1px solid rgba(212,175,55,.18) !important;
+        color:#fff !important;
+        box-shadow:0 18px 38px rgba(0,0,0,.22) !important;
+    }
+
+    .benefit-card h1,
+    .benefit-card h2,
+    .benefit-card h3,
+    .benefit-card h4,
+    .benefit-card h5,
+    .benefit-card p,
+    .category-card h1,
+    .category-card h2,
+    .category-card h3,
+    .category-card h4,
+    .category-card h5,
+    .category-card p,
+    .produto-card h1,
+    .produto-card h2,
+    .produto-card h3,
+    .produto-card h4,
+    .produto-card h5,
+    .produto-card p,
+    .product-card h1,
+    .product-card h2,
+    .product-card h3,
+    .product-card h4,
+    .product-card h5,
+    .product-card p,
+    .card-produto h1,
+    .card-produto h2,
+    .card-produto h3,
+    .card-produto h4,
+    .card-produto h5,
+    .card-produto p,
+    .wl-card h1,
+    .wl-card h2,
+    .wl-card h3,
+    .wl-card h4,
+    .wl-card h5,
+    .wl-card p,
+    .card h1,
+    .card h2,
+    .card h3,
+    .card h4,
+    .card h5,
+    .card p{
+        color:#fff !important;
+    }
+
+    section,
+    .categorias,
+    .produtos,
+    .home-section,
+    .section-home{
+        background:transparent !important;
+        color:#fff !important;
+    }
+
+    section h1,
+    section h2,
+    section h3,
+    section p,
+    .categorias h1,
+    .categorias h2,
+    .categorias h3,
+    .categorias p,
+    .produtos h1,
+    .produtos h2,
+    .produtos h3,
+    .produtos p{
+        color:#fff !important;
+    }
+
+    .text-muted,
+    .subtitle,
+    .section-subtitle,
+    .produto-categoria,
+    .categoria-subtitulo{
+        color:#cfcfcf !important;
+    }
+
+    .preco,
+    .price,
+    .produto-preco{
+        color:var(--gold-light) !important;
+    }
+
+    .btn-dark,
+    .btn-produto,
+    .ver-produto{
+        background:#050505 !important;
+        color:#fff !important;
+        border:1px solid rgba(212,175,55,.35) !important;
+    }
+
+    .btn-dark:hover,
+    .btn-produto:hover,
+    .ver-produto:hover{
+        background:rgba(212,175,55,.12) !important;
+        color:var(--gold-light) !important;
+    }
+
+    @media(max-width:992px){
+        .menu-west{
+            display:none;
+        }
+
+        .logo-west{
+            margin-left:0;
+        }
+
+        .logo-west img{
+            height:58px;
+        }
+    }
+
+    @media(max-width:900px){
+        .wl-nav-container{
+            flex-wrap:wrap;
+        }
+
+        .wl-brand img{
+            height:52px;
+        }
+
+        .wl-menu-toggle{
+            display:flex;
+            margin-left:auto;
+        }
+
+        .wl-cart-top{
+            width:100%;
+            justify-content:center;
+            order:3;
+        }
+
+        .wl-menu{
+            display:none;
+            width:100%;
+            flex-direction:column;
+            align-items:stretch;
+            background:#0b0b0b;
+            border:1px solid rgba(212,175,55,.25);
+            border-radius:22px;
+            padding:12px;
+            order:4;
+        }
+
+        .wl-menu.active{
+            display:flex;
+        }
+
+        .wl-menu a{
+            width:100%;
+            justify-content:flex-start;
+            padding:14px 16px;
+            border-radius:16px;
+            background:rgba(255,255,255,.03);
+        }
+
+        .wl-menu a:hover{
+            background:rgba(212,175,55,.16);
+        }
+    }
+
+    @media(max-width:576px){
+        .topbar-inner{
+            justify-content:center;
+            text-align:center;
+        }
+
+        .topbar-left{
+            justify-content:center;
+            gap:12px;
+        }
+
+        .topbar-right{
+            display:none;
+        }
+
+        .cart-btn{
+            padding:11px 15px;
+            font-size:14px;
+        }
+
+        .footer-bottom{
+            text-align:center;
+            justify-content:center;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="topbar-west">
+    <div class="container">
+        <div class="topbar-inner">
+
+            <div class="topbar-left">
+                <span>
+                    <i class="bi bi-truck"></i>
+                    Entrega local rápida
+                </span>
+
+                <span>
+                    <i class="bi bi-shield-check"></i>
+                    Compra segura
+                </span>
+
+                <a href="https://wa.me/5585996965533" target="_blank">
+                    <i class="bi bi-whatsapp"></i>
+                    Atendimento via WhatsApp
+                </a>
+            </div>
+
+            <div class="topbar-right">
+
+                <a href="https://wa.me/5585996965533" target="_blank">
+                    Fale conosco
+                </a>
+
+                <a href="https://wa.me/5585996965533" target="_blank">
+                    <i class="bi bi-whatsapp"></i>
+                    (85) 99696-5533
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<header class="wl-navbar">
+    <div class="wl-nav-container">
+
+        <a href="{{ url_for('loja.home') }}" class="wl-brand">
+            <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
+        </a>
+
+        <button class="wl-menu-toggle" type="button" onclick="toggleMenu()">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <nav class="wl-menu" id="wlMenu">
+            <a href="{{ url_for('loja.home') }}">
+                <i class="bi bi-house-door"></i> Início
+            </a>
+
+            <a href="#">
+                <i class="bi bi-stars"></i> Essential
+            </a>
+
+            <a href="#">
+                <i class="bi bi-gem"></i> Minimal
+            </a>
+
+            <a href="#">
+                <i class="bi bi-lightning-charge"></i> Sneaker
+            </a>
+
+            <a href="#">
+                <i class="bi bi-bag-heart"></i> Casual
+            </a>
+
+            <a href="https://wa.me/5585996965533" target="_blank">
+                <i class="bi bi-whatsapp"></i> Contato
+            </a>
+
+            <a href="{{ url_for('loja.consultar_pedido') }}">
+                <i class="bi bi-search-heart"></i> Pedido
+            </a>
+        </nav>
+
+        <a href="{{ url_for('carrinho.ver') }}" class="wl-cart-top">
+            <i class="bi bi-bag"></i>
+            <span>Carrinho</span>
+        </a>
+
+    </div>
+</header>
+
+<main class="page-container">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<a href="https://wa.me/5585996965533" target="_blank" class="whatsapp-float">
+    <i class="bi bi-whatsapp"></i>
+</a>
+
+<footer class="footer-west">
+    <div class="container">
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="footer-logo">
+                    <img
+                        src="{{ url_for('static', filename='img/wl_gold.png') }}"
+                        class="footer-logo-img"
+                        alt="WestLooks">
+                </div>
+                <p>Estilo que te acompanha.</p>
+                <p>Calçados selecionados para quem busca conforto, presença e personalidade.</p>
+            </div>
+
+            <div class="col-md-2">
+                <h5>Navegação</h5>
+                <a href="{{ url_for('loja.home') }}">Início</a>
+                <a href="{{ url_for('loja.home') }}#categorias">Essential</a>
+                <a href="{{ url_for('loja.home') }}#categorias">Minimal</a>
+                <a href="{{ url_for('loja.home') }}#categorias">Sneaker</a>
+                <a href="{{ url_for('loja.home') }}#categorias">Casual</a>
+            </div>
+
+            <div class="col-md-3">
+                <h5>Informações</h5>
+                <a href="{{ url_for('loja.sobre') }}">Sobre nós</a>
+                <a href="{{ url_for('loja.trocas') }}">Trocas e devoluções</a>
+                <a href="{{ url_for('loja.privacidade') }}">Política de privacidade</a>
+                <a href="{{ url_for('loja.consultar_pedido') }}">Consultar pedido</a>
+            </div>
+
+            <div class="col-md-3">
+
+                <h5>Atendimento</h5>
+
+                <p>
+                    <a href="https://wa.me/5585996965533" target="_blank">
+                        <i class="bi bi-whatsapp text-warning"></i>
+                        (85) 99696-5533
+                    </a>
+                </p>
+
+                <p>
+                    <a href="https://instagram.com/westlooks_26" target="_blank">
+                        <i class="bi bi-instagram text-warning"></i>
+                        @westlooks_26
+                    </a>
+                </p>
+
+                <p>
+                    <a href="https://maps.google.com/?q=Fortaleza+CE" target="_blank">
+                        <i class="bi bi-geo-alt text-warning"></i>
+                        Fortaleza - CE
+                    </a>
+                </p>
+
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 WestLooks. Todos os direitos reservados.</span>
+            <span>Desenvolvido com 💛 para quem tem estilo.</span>
+        </div>
+
+    </div>
+</footer>
+
+<script>
+function toggleMenu(){
+    const menu = document.getElementById("wlMenu");
+    menu.classList.toggle("active");
+}
+</script>
+
+</body>
+</html>

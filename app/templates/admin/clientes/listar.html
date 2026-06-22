@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Clientes | WestLooks{% endblock %}
+{% block page_title %}Clientes{% endblock %}
+{% block page_subtitle %}Gerencie os clientes cadastrados na loja{% endblock %}
+
+{% block content %}
+
+<style>
+.clientes-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+    margin-bottom:24px;
+}
+
+.resumo-card,
+.cliente-card{
+    background:#fff;
+    border:1px solid rgba(212,175,55,.25);
+    border-left:6px solid #d4af37;
+    border-radius:26px;
+    padding:22px;
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+}
+
+.resumo-card{
+    text-align:center;
+}
+
+.resumo-card small{
+    color:#64748b;
+    font-weight:700;
+}
+
+.resumo-card h2{
+    margin:8px 0 0;
+    font-size:34px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+.cliente-card{
+    margin-bottom:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.cliente-avatar{
+    width:54px;
+    height:54px;
+    border-radius:18px;
+    background:#111827;
+    color:#d4af37;
+    display:grid;
+    place-items:center;
+    font-weight:900;
+    font-size:22px;
+}
+
+.cliente-info{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.cliente-nome{
+    font-weight:900;
+    font-size:18px;
+    color:#111827;
+}
+
+.cliente-dados{
+    color:#64748b;
+    font-size:14px;
+}
+
+@media(max-width:768px){
+    .clientes-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+<div class="clientes-grid">
+
+    <div class="resumo-card">
+        <small>Total de Clientes</small>
+        <h2>{{ total_clientes }}</h2>
+    </div>
+
+    <div class="resumo-card">
+        <small>Clientes com Pedido</small>
+        <h2>{{ total_com_pedido }}</h2>
+    </div>
+
+</div>
+
+{% for cliente in clientes %}
+
+<div class="cliente-card">
+
+    <div class="cliente-info">
+
+        <div class="cliente-avatar">
+            {{ cliente.nome[0]|upper if cliente.nome else "C" }}
+        </div>
+
+        <div>
+            <div class="cliente-nome">
+                {{ cliente.nome }}
+            </div>
+
+            <div class="cliente-dados">
+                📱 {{ cliente.telefone or "Telefone não informado" }}
+            </div>
+
+            <div class="cliente-dados">
+                CPF: {{ cliente.cpf or "Não informado" }}
+            </div>
+
+            <div class="cliente-dados">
+                Email: {{ cliente.email or "Não informado" }}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="cliente-card text-center">
+    Nenhum cliente cadastrado ainda.
+</div>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,543 @@
+{% extends "base.html" %}
+
+{% block title %}Estoque | WestLooks{% endblock %}
+{% block page_title %}Estoque{% endblock %}
+{% block page_subtitle %}Controle premium por produto e numeração{% endblock %}
+
+{% block content %}
+
+<style>
+.estoque-topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-bottom:24px;
+}
+
+.estoque-title-page h4{
+    margin:0;
+    font-size:28px;
+    font-weight:950;
+    color:#020617;
+}
+
+.estoque-title-page p{
+    margin:6px 0 0;
+    color:#64748b;
+    font-weight:700;
+}
+
+.resumo-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:24px;
+}
+
+.resumo-card{
+    background:linear-gradient(180deg,#fff,#fffdf7);
+    border:1px solid rgba(212,175,55,.30);
+    border-left:7px solid #d4af37;
+    border-radius:24px;
+    padding:22px 24px;
+    box-shadow:0 16px 34px rgba(15,23,42,.07);
+}
+
+.resumo-card small{
+    color:#475569;
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:.3px;
+}
+
+.resumo-card h2{
+    margin:10px 0 0;
+    font-size:34px;
+    font-weight:950;
+    color:#020617;
+}
+
+.filtro-card{
+    background:#fff;
+    border:1px solid rgba(212,175,55,.28);
+    border-radius:26px;
+    padding:18px;
+    box-shadow:0 14px 32px rgba(15,23,42,.06);
+    margin-bottom:24px;
+}
+
+.filtro-input{
+    border-radius:20px;
+    border:1px solid #e5e7eb;
+    padding:16px 18px;
+    font-weight:800;
+    color:#0f172a;
+    background:#fff;
+}
+
+.filtro-input:focus{
+    border-color:#d4af37;
+    box-shadow:0 0 0 4px rgba(212,175,55,.16);
+}
+
+.estoque-card{
+    background:linear-gradient(180deg,#fff,#fffefa);
+    border:1px solid rgba(212,175,55,.32);
+    border-left:7px solid #d4af37;
+    border-radius:30px;
+    padding:22px;
+    box-shadow:0 18px 38px rgba(15,23,42,.08);
+    height:100%;
+    transition:.25s ease;
+}
+
+.estoque-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 26px 52px rgba(15,23,42,.14);
+}
+
+.estoque-card.baixo{
+    border-left-color:#f59e0b;
+}
+
+.estoque-card.zerado{
+    border-left-color:#ef4444;
+}
+
+.estoque-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:16px;
+}
+
+.estoque-produto-left{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    min-width:0;
+}
+
+.produto-thumb{
+    width:68px;
+    height:68px;
+    border-radius:17px;
+    object-fit:contain;
+    background:#fff;
+    border:1px solid rgba(212,175,55,.25);
+    flex-shrink:0;
+}
+
+.produto-thumb-empty{
+    width:68px;
+    height:68px;
+    border-radius:17px;
+    background:linear-gradient(135deg,#0f172a,#020617);
+    border:1px solid rgba(212,175,55,.25);
+    color:#d4af37;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    flex-shrink:0;
+}
+
+.estoque-title{
+    font-size:22px;
+    line-height:1.12;
+    font-weight:950;
+    color:#020617;
+    margin:0 0 8px;
+}
+
+.estoque-cat{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    color:#475569;
+    border-radius:999px;
+    padding:7px 11px;
+    font-size:12px;
+    font-weight:900;
+    margin:0;
+}
+
+.estoque-cat::before{
+    content:"•";
+    color:#d4af37;
+    font-size:18px;
+    line-height:0;
+}
+
+.total-estoque{
+    min-width:78px;
+    text-align:right;
+    font-size:17px;
+    font-weight:950;
+    color:#047857;
+}
+
+.total-estoque span{
+    display:block;
+    color:#64748b;
+    font-size:11px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+.numeracoes-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:18px 0;
+}
+
+.num-badge{
+    border-radius:17px;
+    padding:11px 8px;
+    min-height:78px;
+    text-align:center;
+    font-weight:950;
+    border:1px solid #e5e7eb;
+    background:#f8fafc;
+}
+
+.num-badge strong{
+    display:block;
+    font-size:21px;
+    line-height:1;
+    margin-bottom:5px;
+}
+
+.num-badge small{
+    display:block;
+    font-size:11px;
+    font-weight:850;
+}
+
+.num-status{
+    margin-top:5px;
+}
+
+.num-badge.disponivel{
+    background:#dcfce7;
+    border-color:#22c55e;
+    color:#166534;
+}
+
+.num-badge.baixo{
+    background:#fef3c7;
+    border-color:#f59e0b;
+    color:#92400e;
+}
+
+.num-badge.zerado{
+    background:#fee2e2;
+    border-color:#ef4444;
+    color:#991b1b;
+}
+
+.estoque-mini-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:16px;
+}
+
+.estoque-mini-box{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:10px 12px;
+}
+
+.estoque-mini-box small{
+    display:block;
+    color:#64748b;
+    font-size:11px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+.estoque-mini-box strong{
+    display:block;
+    margin-top:3px;
+    color:#0f172a;
+    font-size:15px;
+    font-weight:950;
+}
+
+.btn-gerenciar-estoque{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    width:100%;
+    margin-top:18px;
+    border-radius:18px;
+    padding:14px 16px;
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    border:1px solid rgba(212,175,55,.65);
+    color:#111827;
+    font-size:16px;
+    font-weight:950;
+    text-decoration:none;
+    transition:.2s ease;
+}
+
+.btn-gerenciar-estoque:hover{
+    color:#111827;
+    transform:translateY(-2px);
+}
+
+.empty-estoque{
+    background:#f8fafc;
+    border:1px dashed #cbd5e1;
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+    color:#64748b;
+    font-weight:800;
+}
+
+@media(max-width:1200px){
+    .numeracoes-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:992px){
+    .resumo-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:576px){
+    .estoque-title-page h4{
+        font-size:24px;
+    }
+
+    .resumo-grid{
+        grid-template-columns:1fr;
+    }
+
+    .estoque-header{
+        flex-direction:column;
+    }
+
+    .total-estoque{
+        text-align:left;
+    }
+
+    .numeracoes-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .estoque-mini-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+{% set total_produtos = produtos|length %}
+{% set total_pecas = namespace(valor=0) %}
+{% set total_baixo = namespace(valor=0) %}
+{% set total_zerado = namespace(valor=0) %}
+
+{% for produto in produtos %}
+    {% set estoques_calc = resumo_estoque.get(produto.id, []) %}
+    {% for est in estoques_calc %}
+        {% set total_pecas.valor = total_pecas.valor + (est.quantidade or 0) %}
+        {% if est.quantidade <= 0 %}
+            {% set total_zerado.valor = total_zerado.valor + 1 %}
+        {% elif est.quantidade <= est.estoque_minimo %}
+            {% set total_baixo.valor = total_baixo.valor + 1 %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+<div class="estoque-topo">
+    <div class="estoque-title-page">
+        <h4>Controle de Estoque</h4>
+        <p>Visualize pares, numerações, estoque baixo e produtos zerados.</p>
+    </div>
+</div>
+
+<div class="resumo-grid">
+    <div class="resumo-card">
+        <small>PRODUTOS</small>
+        <h2>{{ total_produtos }}</h2>
+    </div>
+
+    <div class="resumo-card">
+        <small>TOTAL DE PARES</small>
+        <h2>{{ total_pecas.valor }}</h2>
+    </div>
+
+    <div class="resumo-card">
+        <small>ESTOQUE BAIXO</small>
+        <h2>{{ total_baixo.valor }}</h2>
+    </div>
+
+    <div class="resumo-card">
+        <small>ZERADOS</small>
+        <h2>{{ total_zerado.valor }}</h2>
+    </div>
+</div>
+
+<div class="filtro-card">
+    <input
+        type="text"
+        id="buscaEstoque"
+        class="form-control filtro-input"
+        placeholder="Buscar por produto, categoria ou numeração..."
+        onkeyup="filtrarEstoque()">
+</div>
+
+<div class="row g-4" id="listaEstoque">
+
+{% for produto in produtos %}
+
+    {% set estoques = resumo_estoque.get(produto.id, []) %}
+    {% set total = namespace(valor=0) %}
+    {% set baixos = namespace(valor=0) %}
+    {% set zerados = namespace(valor=0) %}
+
+    {% for est in estoques %}
+        {% set total.valor = total.valor + (est.quantidade or 0) %}
+
+        {% if est.quantidade <= 0 %}
+            {% set zerados.valor = zerados.valor + 1 %}
+        {% elif est.quantidade <= est.estoque_minimo %}
+            {% set baixos.valor = baixos.valor + 1 %}
+        {% endif %}
+    {% endfor %}
+
+    <div class="col-md-6 col-xl-4 estoque-item"
+         data-busca="{{ produto.nome }} {% if produto.categoria %}{{ produto.categoria.nome }}{% endif %} {% for est in estoques %} {{ est.numeracao }} {{ est.quantidade }} {% endfor %}">
+
+        <div class="estoque-card {% if zerados.valor > 0 %}zerado{% elif baixos.valor > 0 %}baixo{% endif %}">
+
+            <div class="estoque-header">
+                <div class="estoque-produto-left">
+
+                    {% if produto.imagens and produto.imagens|length > 0 %}
+                        {% set principal = produto.imagens|selectattr('principal', 'equalto', True)|list %}
+
+                        {% if principal %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ principal[0].imagem) }}" class="produto-thumb">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ produto.imagens[0].imagem) }}" class="produto-thumb">
+                        {% endif %}
+                    {% else %}
+                        <div class="produto-thumb-empty">
+                            <i class="bi bi-bag-heart"></i>
+                        </div>
+                    {% endif %}
+
+                    <div>
+                        <h5 class="estoque-title">
+                            {{ produto.nome }}
+                        </h5>
+
+                        <p class="estoque-cat">
+                            {% if produto.categoria %}
+                                {{ produto.categoria.nome }}
+                            {% else %}
+                                Sem categoria
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="total-estoque">
+                    {{ total.valor }}
+                    <span>pares</span>
+                </div>
+            </div>
+
+            <div class="numeracoes-grid">
+
+                {% for est in estoques %}
+
+                    <div class="num-badge
+                        {% if est.quantidade <= 0 %}
+                            zerado
+                        {% elif est.quantidade <= est.estoque_minimo %}
+                            baixo
+                        {% else %}
+                            disponivel
+                        {% endif %}
+                    ">
+                        <strong>{{ est.numeracao }}</strong>
+
+                        <small>{{ est.quantidade or 0 }} pares</small>
+
+                        {% if est.quantidade <= 0 %}
+                            <small class="num-status">🔴 Zerado</small>
+                        {% elif est.quantidade <= est.estoque_minimo %}
+                            <small class="num-status">🟡 Baixo</small>
+                        {% else %}
+                            <small class="num-status">🟢 OK</small>
+                        {% endif %}
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-estoque">
+                        Nenhuma numeração cadastrada.
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="estoque-mini-grid">
+                <div class="estoque-mini-box">
+                    <small>Baixo</small>
+                    <strong>{{ baixos.valor }}</strong>
+                </div>
+
+                <div class="estoque-mini-box">
+                    <small>Zerado</small>
+                    <strong>{{ zerados.valor }}</strong>
+                </div>
+            </div>
+
+            <a href="{{ url_for('estoque.produto', produto_id=produto.id) }}"
+               class="btn-gerenciar-estoque">
+                <i class="bi bi-box-seam"></i>
+                Gerenciar Estoque
+            </a>
+
+        </div>
+
+    </div>
+
+{% endfor %}
+
+</div>
+
+<script>
+function filtrarEstoque(){
+    const termo = document.getElementById("buscaEstoque").value.toLowerCase();
+    const itens = document.querySelectorAll(".estoque-item");
+
+    itens.forEach(function(item){
+        const texto = item.dataset.busca.toLowerCase();
+
+        if(texto.includes(termo)){
+            item.style.display = "";
+        }else{
+            item.style.display = "none";
+        }
+    });
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "loja/base_loja.html" %}
+
+{% block title %}Pedido Criado | WestLooks{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div
+                class="bg-white rounded-5 shadow p-5 text-center">
+
+                <i
+                    class="bi bi-check-circle-fill"
+                    style="font-size:80px;color:#16a34a;">
+                </i>
+
+                <h1 class="fw-bold mt-3">
+                    Pedido criado com sucesso!
+                </h1>
+
+                <p class="text-muted">
+                    Recebemos seu pedido e estamos aguardando o pagamento.
+                </p>
+
+                <div
+                    class="border rounded-4 p-4 my-4">
+
+                    <h3 class="fw-bold">
+                        Pedido #{{ pedido.id }}
+                    </h3>
+
+                    <h2
+                        style="
+                        color:#d4af37;
+                        font-weight:900;
+                        ">
+
+                        R$ {{ "%.2f"|format(pedido.valor_total) }}
+
+                    </h2>
+
+                    <span
+                        class="badge bg-warning text-dark fs-6">
+
+                        Aguardando Pagamento
+
+                    </span>
+
+                </div>
+
+                <div
+                    class="bg-light rounded-4 p-4 mb-4">
+
+                    <h4 class="fw-bold mb-3">
+
+                        💳 Pagamento via PIX
+
+                    </h4>
+
+                    <p class="mb-2">
+                        Chave PIX
+                    </p>
+
+                    <div
+                        id="chavePix"
+                        class="border rounded-3 p-3 bg-white fw-bold">
+
+                        {{ config.chave_pix or "Chave PIX não configurada" }}
+
+                    </div>
+
+                    {% if config and config.nome_recebedor %}
+                        <p class="mt-2 mb-0 text-muted">
+                            Recebedor: <strong>{{ config.nome_recebedor }}</strong>
+                        </p>
+                    {% endif %}
+
+                    <button
+                        type="button"
+                        onclick="copiarPix()"
+                        class="btn btn-outline-dark rounded-4 mt-3">
+
+                        Copiar Chave PIX
+
+                    </button>
+
+                    <p class="mt-3 mb-0 text-muted">
+
+                        Após realizar o pagamento,
+                        envie o comprovante para nosso WhatsApp.
+
+                    </p>
+
+                </div>
+
+                <div
+                    class="d-flex flex-wrap justify-content-center gap-3">
+
+                    <a
+                        href="{{ url_for('loja.acompanhar_pedido', pedido_id=pedido.id) }}"
+                        class="btn btn-dark btn-lg rounded-4">
+
+                        📦 Acompanhar Pedido
+
+                    </a>
+
+                    <a
+                        href="https://wa.me/558596965533?text=Olá%20WestLooks,%20realizei%20o%20pagamento%20do%20pedido%20%23{{ pedido.id }}"
+                        target="_blank"
+                        class="btn btn-success btn-lg rounded-4">
+
+                        <i class="bi bi-whatsapp"></i>
+                        Enviar Comprovante
+
+                    </a>
+
+                </div>
+
+                <hr class="my-4">
+
+                <a
+                    href="/"
+                    class="btn btn-outline-dark rounded-4">
+
+                    Continuar Comprando
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function copiarPix(){
+    const chave = document.getElementById("chavePix").innerText.trim();
+
+    navigator.clipboard.writeText(chave);
+
+    alert("Chave PIX copiada!");
+}
+</script>
+
+{% endblock %}

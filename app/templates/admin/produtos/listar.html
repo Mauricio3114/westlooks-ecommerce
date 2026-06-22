@@ -1,0 +1,519 @@
+{% extends "base.html" %}
+
+{% block title %}Produtos | WestLooks{% endblock %}
+{% block page_title %}Produtos{% endblock %}
+{% block page_subtitle %}Gerencie o catálogo premium da WestLooks{% endblock %}
+
+{% block content %}
+
+<style>
+.produto-topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-bottom:24px;
+}
+
+.produto-title h4{
+    margin:0;
+    font-size:28px;
+    font-weight:950;
+    color:#020617;
+}
+
+.produto-title p{
+    margin:6px 0 0;
+    color:#64748b;
+    font-weight:700;
+}
+
+.resumo-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:24px;
+}
+
+.resumo-card{
+    background:linear-gradient(180deg,#fff,#fffdf7);
+    border:1px solid rgba(212,175,55,.30);
+    border-left:7px solid #d4af37;
+    border-radius:24px;
+    padding:22px 24px;
+    box-shadow:0 16px 34px rgba(15,23,42,.07);
+}
+
+.resumo-card small{
+    color:#475569;
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:.3px;
+}
+
+.resumo-card h2{
+    margin:10px 0 0;
+    font-size:34px;
+    font-weight:950;
+    color:#020617;
+}
+
+.filtro-card{
+    background:#fff;
+    border:1px solid rgba(212,175,55,.28);
+    border-radius:26px;
+    padding:18px;
+    box-shadow:0 14px 32px rgba(15,23,42,.06);
+    margin-bottom:24px;
+}
+
+.filtro-input{
+    border-radius:20px;
+    border:1px solid #e5e7eb;
+    padding:16px 18px;
+    font-weight:800;
+    color:#0f172a;
+    background:#fff;
+}
+
+.filtro-input:focus{
+    border-color:#d4af37;
+    box-shadow:0 0 0 4px rgba(212,175,55,.16);
+}
+
+.produto-card{
+    background:linear-gradient(180deg,#fff,#fffefa);
+    border:1px solid rgba(212,175,55,.32);
+    border-radius:30px;
+    padding:18px;
+    box-shadow:0 18px 38px rgba(15,23,42,.08);
+    height:100%;
+    transition:.25s ease;
+    overflow:hidden;
+}
+
+.produto-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 26px 52px rgba(15,23,42,.14);
+}
+
+.produto-img{
+    width:100%;
+    height:220px;
+    object-fit:contain;
+    object-position:center;
+    border-radius:24px;
+    margin-bottom:18px;
+    background:#fff;
+}
+
+.produto-sem-img{
+    height:220px;
+    border-radius:24px;
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:#d4af37;
+    font-size:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:18px;
+}
+
+.produto-nome{
+    font-size:22px;
+    line-height:1.15;
+    font-weight:900;
+    color:#020617;
+    margin-bottom:6px;
+}
+
+.produto-cat{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    color:#475569;
+    border-radius:999px;
+    padding:7px 11px;
+    font-size:12px;
+    font-weight:900;
+}
+
+.produto-cat::before{
+    content:"•";
+    color:#d4af37;
+    font-size:18px;
+    line-height:0;
+}
+
+.preco-antigo{
+    color:#94a3b8;
+    text-decoration:line-through;
+    font-size:15px;
+    font-weight:800;
+    margin-bottom:2px;
+}
+
+.preco-principal{
+    color:#16a34a;
+    font-size:38px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:-1px;
+    margin:0;
+}
+
+.produto-info-mini{
+    margin-top:12px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.info-mini-box{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:10px 12px;
+}
+
+.info-mini-box small{
+    display:block;
+    color:#64748b;
+    font-size:11px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+.info-mini-box strong{
+    display:block;
+    margin-top:3px;
+    color:#0f172a;
+    font-size:15px;
+    font-weight:950;
+}
+
+.badge-soft{
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:12px;
+    font-weight:950;
+}
+
+.acoes-produto{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:20px;
+}
+
+.acoes-produto-3{
+    grid-template-columns:1fr 1fr;
+}
+
+.acoes-produto-3 .btn-produto-danger{
+    grid-column:1 / -1;
+}
+
+.btn-produto-dark,
+.btn-produto-gold,
+.btn-produto-danger{
+    border-radius:17px;
+    padding:13px 10px;
+    font-size:15px;
+    font-weight:950;
+    text-align:center;
+    text-decoration:none;
+    transition:.2s ease;
+}
+
+.btn-produto-dark{
+    background:#0f172a;
+    color:#fff;
+    border:1px solid #0f172a;
+}
+
+.btn-produto-dark:hover{
+    background:#020617;
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+.btn-produto-gold{
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    color:#111827;
+    border:1px solid rgba(212,175,55,.65);
+}
+
+.btn-produto-gold:hover{
+    color:#111827;
+    transform:translateY(-2px);
+}
+
+.btn-produto-danger{
+    border:1px solid #ef4444;
+    color:#dc2626;
+    background:#fff;
+}
+
+.btn-produto-danger:hover{
+    background:#dc2626;
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+@media(max-width:1200px){
+    .preco-principal{
+        font-size:34px;
+    }
+}
+
+@media(max-width:992px){
+    .resumo-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:576px){
+    .produto-title h4{
+        font-size:24px;
+    }
+
+    .resumo-grid{
+        grid-template-columns:1fr;
+    }
+
+    .produto-img,
+    .produto-sem-img{
+        height:200px;
+    }
+
+    .preco-principal{
+        font-size:32px;
+    }
+
+    .produto-info-mini{
+        grid-template-columns:1fr;
+    }
+
+    .acoes-produto{
+        grid-template-columns:1fr;
+    }
+
+    .acoes-produto .btn-produto-danger{
+        grid-column:auto;
+    }
+}
+</style>
+
+{% set total_produtos = produtos|length %}
+{% set ativos = produtos|selectattr("ativo", "equalto", true)|list|length %}
+{% set destaques = produtos|selectattr("destaque", "equalto", true)|list|length %}
+{% set lancamentos = produtos|selectattr("lancamento", "equalto", true)|list|length %}
+
+<div class="produto-topo">
+    <div class="produto-title">
+        <h4>Produtos cadastrados</h4>
+        <p>Catálogo profissional da WestLooks</p>
+    </div>
+
+    <a href="{{ url_for('produtos.novo') }}" class="wl-btn-gold text-decoration-none">
+        <i class="bi bi-plus-circle"></i>
+        Novo Produto
+    </a>
+</div>
+
+<div class="resumo-grid">
+    <div class="resumo-card">
+        <small>TOTAL PRODUTOS</small>
+        <h2>{{ total_produtos }}</h2>
+    </div>
+
+    <div class="resumo-card">
+        <small>ATIVOS</small>
+        <h2>{{ ativos }}</h2>
+    </div>
+
+    <div class="resumo-card">
+        <small>DESTAQUES</small>
+        <h2>{{ destaques }}</h2>
+    </div>
+
+    <div class="resumo-card">
+        <small>LANÇAMENTOS</small>
+        <h2>{{ lancamentos }}</h2>
+    </div>
+</div>
+
+<div class="filtro-card">
+    <input
+        type="text"
+        id="buscaProduto"
+        class="form-control filtro-input"
+        placeholder="Buscar por nome, categoria ou preço..."
+        onkeyup="filtrarProdutos()">
+</div>
+
+<div class="row g-4" id="listaProdutos">
+
+{% for produto in produtos %}
+
+<div class="col-md-6 col-xl-4 produto-item"
+     data-busca="{{ produto.nome }} {% if produto.categoria %}{{ produto.categoria.nome }}{% endif %} {{ produto.preco }}">
+
+    <div class="produto-card">
+
+        {% if produto.imagens and produto.imagens|length > 0 %}
+            {% set principal = produto.imagens|selectattr('principal', 'equalto', True)|list %}
+
+            {% if principal %}
+                <img src="{{ url_for('static', filename='uploads/' ~ principal[0].imagem) }}" class="produto-img">
+            {% else %}
+                <img src="{{ url_for('static', filename='uploads/' ~ produto.imagens[0].imagem) }}" class="produto-img">
+            {% endif %}
+        {% else %}
+            <div class="produto-sem-img">
+                <i class="bi bi-bag-heart"></i>
+            </div>
+        {% endif %}
+
+        <div class="d-flex justify-content-between align-items-start gap-2">
+            <div>
+                <div class="produto-nome">{{ produto.nome }}</div>
+
+                <div class="produto-cat">
+                    {% if produto.categoria %}
+                        {{ produto.categoria.nome }}
+                    {% else %}
+                        Sem categoria
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if produto.ativo %}
+                <span class="badge bg-success badge-soft">Ativo</span>
+            {% else %}
+                <span class="badge bg-danger badge-soft">Inativo</span>
+            {% endif %}
+        </div>
+
+        <div class="mt-3">
+            {% if produto.preco_promocional and produto.preco_promocional > 0 %}
+                <div class="preco-antigo">R$ {{ produto.preco }}</div>
+                <p class="preco-principal">R$ {{ produto.preco_promocional }}</p>
+            {% else %}
+                <p class="preco-principal">R$ {{ produto.preco }}</p>
+            {% endif %}
+        </div>
+
+        <div class="mt-3 d-flex flex-wrap gap-2">
+
+            {% if produto.destaque %}
+                <span class="badge bg-warning text-dark badge-soft">Destaque</span>
+            {% endif %}
+
+            {% if produto.lancamento %}
+                <span class="badge bg-primary badge-soft">Lançamento</span>
+            {% endif %}
+
+            {% if produto.mais_vendido %}
+                <span class="badge bg-success badge-soft">Mais Vendido</span>
+            {% endif %}
+
+            {% if produto.frete_gratis %}
+                <span class="badge bg-info text-dark badge-soft">Frete Grátis</span>
+            {% endif %}
+
+        </div>
+
+        <div class="produto-info-mini">
+            <div class="info-mini-box">
+                <small>Estoque</small>
+                <strong>
+                    {% if produto.estoques %}
+                        {{ produto.estoques|sum(attribute='quantidade') }} un.
+                    {% else %}
+                        0 un.
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="info-mini-box">
+                <small>Status</small>
+                <strong>
+                    {% if produto.ativo %}
+                        Disponível
+                    {% else %}
+                        Inativo
+                    {% endif %}
+                </strong>
+            </div>
+        </div>
+
+        <div class="acoes-produto acoes-produto-3">
+            <a href="{{ url_for('produtos.editar', id=produto.id) }}" class="btn-produto-dark">
+                <i class="bi bi-pencil-square"></i>
+                Editar
+            </a>
+
+            <a href="{{ url_for('estoque.produto', produto_id=produto.id) }}" class="btn-produto-gold">
+                <i class="bi bi-box-seam"></i>
+                Estoque
+            </a>
+
+            <a href="{{ url_for('produtos.excluir', id=produto.id) }}"
+            onclick="return confirm('Deseja excluir este produto?')"
+            class="btn-produto-danger">
+                <i class="bi bi-trash"></i>
+                Excluir
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="col-12">
+    <div class="wl-card text-center py-5">
+        <i class="bi bi-bag-heart" style="font-size:64px;color:#d4af37;"></i>
+
+        <h3 class="fw-bold mt-3">
+            Nenhum produto cadastrado
+        </h3>
+
+        <p class="text-muted">
+            Comece adicionando os primeiros produtos da WestLooks.
+        </p>
+
+        <a href="{{ url_for('produtos.novo') }}" class="wl-btn-gold text-decoration-none">
+            Cadastrar Primeiro Produto
+        </a>
+    </div>
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+function filtrarProdutos(){
+    const termo = document.getElementById("buscaProduto").value.toLowerCase();
+    const produtos = document.querySelectorAll(".produto-item");
+
+    produtos.forEach(function(item){
+        const texto = item.dataset.busca.toLowerCase();
+
+        if(texto.includes(termo)){
+            item.style.display = "";
+        }else{
+            item.style.display = "none";
+        }
+    });
+}
+</script>
+
+{% endblock %}

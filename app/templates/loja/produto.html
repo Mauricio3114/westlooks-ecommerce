@@ -1,0 +1,479 @@
+{% extends "loja/base_loja.html" %}
+
+{% block title %}{{ produto.nome }} | WestLooks{% endblock %}
+
+{% block content %}
+
+<style>
+.produto-page{
+    margin:36px 0 70px;
+}
+
+.produto-box{
+    background:#fff;
+    border:1px solid rgba(212,175,55,.22);
+    border-radius:34px;
+    padding:34px;
+    box-shadow:0 24px 70px rgba(15,23,42,.10);
+}
+
+.produto-galeria{
+    background:linear-gradient(180deg,#fff,#fffefa);
+    border:1px solid rgba(212,175,55,.22);
+    border-radius:30px;
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+}
+
+.galeria-principal{
+    position:relative;
+    height:520px;
+    border-radius:26px;
+    background:#f8fafc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.produto-foto-principal{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    transition:.25s ease;
+}
+
+.galeria-seta{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    border:1px solid rgba(212,175,55,.35);
+    background:#fff;
+    color:#0f172a;
+    display:grid;
+    place-items:center;
+    font-size:24px;
+    cursor:pointer;
+    z-index:5;
+    box-shadow:0 10px 26px rgba(15,23,42,.16);
+}
+
+.galeria-seta:hover{
+    background:#0f172a;
+    color:#d4af37;
+}
+
+.galeria-prev{
+    left:16px;
+}
+
+.galeria-next{
+    right:16px;
+}
+
+.thumbs{
+    display:flex;
+    gap:12px;
+    margin-top:0px;
+    overflow-x:auto;
+    padding-bottom:4px;
+}
+
+.thumb{
+    width:84px;
+    height:84px;
+    border-radius:18px;
+    border:2px solid transparent;
+    background:#f8fafc;
+    padding:6px;
+    cursor:pointer;
+    flex:0 0 auto;
+}
+
+.thumb img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    border-radius:14px;
+}
+
+.thumb.ativo{
+    border-color:#d4af37;
+    box-shadow:0 0 0 4px rgba(212,175,55,.16);
+}
+
+.produto-info{
+    padding:10px 10px 10px 25px;
+}
+
+.produto-categoria{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#111827;
+    color:#d4af37;
+    padding:9px 15px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:950;
+    margin-bottom:16px;
+}
+
+.produto-titulo{
+    font-size:44px;
+    font-weight:950;
+    color:#111827;
+    line-height:1.05;
+    margin-bottom:12px;
+}
+
+.produto-stars{
+    color:#d4af37;
+    font-size:18px;
+    margin-bottom:16px;
+    font-weight:800;
+}
+
+.preco-antigo{
+    color:#94a3b8;
+    text-decoration:line-through;
+    font-size:18px;
+    font-weight:800;
+}
+
+.preco-atual{
+    color:#16a34a;
+    font-size:44px;
+    font-weight:950;
+    margin-bottom:6px;
+}
+
+.parcelamento{
+    color:#64748b;
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+.section-mini-title{
+    font-weight:950;
+    margin-bottom:12px;
+    color:#111827;
+}
+
+.numeracoes{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:22px;
+}
+
+.num-box{
+    cursor:pointer;
+    border:2px solid #111827;
+    border-radius:14px;
+    padding:11px 16px;
+    font-weight:950;
+    background:#fff;
+    min-width:54px;
+    text-align:center;
+    transition:.2s ease;
+}
+
+.num-box:hover{
+    transform:translateY(-2px);
+}
+
+.num-box.ativo{
+    background:#111827;
+    color:#d4af37;
+    border-color:#d4af37;
+}
+
+.produto-beneficios{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:24px 0;
+}
+
+.beneficio{
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    padding:14px;
+    text-align:center;
+    font-weight:900;
+    font-size:13px;
+}
+
+.beneficio i{
+    display:block;
+    color:#d4af37;
+    font-size:22px;
+    margin-bottom:6px;
+}
+
+.btn-carrinho-produto{
+    background:#111827;
+    color:#fff;
+    border:none;
+    border-radius:18px;
+    padding:17px 24px;
+    font-weight:950;
+    text-decoration:none;
+    display:block;
+    text-align:center;
+    font-size:18px;
+    width:100%;
+}
+
+.btn-carrinho-produto:hover{
+    background:#020617;
+}
+
+.descricao-box{
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    border-radius:24px;
+    padding:22px;
+    margin-top:24px;
+}
+
+@media(max-width:768px){
+    .produto-box{
+        padding:18px;
+        border-radius:26px;
+    }
+
+    .galeria-principal{
+        height:330px;
+    }
+
+    .produto-info{
+        padding:20px 0 0;
+    }
+
+    .produto-titulo{
+        font-size:30px;
+    }
+
+    .preco-atual{
+        font-size:34px;
+    }
+
+    .produto-beneficios{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+<div class="produto-page">
+    <div class="produto-box">
+        <div class="row g-4 align-items-start">
+
+            <div class="col-lg-6">
+                <div class="produto-galeria">
+
+                    <div class="galeria-principal">
+                        {% if produto.imagens and produto.imagens|length > 0 %}
+                            <button type="button" class="galeria-seta galeria-prev" onclick="trocarImagem(-1)">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+
+                            <img
+                                id="imagemPrincipal"
+                                src="{{ url_for('static', filename='uploads/' ~ produto.imagens[0].imagem) }}"
+                                class="produto-foto-principal"
+                                alt="{{ produto.nome }}">
+
+                            <button type="button" class="galeria-seta galeria-next" onclick="trocarImagem(1)">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        {% else %}
+                            <div class="produto-foto-principal d-flex align-items-center justify-content-center">
+                                <i class="bi bi-bag" style="font-size:70px;color:#d4af37;"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if produto.imagens and produto.imagens|length > 1 %}
+                    <div class="thumbs">
+                        {% for img in produto.imagens %}
+                            <button
+                                type="button"
+                                class="thumb {% if loop.index0 == 0 %}ativo{% endif %}"
+                                onclick="selecionarImagem({{ loop.index0 }})">
+
+                                <img
+                                    src="{{ url_for('static', filename='uploads/' ~ img.imagem) }}"
+                                    alt="{{ produto.nome }}">
+
+                            </button>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="col-lg-6 produto-info">
+
+                {% if produto.categoria %}
+                    <div class="produto-categoria">
+                        <i class="bi bi-tag"></i>
+                        {{ produto.categoria.nome }}
+                    </div>
+                {% endif %}
+
+                <h1 class="produto-titulo">{{ produto.nome }}</h1>
+
+                <div class="produto-stars">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <span class="text-muted ms-2">Produto premium WestLooks</span>
+                </div>
+
+                {% if produto.preco_promocional and produto.preco_promocional > 0 %}
+                    <div class="preco-antigo">R$ {{ produto.preco }}</div>
+                    <div class="preco-atual">R$ {{ produto.preco_promocional }}</div>
+                {% else %}
+                    <div class="preco-atual">R$ {{ produto.preco }}</div>
+                {% endif %}
+
+                <div class="parcelamento">
+                    Consulte disponibilidade, entrega e formas de pagamento pelo WhatsApp.
+                </div>
+
+                <h5 class="section-mini-title">Escolha sua numeração</h5>
+
+                <div class="numeracoes">
+                    {% for estoque in estoques %}
+                        <button
+                            type="button"
+                            class="num-box tamanho-btn"
+                            data-numero="{{ estoque.numeracao }}">
+                            {{ estoque.numeracao }}
+                        </button>
+                    {% else %}
+                        <p class="text-muted">Sem numeração disponível no momento.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="produto-beneficios">
+                    <div class="beneficio">
+                        <i class="bi bi-truck"></i>
+                        Entrega local
+                    </div>
+                    <div class="beneficio">
+                        <i class="bi bi-shield-check"></i>
+                        Produto selecionado
+                    </div>
+                    <div class="beneficio">
+                        <i class="bi bi-whatsapp"></i>
+                        Atendimento rápido
+                    </div>
+                </div>
+
+                <form action="{{ url_for('carrinho.adicionar') }}" method="POST" onsubmit="return validarNumeracao()">
+                    <input type="hidden" name="produto_id" value="{{ produto.id }}">
+                    <input type="hidden" name="numeracao" id="numeracao_escolhida">
+
+                    {% if estoques|length > 0 %}
+                        <button type="submit" class="btn-carrinho-produto">
+                            <i class="bi bi-bag-plus"></i>
+                            Adicionar ao Carrinho
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-danger w-100 rounded-4" disabled>
+                            Produto Indisponível
+                        </button>
+                    {% endif %}
+                </form>
+
+            </div>
+        </div>
+
+        <div class="descricao-box">
+            <h5 class="fw-bold">Descrição do produto</h5>
+            <p class="text-muted mb-0">
+                {{ produto.descricao or "Produto WestLooks com estilo, conforto e qualidade para acompanhar sua rotina." }}
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+const imagensProduto = [
+    {% for img in produto.imagens %}
+        "{{ url_for('static', filename='uploads/' ~ img.imagem) }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
+let imagemAtual = 0;
+
+function atualizarImagem(){
+    const principal = document.getElementById("imagemPrincipal");
+    if(!principal || imagensProduto.length === 0) return;
+
+    principal.src = imagensProduto[imagemAtual];
+
+    document.querySelectorAll(".thumb").forEach((thumb, index) => {
+        thumb.classList.toggle("ativo", index === imagemAtual);
+    });
+}
+
+function trocarImagem(direcao){
+    if(imagensProduto.length === 0) return;
+
+    imagemAtual += direcao;
+
+    if(imagemAtual < 0){
+        imagemAtual = imagensProduto.length - 1;
+    }
+
+    if(imagemAtual >= imagensProduto.length){
+        imagemAtual = 0;
+    }
+
+    atualizarImagem();
+}
+
+function selecionarImagem(index){
+    imagemAtual = index;
+    atualizarImagem();
+}
+
+let tamanhoSelecionado = "";
+
+document.querySelectorAll(".tamanho-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+        document.querySelectorAll(".tamanho-btn").forEach(b => b.classList.remove("ativo"));
+
+        this.classList.add("ativo");
+        tamanhoSelecionado = this.dataset.numero;
+
+        document.getElementById("numeracao_escolhida").value = tamanhoSelecionado;
+    });
+});
+
+function validarNumeracao(){
+    const campo = document.getElementById("numeracao_escolhida");
+
+    if(!campo || !campo.value){
+        alert("Escolha uma numeração antes de adicionar ao carrinho.");
+        return false;
+    }
+
+    return true;
+}
+</script>
+
+{% endblock %}

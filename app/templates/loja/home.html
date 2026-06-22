@@ -1,0 +1,880 @@
+{% extends "loja/base_loja.html" %}
+
+{% block title %}WestLooks | Loja Online{% endblock %}
+
+{% block content %}
+
+<style>
+.home-v2{
+    padding-top:22px;
+}
+
+.hero-v2{
+    position:relative;
+    overflow:hidden;
+    border-radius:36px;
+    min-height:430px;
+    padding:54px 56px 46px;
+    background:
+        radial-gradient(circle at 80% 8%, rgba(246,226,122,.32), transparent 8%),
+        radial-gradient(circle at 78% 45%, rgba(212,175,55,.20), transparent 32%),
+        linear-gradient(135deg,#020617 0%,#050505 48%,#111827 100%);
+    color:#fff;
+    box-shadow:0 32px 75px rgba(2,6,23,.38);
+    display:grid;
+    grid-template-columns:1fr 1.15fr;
+    align-items:center;
+    gap:28px;
+}
+
+.hero-v2::before{
+    content:"";
+    position:absolute;
+
+    right:70px;
+    top:25px;
+
+    width:450px;
+    height:450px;
+
+    border-radius:50%;
+
+    border:5px solid #f6e27a;
+
+    box-shadow:
+        0 0 20px rgba(246,226,122,.9),
+        0 0 50px rgba(212,175,55,.8),
+        0 0 90px rgba(212,175,55,.5);
+
+    z-index:1;
+}
+
+.circle-shine{
+    position:absolute;
+
+    right:105px;
+    top:55px;
+
+    width:18px;
+    height:18px;
+
+    border-radius:50%;
+
+    background:#fff9c4;
+
+    box-shadow:
+        0 0 15px #fff9c4,
+        0 0 35px #f6e27a,
+        0 0 70px #d4af37,
+        0 0 120px #d4af37;
+
+    z-index:6;
+}
+
+.hero-v2::after{
+    content:"";
+    position:absolute;
+
+    right:120px;
+    bottom:35px;
+
+    width:520px;
+    height:90px;
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.85);
+
+    filter:blur(10px);
+
+    z-index:1;
+}
+
+.hero-content-v2{
+    position:relative;
+    z-index:3;
+}
+
+.hero-badge-v2{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    border:1px solid rgba(212,175,55,.70);
+    background:rgba(212,175,55,.10);
+    color:#f6e27a;
+    border-radius:999px;
+    padding:11px 18px;
+    font-size:14px;
+    font-weight:950;
+    margin-bottom:24px;
+}
+
+.hero-v2 h1{
+    font-size:66px;
+    line-height:.95;
+    font-weight:950;
+    letter-spacing:-1px;
+    margin:0 0 22px;
+}
+
+.hero-v2 h1 span{
+    color:#d4af37;
+}
+
+.hero-v2 p{
+    max-width:590px;
+    color:rgba(255,255,255,.88);
+    font-size:20px;
+    line-height:1.55;
+    font-weight:650;
+    margin:0 0 30px;
+}
+
+.btn-hero-v2{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    border-radius:18px;
+    padding:17px 28px;
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    color:#111827;
+    font-size:17px;
+    font-weight:950;
+    text-decoration:none;
+    box-shadow:0 16px 34px rgba(212,175,55,.22);
+    transition:.2s ease;
+}
+
+.btn-hero-v2:hover{
+    color:#111827;
+    transform:translateY(-2px);
+}
+
+.hero-product-v2{
+    position:relative;
+    z-index:5;
+    min-height:360px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.hero-v2::before{
+    z-index:2;
+}
+
+.hero-product-v2 img{
+    width:115%;
+    max-width:760px;
+    object-fit:contain;
+
+    transform:translateX(-20px) translateY(90px);
+
+    filter:drop-shadow(0 38px 52px rgba(0,0,0,.65));
+}
+
+.beneficios-v2{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+
+    margin-top:35px;
+    margin-bottom:45px;
+}
+
+.beneficio-v2{
+    background:#d0d0d0;
+    border:1px solid rgba(212,175,55,.45);
+    border-radius:22px;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    box-shadow:0 18px 38px rgba(15,23,42,.10);
+}
+
+.beneficio-icon-v2{
+    width:52px;
+    height:52px;
+    border-radius:17px;
+    background:#0f172a;
+    color:#d4af37;
+    display:grid;
+    place-items:center;
+    font-size:25px;
+    flex-shrink:0;
+}
+
+.beneficio-v2 strong{
+    display:block;
+    color:#020617;
+    font-size:17px;
+    font-weight:950;
+}
+
+.beneficio-v2 small{
+    color:#64748b;
+    font-weight:750;
+}
+
+.section-v2{
+    margin-top:42px;
+}
+
+.section-head-v2{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+}
+
+.section-head-v2 h3{
+    margin:0;
+    color:#020617;
+    font-size:34px;
+    font-weight:950;
+}
+
+.section-head-v2 p{
+    margin:6px 0 0;
+    color:#64748b;
+    font-size:16px;
+    font-weight:750;
+}
+
+.categorias-v2{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:24px;
+}
+
+.categoria-v2{
+    background:#d0d0d0;
+    border:1px solid rgba(212,175,55,.35);
+    border-radius:24px;
+    padding:22px 18px;
+    text-align:center;
+    box-shadow:0 16px 34px rgba(15,23,42,.06);
+    transition:.2s ease;
+    min-height:150px;
+}
+
+.categoria-v2:hover{
+    transform:translateY(-4px);
+    box-shadow:0 24px 48px rgba(15,23,42,.12);
+}
+
+.categoria-v2 img{
+    height:54px;
+    object-fit:contain;
+    margin-bottom:12px;
+}
+
+.categoria-v2 .cat-icon{
+    width:58px;
+    height:58px;
+    margin:0 auto 12px;
+    border-radius:18px;
+    background:#0f172a;
+    color:#d4af37;
+    display:grid;
+    place-items:center;
+    font-size:26px;
+}
+
+.categoria-v2 strong{
+    display:block;
+    color:#020617;
+    font-size:17px;
+    font-weight:950;
+}
+
+.categoria-v2 small{
+    color:#64748b;
+    font-weight:700;
+}
+
+.produtos-grid-v2{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
+}
+
+.produto-v2{
+    background:#d0d0d0;
+    border:1px solid rgba(212,175,55,.45);
+    border-radius:26px;
+    padding:16px;
+    position:relative;
+    box-shadow:0 18px 38px rgba(15,23,42,.08);
+    transition:.22s ease;
+}
+
+.produto-v2:hover{
+    transform:translateY(-5px);
+    box-shadow:0 28px 58px rgba(15,23,42,.14);
+}
+
+.produto-tag-v2{
+    position:absolute;
+    top:18px;
+    left:18px;
+    z-index:2;
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    color:#111827;
+    border-radius:999px;
+    padding:8px 13px;
+    font-size:12px;
+    font-weight:950;
+}
+
+.produto-fav-v2{
+    position:absolute;
+    top:18px;
+    right:18px;
+    z-index:2;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#d8d8d8;
+    border:1px solid rgba(212,175,55,.35);
+    display:grid;
+    place-items:center;
+    color:#475569;
+}
+
+.produto-img-v2{
+    height:230px;
+    background:#e5e5e5;
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:16px;
+    overflow:hidden;
+}
+
+.produto-img-v2 img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.produto-img-empty-v2{
+    height:230px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#0f172a,#020617);
+    color:#d4af37;
+    display:grid;
+    place-items:center;
+    font-size:58px;
+    margin-bottom:16px;
+}
+
+.produto-v2 h5{
+    margin:0 0 8px;
+    color:#020617;
+    font-size:18px;
+    font-weight:950;
+    line-height:1.2;
+}
+
+.produto-cat-v2{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#d8d8d8;
+    border:1px solid rgba(212,175,55,.35);
+    color:#475569;
+    border-radius:999px;
+    padding:7px 11px;
+    font-size:12px;
+    font-weight:900;
+    margin-bottom:12px;
+}
+
+.produto-cat-v2::before{
+    content:"•";
+    color:#d4af37;
+    font-size:18px;
+    line-height:0;
+}
+
+.preco-antigo-v2{
+    color:#94a3b8;
+    text-decoration:line-through;
+    font-weight:800;
+}
+
+.preco-v2{
+    color:#16a34a;
+    font-size:30px;
+    font-weight:950;
+    line-height:1;
+    letter-spacing:-.5px;
+}
+
+.btn-produto-v2{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    width:100%;
+    margin-top:18px;
+    border-radius:16px;
+    padding:14px;
+    background:#0f172a;
+    color:#fff;
+    text-decoration:none;
+    font-weight:950;
+    transition:.2s ease;
+}
+
+.btn-produto-v2:hover{
+    background:#020617;
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+.cta-v2{
+    margin-top:46px;
+    border-radius:28px;
+    padding:28px;
+    background:linear-gradient(135deg,#050505,#111827);
+    color:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:22px;
+    box-shadow:0 22px 52px rgba(2,6,23,.25);
+    border:1px solid rgba(212,175,55,.30);
+}
+
+.cta-v2 h3{
+    margin:0 0 6px;
+    font-size:27px;
+    font-weight:950;
+}
+
+.cta-v2 p{
+    margin:0;
+    color:rgba(255,255,255,.75);
+    font-weight:650;
+}
+
+.btn-whats-v2{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    border-radius:18px;
+    padding:15px 24px;
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    color:#111827;
+    font-weight:950;
+    text-decoration:none;
+    white-space:nowrap;
+}
+
+.btn-whats-v2:hover{
+    color:#111827;
+}
+
+.hero-logo-bg{
+    position:absolute;
+    right:80px;
+    top:37px;
+    width:430px;
+    height:280px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+}
+
+.hero-logo-bg img{
+    width:300px;
+    height:auto;
+    opacity:.75;
+    object-fit:contain;
+    filter:
+        brightness(2.4)
+        contrast(1.25)
+        saturate(2)
+        drop-shadow(0 0 18px rgba(246,226,122,.95))
+        drop-shadow(0 0 45px rgba(212,175,55,.75))
+        drop-shadow(0 0 85px rgba(212,175,55,.55));
+}
+
+.hero-logo-circle{
+    display:none !important;
+}
+
+.beneficio-v2,
+.categoria-v2,
+.produto-v2{
+    box-shadow:
+        0 0 0 1px rgba(212,175,55,.12),
+        0 12px 30px rgba(0,0,0,.10);
+}
+
+@media(max-width:1200px){
+    .hero-v2{
+        grid-template-columns:1fr .9fr;
+    }
+
+    .hero-logo-bg{
+        right:35px;
+        width:320px;
+    }
+
+    .produtos-grid-v2{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .categorias-v2{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media(max-width:992px){
+    .hero-v2{
+        grid-template-columns:1fr;
+        text-align:center;
+        padding:48px 26px;
+    }
+
+    .hero-v2 h1{
+        font-size:48px;
+    }
+
+    .hero-v2 p{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .hero-product-v2 img{
+        max-width:430px;
+    }
+
+    .hero-logo-bg{
+        right:50%;
+        top:58%;
+        width:260px;
+        transform:translate(50%,-50%);
+        opacity:.35;
+    }
+
+    .beneficios-v2{
+        grid-template-columns:repeat(2,1fr);
+        margin:18px 0 36px;
+    }
+
+    .produtos-grid-v2{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:576px){
+    .hero-v2{
+        border-radius:26px;
+    }
+
+    .hero-v2 h1{
+        font-size:38px;
+    }
+
+    .hero-v2 p{
+        font-size:16px;
+    }
+
+    .hero-logo-bg{
+        width:210px;
+        opacity:.25;
+    }
+
+    .beneficios-v2,
+    .categorias-v2,
+    .produtos-grid-v2{
+        grid-template-columns:1fr;
+    }
+
+    .section-head-v2 h3{
+        font-size:28px;
+    }
+
+    .cta-v2{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+/* AJUSTE FINAL WESTLOOKS - CINZA ESCURO PREMIUM */
+body,
+main,
+.page-container{
+    background:#181818 !important;
+}
+
+.benefit-card,
+.categoria-card,
+.category-card,
+.produto-card,
+.product-card,
+.card-produto{
+    background:linear-gradient(135deg,#262626,#1c1c1c) !important;
+    border:1px solid rgba(212,175,55,.20) !important;
+    color:#fff !important;
+}
+
+.benefit-card h1,
+.benefit-card h2,
+.benefit-card h3,
+.benefit-card h4,
+.benefit-card p,
+.categoria-card h1,
+.categoria-card h2,
+.categoria-card h3,
+.categoria-card h4,
+.categoria-card p,
+.category-card h1,
+.category-card h2,
+.category-card h3,
+.category-card h4,
+.category-card p,
+.produto-card h1,
+.produto-card h2,
+.produto-card h3,
+.produto-card h4,
+.produto-card p,
+.product-card h1,
+.product-card h2,
+.product-card h3,
+.product-card h4,
+.product-card p,
+.card-produto h1,
+.card-produto h2,
+.card-produto h3,
+.card-produto h4,
+.card-produto p{
+    color:#fff !important;
+}
+
+.benefit-card small,
+.benefit-card span,
+.categoria-card small,
+.categoria-card span,
+.category-card small,
+.category-card span,
+.produto-card small,
+.produto-card span,
+.product-card small,
+.product-card span,
+.card-produto small,
+.card-produto span{
+    color:#cfcfcf !important;
+}
+
+.produto-card .produto-img,
+.product-card .produto-img,
+.card-produto .produto-img,
+.produto-card img,
+.product-card img,
+.card-produto img{
+    background:#fff !important;
+    border-radius:18px;
+}
+
+.produto-card .btn,
+.product-card .btn,
+.card-produto .btn{
+    background:#050505 !important;
+    color:#fff !important;
+    border:1px solid rgba(212,175,55,.35) !important;
+}
+</style>
+
+<div class="home-v2">
+
+    <section class="hero-v2">
+
+        <div class="circle-shine"></div>
+
+        <div class="hero-logo-bg">
+            <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
+        </div>
+
+        <div class="hero-content-v2">
+            <div class="hero-badge-v2">
+                <i class="bi bi-stars"></i>
+                ESTILO QUE TE ACOMPANHA
+            </div>
+
+            <h1>WEST<span>LOOKS</span></h1>
+
+            <p>
+                Calçados selecionados para quem busca estilo, conforto e presença em cada passo.
+                Escolha seu modelo, finalize seu pedido e receba com praticidade.
+            </p>
+
+            <a href="#produtos" class="btn-hero-v2">
+                <i class="bi bi-bag"></i>
+                Ver Produtos
+            </a>
+        </div>
+
+        <div class="hero-logo-circle">
+            <img src="{{ url_for('static', filename='img/wl_gold.png') }}">
+        </div>
+
+        <div class="hero-product-v2">
+            <img
+                src="{{ url_for('static', filename='uploads/West Classic Black.png') }}"
+                alt="West Classic Black">
+        </div>
+    </section>
+
+    <div class="beneficios-v2">
+        <div class="beneficio-v2">
+            <div class="beneficio-icon-v2"><i class="bi bi-truck"></i></div>
+            <div>
+                <strong>Entrega local</strong>
+                <small>Receba com praticidade</small>
+            </div>
+        </div>
+
+        <div class="beneficio-v2">
+            <div class="beneficio-icon-v2"><i class="bi bi-shield-check"></i></div>
+            <div>
+                <strong>Compra segura</strong>
+                <small>Pedido acompanhado</small>
+            </div>
+        </div>
+
+        <div class="beneficio-v2">
+            <div class="beneficio-icon-v2"><i class="bi bi-gem"></i></div>
+            <div>
+                <strong>Modelos selecionados</strong>
+                <small>Estilo e conforto</small>
+            </div>
+        </div>
+
+        <div class="beneficio-v2">
+            <div class="beneficio-icon-v2"><i class="bi bi-whatsapp"></i></div>
+            <div>
+                <strong>Atendimento rápido</strong>
+                <small>Suporte pelo WhatsApp</small>
+            </div>
+        </div>
+    </div>
+
+    <section class="section-v2">
+        <div class="section-head-v2">
+            <div>
+                <h3>Categorias</h3>
+                <p>Encontre rapidamente o estilo que combina com você.</p>
+            </div>
+        </div>
+
+        <div class="categorias-v2">
+            {% for categoria in categorias %}
+            <div class="categoria-v2">
+                <div class="cat-icon">
+                    <i class="bi bi-bag"></i>
+                </div>
+                <strong>{{ categoria.nome }}</strong>
+                <small>Clássicos do dia a dia</small>
+            </div>
+            {% endfor %}
+
+            <div class="categoria-v2">
+                <div class="cat-icon">
+                    <i class="bi bi-grid"></i>
+                </div>
+                <strong>Todos</strong>
+                <small>Ver todos</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-v2" id="produtos">
+        <div class="section-head-v2">
+            <div>
+                <h3>Todos os Produtos</h3>
+                <p>Confira os modelos disponíveis na WestLooks.</p>
+            </div>
+        </div>
+
+        <div class="produtos-grid-v2">
+            {% for produto in produtos %}
+            <div class="produto-v2">
+                <div class="produto-tag-v2">Produtos</div>
+
+                <div class="produto-fav-v2">
+                    <i class="bi bi-heart"></i>
+                </div>
+
+                {% if produto.imagens and produto.imagens|length > 0 %}
+                    {% set principal = produto.imagens|selectattr('principal', 'equalto', True)|list %}
+
+                    <div class="produto-img-v2">
+                        {% if principal %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ principal[0].imagem) }}" alt="{{ produto.nome }}">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ produto.imagens[0].imagem) }}" alt="{{ produto.nome }}">
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="produto-img-empty-v2">
+                        <i class="bi bi-bag-heart"></i>
+                    </div>
+                {% endif %}
+
+                <h5>{{ produto.nome }}</h5>
+
+                <div class="produto-cat-v2">
+                    {% if produto.categoria %}
+                        {{ produto.categoria.nome }}
+                    {% else %}
+                        Sem categoria
+                    {% endif %}
+                </div>
+
+                {% if produto.preco_promocional and produto.preco_promocional > 0 %}
+                    <div class="preco-antigo-v2">R$ {{ produto.preco }}</div>
+                    <div class="preco-v2">R$ {{ produto.preco_promocional }}</div>
+                {% else %}
+                    <div class="preco-v2">R$ {{ produto.preco }}</div>
+                {% endif %}
+
+                <a href="{{ url_for('loja.detalhe_produto', slug=produto.slug) }}" class="btn-produto-v2">
+                    <i class="bi bi-eye"></i>
+                    Ver Produto
+                </a>
+            </div>
+            {% else %}
+            <div class="produto-v2">
+                <h5>Nenhum produto em destaque ainda.</h5>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class="cta-v2">
+        <div>
+            <h3>Ficou com dúvida ou quer um atendimento especial?</h3>
+            <p>Fale agora com a WestLooks pelo WhatsApp e receba atendimento rápido.</p>
+        </div>
+
+        <a href="https://wa.me/5585996965533" target="_blank" class="btn-whats-v2">
+            <i class="bi bi-whatsapp"></i>
+            Falar pelo WhatsApp
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

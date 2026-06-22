@@ -1,0 +1,447 @@
+{% extends "loja/base_loja.html" %}
+
+{% block title %}
+Pedido #{{ pedido.id }} | WestLooks
+{% endblock %}
+
+{% block content %}
+
+<style>
+.acompanhar-wrap{
+    max-width:1200px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.pedido-card{
+    background:#fff;
+    border-radius:30px;
+    padding:35px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.status-badge{
+    display:inline-block;
+    padding:12px 20px;
+    border-radius:999px;
+    font-weight:800;
+}
+
+.status-aguardando_pagamento{background:#fef3c7;color:#92400e;}
+.status-pago{background:#dcfce7;color:#166534;}
+.status-preparando{background:#dbeafe;color:#1e40af;}
+.status-enviado{background:#ede9fe;color:#5b21b6;}
+.status-entregue{background:#ccfbf1;color:#115e59;}
+.status-cancelado{background:#fee2e2;color:#991b1b;}
+
+.timeline{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:0;
+    margin-top:35px;
+    position:relative;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    top:35px;
+    left:8%;
+    right:8%;
+    height:4px;
+    background:#e5e7eb;
+    z-index:1;
+}
+
+.timeline-progress{
+    position:absolute;
+    top:35px;
+    left:8%;
+    height:4px;
+    background:#22c55e;
+    z-index:1;
+}
+
+.step{
+    position:relative;
+    z-index:2;
+    width:150px;
+    text-align:center;
+    font-weight:800;
+    color:#64748b;
+}
+
+.step .circle{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#f8fafc;
+    border:3px solid #e5e7eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 10px;
+    font-size:26px;
+}
+
+.step.active .circle{
+    background:#dcfce7;
+    border-color:#22c55e;
+    color:#166534;
+}
+
+.step.active{
+    color:#166534;
+}
+
+.step-date{
+    display:block;
+    font-size:12px;
+    color:#64748b;
+    margin-top:5px;
+    font-weight:600;
+}
+
+.produto-card{
+    border:1px solid #e5e7eb;
+    border-radius:22px;
+    padding:18px;
+    margin-bottom:15px;
+    display:flex;
+    gap:18px;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.produto-card img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:18px;
+    background:#f3f4f6;
+}
+
+.produto-info{
+    flex:1;
+    min-width:220px;
+}
+
+.rastreamento-box{
+    background:#0f172a;
+    color:#fff;
+    border-radius:24px;
+    padding:28px;
+}
+
+.rastreamento-box h3{
+    color:#facc15;
+}
+
+@media(max-width:900px){
+    .timeline{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .timeline::before,
+    .timeline-progress{
+        display:none;
+    }
+
+    .step{
+        width:100%;
+    }
+
+    .pedido-card{
+        padding:24px;
+    }
+
+    .produto-card{
+        align-items:flex-start;
+    }
+}
+</style>
+
+{% set ordem_status = {
+    "aguardando_pagamento": 1,
+    "pago": 2,
+    "preparando": 3,
+    "enviado": 4,
+    "entregue": 5,
+    "cancelado": 0
+} %}
+
+{% set etapa = ordem_status.get(pedido.status, 1) %}
+
+{% if etapa <= 1 %}
+    {% set progresso = 20 %}
+{% elif etapa == 2 %}
+    {% set progresso = 40 %}
+{% elif etapa == 3 %}
+    {% set progresso = 60 %}
+{% elif etapa == 4 %}
+    {% set progresso = 80 %}
+{% elif etapa >= 5 %}
+    {% set progresso = 84 %}
+{% else %}
+    {% set progresso = 0 %}
+{% endif %}
+
+<div class="acompanhar-wrap">
+
+    <div class="pedido-card">
+
+        <div class="d-flex justify-content-between flex-wrap gap-3">
+
+            <div>
+                <h1 class="fw-bold">
+                    Pedido #{{ pedido.id }}
+                </h1>
+
+                <p class="text-muted">
+                    Acompanhe seu pedido em tempo real
+                </p>
+            </div>
+
+            <div>
+                <span class="status-badge status-{{ pedido.status }}">
+                    {{ pedido.status.replace("_"," ").title() }}
+                </span>
+            </div>
+
+        </div>
+
+        {% if pedido.status == "aguardando_pagamento" %}
+            <div class="alert alert-warning mt-4 mb-0">
+                ⏳ Estamos aguardando a confirmação do pagamento.
+            </div>
+        {% elif pedido.status == "pago" %}
+            <div class="alert alert-success mt-4 mb-0">
+                ✅ Pagamento confirmado. Seu pedido será preparado em breve.
+            </div>
+        {% elif pedido.status == "preparando" %}
+            <div class="alert alert-primary mt-4 mb-0">
+                📦 Seu pedido está sendo separado pela WestLooks.
+            </div>
+        {% elif pedido.status == "enviado" %}
+            <div class="alert alert-info mt-4 mb-0">
+                🚚 Seu pedido já saiu para entrega.
+            </div>
+        {% elif pedido.status == "entregue" %}
+            <div class="alert alert-success mt-4 mb-0">
+                🎉 Pedido entregue com sucesso.
+            </div>
+        {% elif pedido.status == "cancelado" %}
+            <div class="alert alert-danger mt-4 mb-0">
+                ❌ Este pedido foi cancelado.
+            </div>
+        {% endif %}
+
+        <div class="timeline">
+
+            <div class="timeline-progress" style="width:{{ progresso }}%;"></div>
+
+            <div class="step active">
+                <div class="circle">📦</div>
+                Pedido Criado
+                <span class="step-date">
+                    {{ pedido.data_pedido.strftime('%d/%m/%Y') if pedido.data_pedido else '' }}
+                </span>
+            </div>
+
+            <div class="step {% if etapa >= 1 %}active{% endif %}">
+                <div class="circle">⏳</div>
+                Aguardando
+                <span class="step-date">
+                    {{ pedido.data_pedido.strftime('%d/%m/%Y') if pedido.data_pedido else '' }}
+                </span>
+            </div>
+
+            <div class="step {% if etapa >= 2 %}active{% endif %}">
+                <div class="circle">✅</div>
+                Pago
+                <span class="step-date">
+                    {{ pedido.data_pagamento.strftime('%d/%m/%Y') if pedido.data_pagamento else '--' }}
+                </span>
+            </div>
+
+            <div class="step {% if etapa >= 3 %}active{% endif %}">
+                <div class="circle">📋</div>
+                Preparando
+                <span class="step-date">
+                    {{ pedido.data_preparacao.strftime('%d/%m/%Y') if pedido.data_preparacao else '--' }}
+                </span>
+            </div>
+
+            <div class="step {% if etapa >= 4 %}active{% endif %}">
+                <div class="circle">🚚</div>
+                Enviado
+                <span class="step-date">
+                    {{ pedido.data_envio.strftime('%d/%m/%Y') if pedido.data_envio else '--' }}
+                </span>
+            </div>
+
+            <div class="step {% if etapa >= 5 %}active{% endif %}">
+                <div class="circle">🎉</div>
+                Entregue
+                <span class="step-date">
+                    {{ pedido.data_entrega.strftime('%d/%m/%Y') if pedido.data_entrega else '--' }}
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="pedido-card">
+
+        <h3 class="fw-bold mb-4">
+            Produtos
+        </h3>
+
+        {% for item in pedido.itens %}
+
+        <div class="produto-card">
+
+            {% if item.produto.imagens %}
+                <img src="{{ url_for('static', filename='uploads/' ~ item.produto.imagens[0].imagem) }}">
+            {% endif %}
+
+            <div class="produto-info">
+
+                <h5 class="fw-bold">
+                    {{ item.produto.nome }}
+                </h5>
+
+                <p class="mb-1">
+                    Tamanho:
+                    <strong>{{ item.numeracao }}</strong>
+                </p>
+
+                <p class="mb-1">
+                    Quantidade:
+                    <strong>{{ item.quantidade }}</strong>
+                </p>
+
+                <p class="mb-0">
+                    Valor:
+                    <strong>
+                        R$ {{ "%.2f"|format(item.subtotal) }}
+                    </strong>
+                </p>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <p class="text-muted">
+            Nenhum produto encontrado neste pedido.
+        </p>
+
+        {% endfor %}
+
+        <hr>
+
+        <h2 class="fw-bold text-success">
+            Total: R$ {{ "%.2f"|format(pedido.valor_total) }}
+        </h2>
+
+    </div>
+
+    <div class="pedido-card">
+
+        <h3 class="fw-bold mb-4">
+            Endereço de Entrega
+        </h3>
+
+        {% if pedido.cliente.enderecos %}
+
+            {% set endereco = pedido.cliente.enderecos[0] %}
+
+            <p class="mb-1">
+                {{ endereco.logradouro }}, {{ endereco.numero }}
+            </p>
+
+            <p class="mb-1">
+                {{ endereco.bairro }}
+            </p>
+
+            <p class="mb-1">
+                {{ endereco.cidade }}/{{ endereco.estado }}
+            </p>
+
+            <p class="mb-0">
+                CEP: {{ endereco.cep }}
+            </p>
+
+        {% else %}
+
+            <p class="text-muted">
+                Endereço não informado.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+    <div class="pedido-card">
+
+        <div class="rastreamento-box">
+
+            <h3 class="fw-bold mb-4">
+                Rastreamento
+            </h3>
+
+            {% if pedido.transportadora %}
+                <p>
+                    <strong>Transportadora:</strong>
+                    {{ pedido.transportadora }}
+                </p>
+            {% endif %}
+
+            {% if pedido.codigo_rastreamento %}
+                <p>
+                    <strong>Código:</strong>
+                    {{ pedido.codigo_rastreamento }}
+                </p>
+            {% endif %}
+
+            {% if pedido.data_envio %}
+                <p>
+                    <strong>Data de envio:</strong>
+                    {{ pedido.data_envio.strftime('%d/%m/%Y') }}
+                </p>
+            {% endif %}
+
+            {% if pedido.status == "entregue" %}
+
+                <div class="alert alert-success mb-0">
+                    Pedido entregue com sucesso.
+                </div>
+
+            {% elif pedido.status == "enviado" %}
+
+                <div class="alert alert-primary mb-0">
+                    Pedido saiu para entrega.
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-warning mb-0">
+                    Seu pedido ainda não foi enviado.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WestLooks{% endblock %}</title>
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+
+    <style>
+        body{
+            font-family:'Poppins',sans-serif;
+        }
+
+        :root {
+            --wl-black: #0b0b0f;
+            --wl-dark: #111827;
+            --wl-gold: #d4af37;
+            --wl-gold-soft: #f5e7b2;
+            --wl-bg: #f6f6f4;
+            --wl-white: #ffffff;
+            --wl-text: #111827;
+            --wl-muted: #6b7280;
+            --wl-border: #e5e7eb;
+            --wl-shadow: 0 18px 45px rgba(15, 23, 42, .10);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at top left, rgba(212,175,55,.16), transparent 28%),
+                linear-gradient(135deg, #ffffff 0%, #f7f5ef 45%, #f3f4f6 100%);
+            color: var(--wl-text);
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        .wl-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .wl-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #08080b 0%, #111827 100%);
+            color: #fff;
+            padding: 22px 18px;
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 1000;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .wl-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 10px 24px;
+            border-bottom: 1px solid rgba(255,255,255,.10);
+            margin-bottom: 18px;
+        }
+
+        .wl-brand-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--wl-gold), #fff2b8);
+            color: #111;
+            font-size: 24px;
+            box-shadow: 0 12px 28px rgba(212,175,55,.35);
+        }
+
+        .wl-brand-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: .8px;
+            line-height: 1;
+        }
+
+        .wl-brand-subtitle {
+            color: rgba(255,255,255,.62);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .wl-menu-label{
+            color:#7c7c7c;
+            font-size:12px;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            font-weight:800;
+            margin:20px 0 10px;
+        }
+
+        .wl-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,.88);
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 16px;
+            margin-bottom: 9px;
+            font-weight: 800;
+            transition: .2s ease;
+
+            background: rgba(212,175,55,.07);
+            border: 1px solid rgba(212,175,55,.18);
+        }
+
+        .wl-menu a{
+            min-height:52px;
+        }
+
+        .wl-menu a:hover {
+            background: rgba(212,175,55,.16);
+            color: #fff;
+            transform: translateX(3px);
+            border-color: rgba(212,175,55,.35);
+        }
+
+        .wl-menu a.active,
+        .wl-menu a.ativo {
+            background: linear-gradient(135deg, rgba(212,175,55,.25), rgba(255,255,255,.06));
+            color: #fff;
+            border: 1px solid rgba(212,175,55,.35);
+            box-shadow: 0 10px 25px rgba(212,175,55,.12);
+        }
+
+        .wl-menu a.active i,
+        .wl-menu a.ativo i {
+            color: #facc15;
+        }
+
+        .wl-menu i {
+            color: var(--wl-gold);
+            font-size: 18px;
+        }
+
+        .wl-content {
+            width: 100%;
+            margin-left: 280px;
+            padding: 24px;
+        }
+
+        .wl-topbar {
+            background: rgba(255,255,255,.86);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229,231,235,.9);
+            border-radius: 24px;
+            padding: 16px 18px;
+            box-shadow: var(--wl-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .wl-page-title {
+            margin: 0;
+            font-weight: 900;
+            font-size: 25px;
+        }
+
+        .wl-page-subtitle {
+            margin: 4px 0 0;
+            color: var(--wl-muted);
+            font-size: 14px;
+        }
+
+        .wl-user-pill {
+            background: #111827;
+            color: #fff;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wl-mobile-bar {
+            display: none;
+        }
+
+        .wl-mobile-bottom {
+            display: none;
+        }
+
+        .wl-flash {
+            border-radius: 18px;
+            border: none;
+            box-shadow: 0 10px 25px rgba(15,23,42,.08);
+        }
+
+        .wl-card {
+            background: rgba(255,255,255,.92);
+            border: 1px solid var(--wl-border);
+            border-radius: 26px;
+            padding: 22px;
+            box-shadow: var(--wl-shadow);
+        }
+
+        .wl-btn-gold {
+            background: linear-gradient(135deg, var(--wl-gold), #f8e7a4);
+            color: #111;
+            border: none;
+            border-radius: 16px;
+            font-weight: 900;
+            padding: 11px 18px;
+            box-shadow: 0 12px 28px rgba(212,175,55,.28);
+        }
+
+        .wl-btn-dark {
+            background: #111827;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-weight: 900;
+            padding: 11px 18px;
+        }
+
+        @media (max-width: 991px) {
+            body {
+                padding-bottom: 82px;
+            }
+
+            .wl-sidebar {
+                display: none;
+            }
+
+            .wl-content {
+                margin-left: 0;
+                padding: 14px;
+            }
+
+            .wl-mobile-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: sticky;
+                top: 0;
+                z-index: 900;
+                background: rgba(8,8,11,.96);
+                color: #fff;
+                margin: -14px -14px 14px;
+                padding: 14px 16px;
+                box-shadow: 0 12px 35px rgba(0,0,0,.22);
+            }
+
+            .wl-mobile-logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 900;
+                letter-spacing: .8px;
+            }
+
+            .wl-mobile-logo span {
+                width: 38px;
+                height: 38px;
+                border-radius: 14px;
+                display: grid;
+                place-items: center;
+                background: linear-gradient(135deg, var(--wl-gold), #fff2b8);
+                color: #111;
+            }
+
+            .wl-topbar {
+                border-radius: 22px;
+                padding: 16px;
+                align-items: flex-start;
+            }
+
+            .wl-page-title {
+                font-size: 22px;
+            }
+
+            .wl-user-pill {
+                display: none;
+            }
+
+            .wl-mobile-bottom {
+                display: grid;
+                grid-template-columns: repeat(6, 1fr);
+                position: fixed;
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                z-index: 1200;
+                background: #08080b;
+                border: 1px solid rgba(255,255,255,.10);
+                border-radius: 24px;
+                padding: 9px;
+                box-shadow: 0 20px 45px rgba(0,0,0,.35);
+            }
+
+            .wl-mobile-bottom a {
+                text-decoration: none;
+                color: rgba(255,255,255,.68);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                font-size: 10px;
+                font-weight: 800;
+            }
+
+            .wl-mobile-bottom i {
+                font-size: 20px;
+                color: var(--wl-gold);
+            }
+        }
+
+        .wl-menu a.active{
+        background: linear-gradient(
+            135deg,
+            rgba(212,175,55,.25),
+            rgba(212,175,55,.08)
+        );
+
+        color:#fff;
+
+        border:1px solid rgba(212,175,55,.30);
+
+        box-shadow:
+            0 0 20px rgba(212,175,55,.15),
+            0 10px 25px rgba(0,0,0,.25);
+
+        border-radius:16px;
+    }
+
+    .wl-menu a.active i{
+        color:#facc15;
+    }
+
+    .wl-brand{
+        justify-content:center;
+    }
+
+    .wl-brand-logo-box{
+        width:190px;
+        margin:auto;
+        border-radius:24px;
+
+        box-shadow:
+            0 0 20px rgba(212,175,55,.25),
+            0 0 50px rgba(212,175,55,.15);
+
+        overflow:hidden;
+    }
+
+    .wl-brand-logo{
+        width:100%;
+        display:block;
+        border-radius:16px;
+    }
+
+    .menu-badge{
+        margin-left:auto;
+
+        min-width:30px;
+        height:30px;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        border-radius:999px;
+
+        font-size:13px;
+        font-weight:900;
+
+        background:linear-gradient(
+            135deg,
+            #fde68a,
+            #facc15,
+            #d4af37
+        );
+
+        color:#111827;
+
+        box-shadow:
+            0 0 18px rgba(212,175,55,.45);
+
+        padding:0 10px;
+    }
+
+    .menu-badge-danger{
+        background:linear-gradient(
+            135deg,
+            #ff5f5f,
+            #ef4444,
+            #dc2626
+        );
+
+        color:#fff;
+
+        box-shadow:
+            0 0 16px rgba(239,68,68,.40);
+    }
+
+    .page-header{
+        background:#fff !important;
+
+        border:1px solid rgba(15,23,42,.10) !important;
+
+        border-left:6px solid #0f172a !important;
+
+        border-radius:28px !important;
+
+        box-shadow:
+            0 12px 30px rgba(15,23,42,.05) !important;
+    }
+
+    .page-title,
+    .page-header h1{
+        font-family:'Poppins',sans-serif;
+
+        font-weight:700;
+
+        letter-spacing:-0.5px;
+    }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+<body>
+
+<div class="wl-layout">
+
+    <aside class="wl-sidebar">
+        <div class="wl-brand">
+            <div class="wl-brand-logo-box">
+                <img src="{{ url_for('static', filename='img/logo-westlooks.png') }}"
+                    alt="WestLooks"
+                    class="wl-brand-logo">
+            </div>
+        </div>
+
+        <div class="wl-menu">
+            <div class="wl-menu-label">Gestão</div>
+
+            <a href="/admin/dashboard"
+                class="{% if '/admin/dashboard' in rota %}active{% endif %}">
+                <i class="bi bi-speedometer2"></i>
+                Dashboard
+            </a>
+
+            <a href="/admin/categorias"
+                class="{% if '/admin/categorias' in rota %}active{% endif %}">
+                <i class="bi bi-grid"></i>
+                Categorias
+            </a>
+
+            <a href="/admin/produtos"
+                class="{% if '/admin/produtos' in rota %}active{% endif %}">
+                <i class="bi bi-bag"></i>
+                Produtos
+            </a>
+
+            <a href="/admin/estoque"
+                class="{% if '/admin/estoque' in rota %}active{% endif %}">
+                <i class="bi bi-box-seam"></i>
+                Estoque
+
+                {% if total_estoque is defined %}
+                    <span class="menu-badge">
+                        {{ total_estoque }}
+                    </span>
+                {% endif %}
+            </a>
+
+            <div class="wl-menu-label">Vendas</div>
+
+            <a href="/admin/pedidos"
+                class="{% if '/admin/pedidos' in rota %}active{% endif %}">
+                <i class="bi bi-receipt"></i>
+                Pedidos
+
+                {% if aguardando is defined and aguardando > 0 %}
+                    <span class="menu-badge menu-badge-danger">
+                        {{ aguardando }}
+                    </span>
+                {% endif %}
+            </a>
+
+            <a href="/admin/clientes"
+                class="{% if '/admin/clientes' in rota %}active{% endif %}">
+                <i class="bi bi-people"></i>
+                Clientes
+            </a>
+
+            <div class="wl-menu-label">Loja</div>
+
+            <a href="/admin/configuracoes"
+                class="{% if '/admin/configuracoes' in rota %}active{% endif %}">
+                <i class="bi bi-gear"></i>
+                Configurações
+            </a>
+
+            <a href="/" target="_blank">
+                <i class="bi bi-shop"></i>
+                Ver Loja
+            </a>
+
+            <a href="/logout">
+                <i class="bi bi-box-arrow-right"></i>
+                Sair
+            </a>
+        </div>
+
+        <div class="wl-footer">
+
+            <div class="wl-footer-title">
+                WestLooks ERP
+            </div>
+
+            <div class="wl-footer-version">
+                Versão 1.0 Premium
+            </div>
+
+            <div class="wl-footer-copy">
+                © 2026 WestLooks
+            </div>
+
+        </div>
+    </aside>
+
+    <main class="wl-content">
+
+        <div class="wl-mobile-bar">
+            <div class="wl-mobile-logo">
+                <span><i class="bi bi-bag-heart-fill"></i></span>
+                WESTLOOKS
+            </div>
+            <a href="/logout" class="text-white">
+                <i class="bi bi-box-arrow-right fs-4"></i>
+            </a>
+        </div>
+
+        <div class="wl-topbar">
+            <div>
+                <h1 class="wl-page-title">{% block page_title %}WestLooks{% endblock %}</h1>
+                <p class="wl-page-subtitle">{% block page_subtitle %}Painel profissional de gestão da loja{% endblock %}</p>
+            </div>
+
+            <div class="wl-user-pill">
+                <i class="bi bi-person-circle"></i>
+                Admin
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for categoria, mensagem in messages %}
+                    <div class="alert alert-{{ categoria }} wl-flash">
+                        {{ mensagem }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+<nav class="wl-mobile-bottom">
+    <a href="/admin/dashboard">
+        <i class="bi bi-speedometer2"></i>
+        Início
+    </a>
+
+    <a href="/admin/produtos/">
+        <i class="bi bi-bag"></i>
+        Produtos
+    </a>
+
+    <a href="/admin/estoque/">
+        <i class="bi bi-box-seam"></i>
+        Estoque
+    </a>
+
+    <a href="/admin/pedidos/">
+        <i class="bi bi-receipt"></i>
+        Pedidos
+    </a>
+
+    <a href="/admin/configuracoes/">
+        <i class="bi bi-gear"></i>
+        Configurações
+    </a>
+
+    <a href="/loja">
+        <i class="bi bi-shop"></i>
+        Loja
+    </a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

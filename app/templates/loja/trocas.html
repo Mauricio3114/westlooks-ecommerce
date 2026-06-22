@@ -1,0 +1,158 @@
+{% extends "loja/base_loja.html" %}
+
+{% block title %}Trocas e Devoluções | WestLooks{% endblock %}
+
+{% block content %}
+
+<style>
+.institucional-page{
+    padding:55px 0;
+}
+
+.inst-card{
+    background:#fff;
+    border:1px solid rgba(212,175,55,.25);
+    border-radius:34px;
+    padding:42px;
+    box-shadow:0 24px 70px rgba(15,23,42,.09);
+}
+
+.inst-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#111827;
+    color:#f6e27a;
+    border-radius:999px;
+    padding:9px 16px;
+    font-weight:900;
+    margin-bottom:18px;
+}
+
+.inst-title{
+    font-size:42px;
+    font-weight:950;
+    color:#020617;
+    margin-bottom:12px;
+}
+
+.inst-subtitle{
+    color:#64748b;
+    font-weight:700;
+    max-width:760px;
+    margin-bottom:32px;
+}
+
+.inst-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.inst-box{
+    background:linear-gradient(180deg,#fff,#fffdf6);
+    border:1px solid rgba(212,175,55,.25);
+    border-radius:24px;
+    padding:24px;
+}
+
+.inst-icon{
+    width:54px;
+    height:54px;
+    border-radius:18px;
+    background:#111827;
+    color:#d4af37;
+    display:grid;
+    place-items:center;
+    font-size:26px;
+    margin-bottom:14px;
+}
+
+.inst-box h5{
+    font-weight:950;
+    color:#020617;
+}
+
+.inst-box p,
+.inst-box li{
+    color:#475569;
+    font-weight:650;
+}
+
+@media(max-width:768px){
+    .inst-card{
+        padding:26px;
+    }
+
+    .inst-title{
+        font-size:32px;
+    }
+
+    .inst-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+<div class="institucional-page">
+    <div class="inst-card">
+
+        <div class="inst-badge">
+            <i class="bi bi-arrow-repeat"></i>
+            Atendimento WestLooks
+        </div>
+
+        <h1 class="inst-title">
+            Trocas e Devoluções
+        </h1>
+
+        <p class="inst-subtitle">
+            Nossa política foi criada para garantir segurança, transparência e tranquilidade na sua compra.
+        </p>
+
+        <div class="inst-grid">
+
+            <div class="inst-box">
+                <div class="inst-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+
+                <h5>Prazo para Troca</h5>
+
+                <p>
+                    Você poderá solicitar troca em até 7 dias após o recebimento do produto.
+                </p>
+            </div>
+
+            <div class="inst-box">
+                <div class="inst-icon">
+                    <i class="bi bi-shield-exclamation"></i>
+                </div>
+
+                <h5>Produto com Defeito</h5>
+
+                <p>
+                    Caso o produto apresente defeito de fabricação, entre em contato conosco imediatamente.
+                </p>
+            </div>
+
+            <div class="inst-box">
+                <div class="inst-icon">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+
+                <h5>Condições</h5>
+
+                <ul class="mb-0">
+                    <li>Produto sem sinais de uso.</li>
+                    <li>Embalagem original.</li>
+                    <li>Nota ou comprovante da compra.</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Categorias | WestLooks{% endblock %}
+{% block page_title %}Categorias{% endblock %}
+{% block page_subtitle %}Organize os produtos da loja por coleção, linha e tipo{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">Categorias cadastradas</h4>
+        <p class="text-muted mb-0">Tênis, casual, social, promoções e lançamentos.</p>
+    </div>
+
+    <a href="{{ url_for('categorias.novo') }}" class="wl-btn-gold text-decoration-none">
+        <i class="bi bi-plus-circle"></i>
+        Nova Categoria
+    </a>
+</div>
+
+<div class="row g-3">
+
+    {% for categoria in categorias %}
+
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="wl-card h-100">
+
+                {% if categoria.imagem %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ categoria.imagem) }}"
+                         class="w-100 mb-3"
+                         style="height: 160px; object-fit: cover; border-radius: 20px;">
+                {% else %}
+                    <div class="mb-3 d-flex align-items-center justify-content-center"
+                         style="height: 160px; border-radius: 20px; background: #111827; color: #d4af37; font-size: 44px;">
+                        <i class="bi bi-grid"></i>
+                    </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                    <div>
+                        <h5 class="fw-bold mb-1">{{ categoria.nome }}</h5>
+                        <div class="text-muted small">{{ categoria.slug }}</div>
+                    </div>
+
+                    {% if categoria.ativo %}
+                        <span class="badge bg-success">Ativa</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Inativa</span>
+                    {% endif %}
+                </div>
+
+                {% if categoria.descricao %}
+                    <p class="text-muted mt-3 mb-2">{{ categoria.descricao }}</p>
+                {% endif %}
+
+                <div class="d-flex gap-2 mt-4">
+                    <a href="{{ url_for('categorias.editar', id=categoria.id) }}"
+                       class="btn btn-dark flex-fill rounded-4">
+                        Editar
+                    </a>
+
+                    <a href="{{ url_for('categorias.excluir', id=categoria.id) }}"
+                       onclick="return confirm('Deseja excluir esta categoria?')"
+                       class="btn btn-outline-danger flex-fill rounded-4">
+                        Excluir
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="col-12">
+            <div class="wl-card text-center py-5">
+                <i class="bi bi-grid" style="font-size: 48px; color: #d4af37;"></i>
+                <h4 class="fw-bold mt-3">Nenhuma categoria cadastrada</h4>
+                <p class="text-muted">Comece criando as categorias principais da WestLooks.</p>
+
+                <a href="{{ url_for('categorias.novo') }}" class="wl-btn-gold text-decoration-none">
+                    Criar primeira categoria
+                </a>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

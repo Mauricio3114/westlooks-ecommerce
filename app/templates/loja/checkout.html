@@ -1,0 +1,313 @@
+{% extends "loja/base_loja.html" %}
+
+{% block title %}Checkout | WestLooks{% endblock %}
+
+{% block content %}
+
+<style>
+.checkout-box {
+    background: #fff;
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.08);
+}
+
+.resumo-box {
+    background: #111827;
+    color: white;
+    border-radius: 26px;
+    padding: 28px;
+}
+
+.resumo-total {
+    font-size: 38px;
+    font-weight: 900;
+    color: #d4af37;
+}
+
+.btn-pedido {
+    width: 100%;
+    background: #d4af37;
+    color: #000;
+    border: none;
+    border-radius: 18px;
+    padding: 16px;
+    font-weight: 900;
+    margin-top: 15px;
+}
+</style>
+
+<div class="row mt-4 g-4">
+
+    <div class="col-lg-8">
+
+        <div class="checkout-box">
+
+            <h2 class="fw-bold mb-4">
+                Finalizar Compra
+            </h2>
+
+            <form method="POST" action="{{ url_for('carrinho.checkout') }}">
+
+                <div class="row g-3">
+
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Nome completo</label>
+                        <input type="text" name="nome" class="form-control form-control-lg" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Telefone</label>
+                        <input type="text" name="telefone" id="telefone" class="form-control form-control-lg" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">E-mail</label>
+                        <input type="email" name="email" class="form-control form-control-lg">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">CPF</label>
+                        <input type="text" name="cpf" id="cpf" class="form-control form-control-lg">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">CEP</label>
+                        <input type="text" name="cep" id="cep" class="form-control form-control-lg" maxlength="9">
+                    </div>
+
+                    <div class="col-md-7">
+                        <label class="form-label fw-bold">Endereço</label>
+                        <input type="text" name="logradouro" id="logradouro" class="form-control form-control-lg">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">Nº</label>
+                        <input type="text" name="numero" class="form-control form-control-lg">
+                    </div>
+
+                    <div class="col-md-5">
+                        <label class="form-label fw-bold">Bairro</label>
+                        <input type="text" name="bairro" id="bairro" class="form-control form-control-lg">
+                    </div>
+
+                    <div class="col-md-5">
+                        <label class="form-label fw-bold">Cidade</label>
+                        <select name="cidade" id="cidade" class="form-select form-select-lg">
+                            <option value="">Selecione a UF primeiro</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">UF</label>
+                        <select name="estado" id="estado" class="form-select form-select-lg">
+                            <option value="">UF</option>
+                            <option value="MA">MA</option>
+                            <option value="CE">CE</option>
+                            <option value="PI">PI</option>
+                            <option value="PA">PA</option>
+                            <option value="TO">TO</option>
+                            <option value="PE">PE</option>
+                            <option value="PB">PB</option>
+                            <option value="RN">RN</option>
+                            <option value="BA">BA</option>
+                            <option value="SP">SP</option>
+                            <option value="RJ">RJ</option>
+                            <option value="MG">MG</option>
+                            <option value="GO">GO</option>
+                            <option value="DF">DF</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Observações</label>
+                        <textarea name="observacao" rows="3" class="form-control"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-bold">Entrega</label>
+                    <select name="tipo_entrega" id="tipo_entrega" class="form-select form-select-lg">
+                        <option value="retirada" data-valor="0">Retirada - R$ 0,00</option>
+                        <option value="fortaleza" data-valor="15">Fortaleza - R$ 15,00</option>
+                        <option value="metropolitana" data-valor="25">Região Metropolitana - R$ 25,00</option>
+                        <option value="combinar" data-valor="0">Fora da área - combinar</option>
+                    </select>
+                </div>
+
+                <input type="hidden" name="valor_entrega" id="valor_entrega" value="15">
+
+                <div class="col-12">
+
+                </div>
+
+                <button type="submit" class="btn-pedido">
+                    Criar Pedido
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="resumo-box">
+
+            <h4 class="fw-bold mb-3">
+                Resumo do Pedido
+            </h4>
+
+            {% for item in itens %}
+                <div class="mb-3">
+                    <strong>{{ item.produto.nome }}</strong><br>
+                    <small>Tamanho: {{ item.numeracao }} | Qtd: {{ item.quantidade }}</small><br>
+                    <span>R$ {{ "%.2f"|format(item.subtotal) }}</span>
+                </div>
+                <hr>
+            {% endfor %}
+
+            <div class="resumo-total">
+                R$ {{ "%.2f"|format(total) }}
+            </div>
+
+            <small>
+                Pagamento será configurado na próxima etapa.
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+document.getElementById("cep").addEventListener("blur", function () {
+    let cep = this.value.replace(/\D/g, "");
+
+    if (cep.length !== 8) {
+        return;
+    }
+
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.erro) {
+                alert("CEP não encontrado.");
+                return;
+            }
+
+            document.getElementById("logradouro").value = data.logradouro || "";
+            document.getElementById("bairro").value = data.bairro || "";
+            document.getElementById("cidade").value = data.localidade || "";
+            document.getElementById("estado").value = data.uf || "";
+        })
+        .catch(() => {
+            alert("Erro ao buscar CEP.");
+        });
+});
+</script>
+
+<script>
+const cidadesPorUF = {
+    MA: ["Imperatriz", "São Luís", "Açailândia", "Balsas", "Caxias", "Timon"],
+    CE: ["Fortaleza", "Caucaia", "Maracanaú", "Juazeiro do Norte", "Sobral"],
+    PI: ["Teresina", "Parnaíba", "Picos", "Floriano"],
+    PA: ["Belém", "Ananindeua", "Marabá", "Santarém"],
+    TO: ["Palmas", "Araguaína", "Gurupi"],
+    PE: ["Recife", "Olinda", "Jaboatão dos Guararapes", "Caruaru"],
+    PB: ["João Pessoa", "Campina Grande"],
+    RN: ["Natal", "Mossoró"],
+    BA: ["Salvador", "Feira de Santana", "Vitória da Conquista"],
+    SP: ["São Paulo", "Campinas", "Santos"],
+    RJ: ["Rio de Janeiro", "Niterói"],
+    MG: ["Belo Horizonte", "Uberlândia"],
+    GO: ["Goiânia", "Aparecida de Goiânia"],
+    DF: ["Brasília"]
+};
+
+function carregarCidades(uf, cidadeSelecionada = "") {
+    const cidadeSelect = document.getElementById("cidade");
+    cidadeSelect.innerHTML = '<option value="">Selecione a cidade</option>';
+
+    if (!uf || !cidadesPorUF[uf]) return;
+
+    cidadesPorUF[uf].forEach(function(cidade) {
+        const option = document.createElement("option");
+        option.value = cidade;
+        option.textContent = cidade;
+
+        if (cidade === cidadeSelecionada) {
+            option.selected = true;
+        }
+
+        cidadeSelect.appendChild(option);
+    });
+}
+
+document.getElementById("estado").addEventListener("change", function() {
+    carregarCidades(this.value);
+});
+
+document.getElementById("cep").addEventListener("input", function() {
+    let cep = this.value.replace(/\D/g, "");
+
+    if (cep.length > 5) {
+        cep = cep.replace(/^(\d{5})(\d)/, "$1-$2");
+    }
+
+    this.value = cep;
+});
+
+document.getElementById("cep").addEventListener("blur", function() {
+    const cep = this.value.replace(/\D/g, "");
+
+    if (cep.length !== 8) return;
+
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.erro) {
+                alert("CEP não encontrado.");
+                return;
+            }
+
+            document.getElementById("logradouro").value = data.logradouro || "";
+            document.getElementById("bairro").value = data.bairro || "";
+            document.getElementById("estado").value = data.uf || "";
+
+            carregarCidades(data.uf, data.localidade);
+        })
+        .catch(() => {
+            alert("Erro ao buscar CEP.");
+        });
+});
+</script>
+
+<script>
+document.getElementById("telefone").addEventListener("input", function() {
+    let v = this.value.replace(/\D/g, "").slice(0, 11);
+
+    if (v.length > 10) {
+        v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+    } else {
+        v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, "($1) $2-$3");
+    }
+
+    this.value = v;
+});
+
+document.getElementById("cpf").addEventListener("input", function() {
+    let v = this.value.replace(/\D/g, "").slice(0, 11);
+
+    v = v.replace(/^(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3");
+    v = v.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+
+    this.value = v;
+});
+</script>
+
+{% endblock %}

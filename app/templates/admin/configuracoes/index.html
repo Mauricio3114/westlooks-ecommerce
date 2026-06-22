@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Configurações{% endblock %}
+{% block page_title %}Configurações da Loja{% endblock %}
+{% block page_subtitle %}Dados da WestLooks, PIX e contatos{% endblock %}
+
+{% block content %}
+
+<style>
+
+.config-card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:28px;
+    padding:30px;
+    box-shadow:0 14px 35px rgba(15,23,42,.08);
+}
+
+.config-title{
+    font-size:22px;
+    font-weight:900;
+    margin-bottom:25px;
+}
+
+.form-label{
+    font-weight:800;
+    color:#111827;
+}
+
+.form-control,
+.form-select{
+    border-radius:16px;
+    padding:12px 14px;
+}
+
+.btn-save{
+    background:#111827;
+    color:#fff;
+    border:none;
+    border-radius:18px;
+    padding:14px 24px;
+    font-weight:900;
+}
+
+.section-divider{
+    margin:35px 0;
+    border-top:1px solid #e5e7eb;
+}
+
+</style>
+
+<div class="config-card">
+
+    <form method="POST">
+
+        <div class="config-title">
+            🏪 Dados da Loja
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Nome da Loja
+                </label>
+
+                <input
+                    type="text"
+                    name="nome_loja"
+                    class="form-control"
+                    value="{{ config.nome_loja or '' }}">
+
+            </div>
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    WhatsApp
+                </label>
+
+                <input
+                    type="text"
+                    name="whatsapp"
+                    class="form-control"
+                    value="{{ config.whatsapp or '' }}">
+
+            </div>
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Instagram
+                </label>
+
+                <input
+                    type="text"
+                    name="instagram"
+                    class="form-control"
+                    value="{{ config.instagram or '' }}">
+
+            </div>
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    value="{{ config.email or '' }}">
+
+            </div>
+
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="config-title">
+            💳 Configurações PIX
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Tipo da Chave
+                </label>
+
+                <select
+                    name="tipo_pix"
+                    class="form-select">
+
+                    <option value="">
+                        Selecione
+                    </option>
+
+                    <option value="cpf"
+                    {% if config.tipo_pix == "cpf" %}
+                    selected
+                    {% endif %}>
+                        CPF
+                    </option>
+
+                    <option value="email"
+                    {% if config.tipo_pix == "email" %}
+                    selected
+                    {% endif %}>
+                        Email
+                    </option>
+
+                    <option value="telefone"
+                    {% if config.tipo_pix == "telefone" %}
+                    selected
+                    {% endif %}>
+                        Telefone
+                    </option>
+
+                    <option value="aleatoria"
+                    {% if config.tipo_pix == "aleatoria" %}
+                    selected
+                    {% endif %}>
+                        Aleatória
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Chave PIX
+                </label>
+
+                <input
+                    type="text"
+                    name="chave_pix"
+                    class="form-control"
+                    value="{{ config.chave_pix or '' }}">
+
+            </div>
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Nome Recebedor
+                </label>
+
+                <input
+                    type="text"
+                    name="nome_recebedor"
+                    class="form-control"
+                    value="{{ config.nome_recebedor or '' }}">
+
+            </div>
+
+        </div>
+
+        <hr class="my-5">
+
+            <div class="config-title">
+                💰 Mercado Pago
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Public Key
+                    </label>
+
+                    <input
+                        type="text"
+                        name="mercado_pago_public_key"
+                        class="form-control"
+                        value="{{ config.mercado_pago_public_key or '' }}">
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Access Token
+                    </label>
+
+                    <input
+                        type="text"
+                        name="mercado_pago_access_token"
+                        class="form-control"
+                        value="{{ config.mercado_pago_access_token or '' }}">
+
+                </div>
+
+            </div>
+
+        <div class="mt-5">
+
+            <button
+                type="submit"
+                class="btn-save">
+
+                Salvar Configurações
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
