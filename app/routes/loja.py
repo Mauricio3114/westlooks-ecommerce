@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
+from sqlalchemy import or_
+
 from app.models.produto import Produto
 from app.models.categoria import Categoria
 from app.models.estoque import Estoque
@@ -45,11 +47,81 @@ def home():
     )
 
 
+@loja_bp.route("/buscar")
+def buscar():
+    termo = request.args.get("q", "").strip()
+
+    categorias = Categoria.query.filter_by(
+        ativo=True
+    ).order_by(
+        Categoria.ordem.asc()
+    ).all()
+
+    produtos = []
+
+    if termo:
+        produtos = Produto.query.filter(
+            Produto.ativo == True,
+            or_(
+                Produto.nome.ilike(f"%{termo}%"),
+                Produto.marca.ilike(f"%{termo}%"),
+                Produto.referencia.ilike(f"%{termo}%"),
+                Produto.descricao.ilike(f"%{termo}%")
+            )
+        ).order_by(
+            Produto.data_cadastro.desc()
+        ).all()
+
+    return render_template(
+        "loja/busca.html",
+        produtos=produtos,
+        categorias=categorias,
+        termo=termo
+    )
+
+
+@loja_bp.route("/categoria/<slug>")
+def categoria(slug):
+    categoria = Categoria.query.filter_by(
+        slug=slug,
+        ativo=True
+    ).first_or_404()
+
+    categorias = Categoria.query.filter_by(
+        ativo=True
+    ).order_by(
+        Categoria.ordem.asc()
+    ).all()
+
+    produtos = Produto.query.filter_by(
+        ativo=True,
+        categoria_id=categoria.id
+    ).order_by(
+        Produto.data_cadastro.desc()
+    ).all()
+
+    return render_template(
+        "loja/categoria.html",
+        categoria=categoria,
+        categorias=categorias,
+        produtos=produtos
+    )
+
+
 @loja_bp.route("/produto/<slug>")
 def detalhe_produto(slug):
-    produto = Produto.query.filter_by(slug=slug, ativo=True).first_or_404()
+    produto = Produto.query.filter_by(
+        slug=slug,
+        ativo=True
+    ).first_or_404()
 
-    from app.models.estoque import Estoque
+    produto.visualizacoes = (produto.visualizacoes or 0) + 1
+
+    try:
+        from app import db
+        db.session.commit()
+    except Exception:
+        pass
 
     estoques = Estoque.query.filter(
         Estoque.produto_id == produto.id,
@@ -58,28 +130,27 @@ def detalhe_produto(slug):
         Estoque.numeracao.asc()
     ).all()
 
-    categorias = Categoria.query.filter_by(ativo=True).order_by(Categoria.ordem.asc()).all()
-
-    estoques = Estoque.query.filter(
-        Estoque.produto_id == produto.id,
-        Estoque.quantidade > 0
-    ).order_by(Estoque.numeracao.asc()).all()
+    relacionados = Produto.query.filter(
+        Produto.ativo == True,
+        Produto.id != produto.id,
+        Produto.categoria_id == produto.categoria_id
+    ).order_by(
+        Produto.data_cadastro.desc()
+    ).limit(4).all()
 
     return render_template(
         "loja/produto.html",
         produto=produto,
-        estoques=estoques
+        estoques=estoques,
+        relacionados=relacionados
     )
 
 
 @loja_bp.route("/acompanhar/<int:pedido_id>")
 def acompanhar_pedido(pedido_id):
-
     from app.models.pedido import Pedido
 
-    pedido = Pedido.query.get_or_404(
-        pedido_id
-    )
+    pedido = Pedido.query.get_or_404(pedido_id)
 
     return render_template(
         "loja/acompanhar_pedido.html",
@@ -89,13 +160,9 @@ def acompanhar_pedido(pedido_id):
 
 @loja_bp.route("/consultar-pedido", methods=["GET", "POST"])
 def consultar_pedido():
-
     from app.models.pedido import Pedido
 
-    pedido = None
-
     if request.method == "POST":
-
         numero = request.form.get("pedido")
         cpf = request.form.get("cpf")
 
@@ -107,7 +174,10 @@ def consultar_pedido():
             flash("Pedido não encontrado.", "danger")
             return redirect(url_for("loja.consultar_pedido"))
 
-        if pedido.cliente.cpf.replace(".", "").replace("-", "") != cpf.replace(".", "").replace("-", ""):
+        cpf_digitado = cpf.replace(".", "").replace("-", "")
+        cpf_cliente = pedido.cliente.cpf.replace(".", "").replace("-", "")
+
+        if cpf_cliente != cpf_digitado:
             flash("CPF não confere com o pedido.", "danger")
             return redirect(url_for("loja.consultar_pedido"))
 
@@ -118,9 +188,7 @@ def consultar_pedido():
             )
         )
 
-    return render_template(
-        "loja/consultar_pedido.html"
-    )
+    return render_template("loja/consultar_pedido.html")
 
 
 @loja_bp.route("/sobre-nos")

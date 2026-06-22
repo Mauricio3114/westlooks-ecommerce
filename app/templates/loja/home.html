@@ -169,7 +169,7 @@
     max-width:470px !important;
     object-fit:contain;
 
-    transform:translateX(0) translateY(85px) !important;
+    transform:translateX(0) translateY(135px) !important;
 
     filter:drop-shadow(0 38px 52px rgba(0,0,0,.65));
 }
@@ -845,46 +845,384 @@ main,
         margin-top:8px !important;
     }
 }
+
+/* BANNER ROTATIVO WESTLOOKS */
+.hero-slider-v2{
+    position:relative;
+    overflow:hidden;
+    border-radius:36px;
+    min-height:430px;
+    background:
+        radial-gradient(circle at 80% 8%, rgba(246,226,122,.32), transparent 8%),
+        radial-gradient(circle at 78% 45%, rgba(212,175,55,.20), transparent 32%),
+        linear-gradient(135deg,#020617 0%,#050505 48%,#111827 100%);
+    color:#fff;
+    box-shadow:0 32px 75px rgba(2,6,23,.38);
+}
+
+.hero-slide-v2{
+    display:none;
+    position:relative;
+    min-height:430px;
+    padding:54px 56px 46px;
+    grid-template-columns:1fr 1.15fr;
+    align-items:center;
+    gap:28px;
+    animation:heroFade .45s ease;
+    overflow:hidden;
+}
+
+.hero-slide-v2.active{
+    display:grid;
+}
+
+.hero-slide-v2::before{
+    content:"";
+    position:absolute;
+    right:70px;
+    top:25px;
+    width:450px;
+    height:450px;
+    border-radius:50%;
+    border:5px solid #f6e27a;
+    background:rgba(5,5,5,.10);
+    box-shadow:
+        0 0 20px rgba(246,226,122,.9),
+        0 0 50px rgba(212,175,55,.8),
+        0 0 90px rgba(212,175,55,.5);
+    z-index:1;
+}
+
+.hero-slide-v2::after{
+    content:"";
+    position:absolute;
+    right:120px;
+    bottom:35px;
+    width:520px;
+    height:90px;
+    border-radius:50%;
+    background:rgba(0,0,0,.85);
+    filter:blur(10px);
+    z-index:1;
+}
+
+@keyframes heroFade{
+    from{
+        opacity:0;
+        transform:translateX(18px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+.hero-arrow-v2{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:1px solid rgba(212,175,55,.35);
+    background:rgba(5,5,5,.58);
+    color:#f6e27a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:20;
+    backdrop-filter:blur(8px);
+    transition:.2s;
+}
+
+.hero-arrow-v2:hover{
+    background:rgba(212,175,55,.18);
+}
+
+.hero-prev-v2{
+    left:18px;
+}
+
+.hero-next-v2{
+    right:18px;
+}
+
+.hero-dots-v2{
+    position:absolute;
+    left:50%;
+    bottom:18px;
+    transform:translateX(-50%);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    z-index:25;
+}
+
+.hero-dots-v2 button{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,.35);
+    transition:.2s;
+}
+
+.hero-dots-v2 button.active{
+    width:24px;
+    border-radius:999px;
+    background:#d4af37;
+}
+
+@media(max-width:992px){
+    .hero-slide-v2{
+        grid-template-columns:1fr;
+        text-align:center;
+        padding:48px 26px;
+    }
+
+    .hero-slide-v2::before{
+        right:35px;
+        width:360px;
+        height:360px;
+    }
+
+    .hero-slide-v2 h1{
+        font-size:48px;
+    }
+}
+
+@media(max-width:576px){
+    .hero-slider-v2{
+        border-radius:26px;
+    }
+
+    .hero-slide-v2{
+        min-height:auto;
+        padding:34px 18px 30px;
+    }
+
+    .hero-slide-v2::before{
+        width:520px;
+        height:520px;
+        left:50%;
+        right:auto;
+        top:245px;
+        transform:translateX(-50%);
+        border:3px solid rgba(246,226,122,.55);
+        background:rgba(5,5,5,.08);
+        box-shadow:
+            0 0 18px rgba(246,226,122,.45),
+            0 0 55px rgba(212,175,55,.28),
+            inset 0 0 70px rgba(0,0,0,.35);
+        opacity:.9;
+    }
+
+    .hero-slide-v2::after{
+        display:none;
+    }
+
+    .hero-slide-v2 h1{
+        font-size:46px;
+        line-height:1;
+        margin:0 0 24px;
+        position:relative;
+        z-index:8;
+    }
+
+    .hero-slide-v2 p{
+        font-size:19px;
+        line-height:1.45;
+        max-width:100%;
+        position:relative;
+        z-index:8;
+    }
+
+    .hero-slide-v2 .hero-product-v2{
+        min-height:310px;
+        margin-top:34px;
+        z-index:9;
+    }
+
+    @media(max-width:576px){
+
+        .hero-slide-v2 .hero-product-v2 img{
+            width:124%;
+            max-width:470px;
+            transform:translateX(0) translateY(120px);
+        }
+
+    }
+
+    .hero-arrow-v2{
+        display:none;
+    }
+
+    .hero-dots-v2{
+        bottom:12px;
+    }
+}
 </style>
 
 <div class="home-v2">
 
-    <section class="hero-v2">
+    <section class="hero-slider-v2">
 
-        <div class="circle-shine"></div>
+        <div class="hero-slide-v2 active">
 
-        <div class="hero-logo-bg">
-            <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
-        </div>
+            <div class="circle-shine"></div>
 
-        <div class="hero-content-v2">
-            <div class="hero-badge-v2">
-                <i class="bi bi-stars"></i>
-                ESTILO QUE TE ACOMPANHA
+            <div class="hero-logo-bg">
+                <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
             </div>
 
-            <h1>WEST<span>LOOKS</span></h1>
+            <div class="hero-content-v2">
+                <div class="hero-badge-v2">
+                    <i class="bi bi-stars"></i>
+                    ESTILO QUE TE ACOMPANHA
+                </div>
 
-            <p>
-                Calçados selecionados para quem busca estilo, conforto e presença em cada passo.
-                Escolha seu modelo, finalize seu pedido e receba com praticidade.
-            </p>
+                <h1>WEST<span>LOOKS</span></h1>
 
-            <a href="#produtos" class="btn-hero-v2">
-                <i class="bi bi-bag"></i>
-                Ver Produtos
-            </a>
+                <p>
+                    Calçados selecionados para quem busca estilo, conforto e presença em cada passo.
+                    Escolha seu modelo, finalize seu pedido e receba com praticidade.
+                </p>
+
+                <a href="#produtos" class="btn-hero-v2">
+                    <i class="bi bi-bag"></i>
+                    Ver Produtos
+                </a>
+            </div>
+
+            <div class="hero-logo-bg">
+                <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
+            </div>
+
+            <div class="hero-product-v2">
+                <img
+                    src="{{ url_for('static', filename='uploads/West Classic Black.png') }}"
+                    alt="West Classic Black">
+            </div>
+
         </div>
 
-        <div class="hero-logo-circle">
-            <img src="{{ url_for('static', filename='img/wl_gold.png') }}">
+        <div class="hero-slide-v2">
+
+            <div class="circle-shine"></div>
+
+            <div class="hero-logo-bg">
+                <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
+            </div>
+
+            <div class="hero-content-v2">
+                <div class="hero-badge-v2">
+                    <i class="bi bi-gem"></i>
+                    LINHA ESSENTIAL
+                </div>
+
+                <h1>ESSEN<span>TIAL</span></h1>
+
+                <p>
+                    Clássico, confortável e fácil de combinar. O modelo ideal para acompanhar sua rotina com estilo.
+                </p>
+
+                <a href="{{ url_for('loja.categoria', slug='essential') }}" class="btn-hero-v2">
+                    <i class="bi bi-bag"></i>
+                    Ver Essential
+                </a>
+            </div>
+
+            <div class="hero-product-v2">
+                <img
+                    src="{{ url_for('static', filename='uploads/essential_principal.jpg') }}"
+                    alt="Linha Essential">
+            </div>
+
         </div>
 
-        <div class="hero-product-v2">
-            <img
-                src="{{ url_for('static', filename='uploads/West Classic Black.png') }}"
-                alt="West Classic Black">
+        <div class="hero-slide-v2">
+
+            <div class="circle-shine"></div>
+
+            <div class="hero-logo-bg">
+                <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
+            </div>
+
+            <div class="hero-content-v2">
+                <div class="hero-badge-v2">
+                    <i class="bi bi-lightning-charge"></i>
+                    LINHA MINIMAL
+                </div>
+
+                <h1>MINI<span>MAL</span></h1>
+
+                <p>
+                    Visual limpo, moderno e versátil. Um calçado para quem gosta de presença sem exagero.
+                </p>
+
+                <a href="{{ url_for('loja.categoria', slug='minimal') }}" class="btn-hero-v2">
+                    <i class="bi bi-bag"></i>
+                    Ver Minimal
+                </a>
+            </div>
+
+            <div class="hero-product-v2">
+                <img
+                    src="{{ url_for('static', filename='uploads/minimal_principal.jpg') }}"
+                    alt="Linha Minimal">
+            </div>
+
         </div>
+
+        <div class="hero-slide-v2">
+
+            <div class="circle-shine"></div>
+
+            <div class="hero-logo-bg">
+                <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
+            </div>
+
+            <div class="hero-content-v2">
+                <div class="hero-badge-v2">
+                    <i class="bi bi-award"></i>
+                    LINHA DERBY
+                </div>
+
+                <h1>DER<span>BY</span></h1>
+
+                <p>
+                    Clássico, versátil e sofisticado. Feito para acompanhar sua rotina com elegância.
+                </p>
+
+                <a href="#produtos" class="btn-hero-v2">
+                    <i class="bi bi-bag"></i>
+                    Ver Derby
+                </a>
+            </div>
+
+            <div class="hero-product-v2">
+                <img
+                    src="{{ url_for('static', filename='uploads/West Classic Black.png') }}"
+                    alt="Linha Derby">
+            </div>
+
+        </div>
+
+        <button class="hero-arrow-v2 hero-prev-v2" type="button" onclick="mudarHero(-1)">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <button class="hero-arrow-v2 hero-next-v2" type="button" onclick="mudarHero(1)">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+        <div class="hero-dots-v2">
+            <button class="active" type="button" onclick="irHero(0)"></button>
+            <button type="button" onclick="irHero(1)"></button>
+            <button type="button" onclick="irHero(2)"></button>
+            <button type="button" onclick="irHero(3)"></button>
+        </div>
+
     </section>
 
     <div class="beneficios-v2">
@@ -1026,5 +1364,42 @@ main,
     </div>
 
 </div>
+
+<script>
+let heroAtual = 0;
+const heroSlides = document.querySelectorAll(".hero-slide-v2");
+const heroDots = document.querySelectorAll(".hero-dots-v2 button");
+
+function mostrarHero(index){
+    heroSlides.forEach(slide => slide.classList.remove("active"));
+    heroDots.forEach(dot => dot.classList.remove("active"));
+
+    heroSlides[index].classList.add("active");
+    heroDots[index].classList.add("active");
+    heroAtual = index;
+}
+
+function mudarHero(direcao){
+    let novo = heroAtual + direcao;
+
+    if(novo < 0){
+        novo = heroSlides.length - 1;
+    }
+
+    if(novo >= heroSlides.length){
+        novo = 0;
+    }
+
+    mostrarHero(novo);
+}
+
+function irHero(index){
+    mostrarHero(index);
+}
+
+setInterval(function(){
+    mudarHero(1);
+}, 6000);
+</script>
 
 {% endblock %}
