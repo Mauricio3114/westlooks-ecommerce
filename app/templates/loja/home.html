@@ -336,14 +336,35 @@
     top:18px;
     right:18px;
     z-index:2;
-    width:34px;
-    height:34px;
+
+    width:38px;
+    height:38px;
+
     border-radius:50%;
     background:#d8d8d8;
     border:1px solid rgba(212,175,55,.35);
+
     display:grid;
     place-items:center;
-    color:#475569;
+
+    color:#64748b;
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.produto-fav-v2:hover{
+    transform:scale(1.08);
+}
+
+.produto-fav-v2.ativo{
+    background:#dc2626;
+    color:#fff;
+    border-color:#dc2626;
+}
+
+.produto-fav-v2.ativo i{
+    color:#fff;
 }
 
 .produto-img-v2{
@@ -1351,8 +1372,14 @@ main,
             <div class="produto-v2">
                 <div class="produto-tag-v2">Produtos</div>
 
-                <div class="produto-fav-v2">
+                <div
+                    class="produto-fav-v2 favorito-btn"
+                    data-id="{{ produto.id }}"
+                    data-nome="{{ produto.nome }}"
+                    data-slug="{{ produto.slug }}">
+
                     <i class="bi bi-heart"></i>
+
                 </div>
 
                 {% if produto.imagens and produto.imagens|length > 0 %}
@@ -1450,6 +1477,67 @@ function irHero(index){
 setInterval(function(){
     mudarHero(1);
 }, 6000);
+</script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    let favoritos =
+        JSON.parse(
+            localStorage.getItem("westlooks_favoritos")
+        ) || [];
+
+    document.querySelectorAll(".favorito-btn").forEach(function(btn){
+
+        const id = btn.dataset.id;
+
+        if(favoritos.includes(id)){
+            btn.classList.add("ativo");
+            btn.querySelector("i").className =
+                "bi bi-heart-fill";
+        }
+
+        btn.addEventListener("click", function(e){
+
+            e.preventDefault();
+
+            const icon =
+                this.querySelector("i");
+
+            if(favoritos.includes(id)){
+
+                favoritos =
+                    favoritos.filter(
+                        fav => fav !== id
+                    );
+
+                this.classList.remove("ativo");
+
+                icon.className =
+                    "bi bi-heart";
+
+            }else{
+
+                favoritos.push(id);
+
+                this.classList.add("ativo");
+
+                icon.className =
+                    "bi bi-heart-fill";
+            }
+
+            localStorage.setItem(
+                "westlooks_favoritos",
+                JSON.stringify(favoritos)
+            );
+
+        });
+
+    });
+
+});
+
 </script>
 
 {% endblock %}
