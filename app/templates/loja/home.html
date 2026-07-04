@@ -1237,6 +1237,42 @@ main,
             </div>
 
             <div class="hero-content-v2">
+
+                <div class="hero-badge-v2">
+                    <i class="bi bi-lightning-charge"></i>
+                    LINHA SNEAKER
+                </div>
+
+                <h1>SNEA<span>KER</span></h1>
+
+                <p>
+                    Moderno, urbano e confortável. Um sneaker premium para quem busca estilo em qualquer ocasião.
+                </p>
+
+                <a href="{{ url_for('loja.categoria', slug='sneaker') }}" class="btn-hero-v2">
+                    <i class="bi bi-bag"></i>
+                    Ver Sneaker
+                </a>
+
+            </div>
+
+            <div class="hero-product-v2">
+                <img
+                    src="{{ url_for('static', filename='uploads/sneaker_principal.png') }}"
+                    alt="Linha Sneaker">
+            </div>
+
+        </div>
+
+        <div class="hero-slide-v2">
+
+            <div class="circle-shine"></div>
+
+            <div class="hero-logo-bg">
+                <img src="{{ url_for('static', filename='img/wl_gold.png') }}" alt="WestLooks">
+            </div>
+
+            <div class="hero-content-v2">
                 <div class="hero-badge-v2">
                     <i class="bi bi-award"></i>
                     LINHA DERBY
@@ -1275,6 +1311,7 @@ main,
             <button type="button" onclick="irHero(1)"></button>
             <button type="button" onclick="irHero(2)"></button>
             <button type="button" onclick="irHero(3)"></button>
+            <button type="button" onclick="irHero(4)"></button>
         </div>
 
     </section>
