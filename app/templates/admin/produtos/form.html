@@ -14,21 +14,32 @@
 
 <style>
 
-.upload-card-principal,
-.upload-card-galeria{
+.upload-card-principal{
     background:#fff;
     border:2px dashed #d4af37;
     border-radius:24px;
     padding:30px;
     text-align:center;
-    min-height:150px;
+    height:240px;
 
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
+}
 
-    transition:.3s;
+.upload-card-galeria{
+    background:#fff;
+    border:2px dashed #d4af37;
+    border-radius:24px;
+    padding:35px;
+    text-align:center;
+    min-height:230px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 }
 
 .upload-card-principal:hover,
@@ -147,7 +158,55 @@
 
             </div>
 
-            <div class="row g-4">
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-bold">
+                        Preço
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        name="preco"
+                        class="form-control"
+                        required
+                        value="{{ produto.preco if produto else '' }}">
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-bold">
+                        Preço Promocional
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        name="preco_promocional"
+                        class="form-control"
+                        value="{{ produto.preco_promocional if produto else '' }}">
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-bold">
+                        Custo
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        name="custo"
+                        class="form-control"
+                        value="{{ produto.custo if produto else '' }}">
+
+                </div>
 
                 <div class="col-lg-4">
 
@@ -162,8 +221,7 @@
                         <h6>Imagem Principal</h6>
 
                         <small>
-                            Essa foto aparecerá na loja,
-                            categorias e destaques.
+                            Essa foto aparecerá na loja.
                         </small>
 
                         <input
@@ -176,42 +234,6 @@
 
                 </div>
 
-                <div class="col-lg-8">
-
-                    <label class="form-label fw-bold">
-                        Galeria de Fotos
-                    </label>
-
-                    <div class="upload-card-galeria">
-
-                        <i class="bi bi-images"></i>
-
-                        <h6>
-                            Fotos Extras do Produto
-                        </h6>
-
-                        <small>
-                            Adicione várias fotos mostrando
-                            detalhes, ângulos e uso do produto.
-                        </small>
-
-                        <input
-                            type="file"
-                            name="fotos_extras"
-                            multiple
-                            class="form-control mt-3"
-                            accept="image/*">
-
-                        <div class="upload-info">
-                            JPG • PNG • WEBP • Múltiplas imagens
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
             <div class="col-12">
 
                 <label class="form-label fw-bold">
@@ -222,6 +244,38 @@
                     name="descricao"
                     rows="6"
                     class="form-control">{{ produto.descricao if produto else '' }}</textarea>
+
+            </div>
+
+            <div class="col-12">
+
+                <label class="form-label fw-bold">
+                    Galeria de Fotos
+                </label>
+
+                <div class="upload-card-galeria">
+
+                    <i class="bi bi-images"></i>
+
+                    <h6>Fotos Extras do Produto</h6>
+
+                    <small>
+                        Adicione várias fotos mostrando detalhes,
+                        ângulos e uso do produto.
+                    </small>
+
+                    <input
+                        type="file"
+                        name="fotos_extras"
+                        multiple
+                        class="form-control mt-3"
+                        accept="image/*">
+
+                    <div class="upload-info">
+                        JPG • PNG • WEBP • Múltiplas imagens
+                    </div>
+
+                </div>
 
             </div>
 
@@ -451,7 +505,7 @@
 
             </div>
 
-        </div>
+        </div> <!-- FECHA A ROW PRINCIPAL -->
 
     </form>
 
