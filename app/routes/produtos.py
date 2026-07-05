@@ -58,7 +58,14 @@ def novo():
 
     if request.method == "POST":
         nome = request.form.get("nome")
+
         slug = gerar_slug(nome)
+
+        contador = 2
+
+        while Produto.query.filter_by(slug=slug).first():
+            slug = f"{gerar_slug(nome)}-{contador}"
+            contador += 1
 
         produto = Produto(
             nome=nome,
@@ -137,7 +144,17 @@ def editar(id):
 
     if request.method == "POST":
         produto.nome = request.form.get("nome")
-        produto.slug = gerar_slug(produto.nome)
+        novo_slug = gerar_slug(produto.nome)
+
+        existe = Produto.query.filter(
+            Produto.slug == novo_slug,
+            Produto.id != produto.id
+        ).first()
+
+        if existe:
+            novo_slug = f"{novo_slug}-{produto.id}"
+
+        produto.slug = novo_slug
         produto.categoria_id = request.form.get("categoria_id") or None
         produto.marca = request.form.get("marca")
         produto.referencia = request.form.get("referencia")
