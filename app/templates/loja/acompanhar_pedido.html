@@ -17,133 +17,212 @@ Pedido #{{ pedido.id }} | WestLooks
     background:#fff;
     border-radius:30px;
     padding:35px;
-    box-shadow:0 15px 40px rgba(0,0,0,.08);
     margin-bottom:25px;
+    border:1px solid rgba(212,175,55,.25);
+    box-shadow:0 12px 35px rgba(15,23,42,.08);
 }
 
 .status-badge{
     display:inline-block;
-    padding:12px 20px;
+    padding:12px 22px;
     border-radius:999px;
-    font-weight:800;
+    font-weight:900;
+    letter-spacing:.4px;
 }
 
-.status-aguardando_pagamento{background:#fef3c7;color:#92400e;}
-.status-pago{background:#dcfce7;color:#166534;}
-.status-preparando{background:#dbeafe;color:#1e40af;}
-.status-enviado{background:#ede9fe;color:#5b21b6;}
-.status-entregue{background:#ccfbf1;color:#115e59;}
-.status-cancelado{background:#fee2e2;color:#991b1b;}
+.status-aguardando_pagamento{
+    background:#fff8e1;
+    color:#b8860b;
+    border:2px solid #d4af37;
+}
+
+.status-pago{
+    background:#dcfce7;
+    color:#166534;
+    border:2px solid #16a34a;
+}
+
+.status-preparando{
+    background:#eff6ff;
+    color:#1d4ed8;
+    border:2px solid #3b82f6;
+}
+
+.status-enviado{
+    background:#dbeafe;
+    color:#1d4ed8;
+    border:2px solid #3b82f6;
+}
+
+.status-entregue{
+    background:#dcfce7;
+    color:#15803d;
+    border:2px solid #22c55e;
+}
+
+.status-cancelado{
+    background:#fee2e2;
+    color:#b91c1c;
+    border:2px solid #ef4444;
+}
+
+/* ---------- TIMELINE ---------- */
 
 .timeline{
     display:flex;
-    align-items:flex-start;
     justify-content:space-between;
-    gap:0;
-    margin-top:35px;
+    align-items:flex-start;
+    margin-top:40px;
     position:relative;
 }
 
 .timeline::before{
     content:"";
     position:absolute;
-    top:35px;
     left:8%;
     right:8%;
+    top:35px;
     height:4px;
-    background:#e5e7eb;
+    background:#d1d5db;
     z-index:1;
 }
 
 .timeline-progress{
     position:absolute;
-    top:35px;
     left:8%;
+    top:35px;
     height:4px;
     background:#22c55e;
-    z-index:1;
+    z-index:2;
+    border-radius:999px;
 }
 
 .step{
-    position:relative;
-    z-index:2;
     width:150px;
     text-align:center;
-    font-weight:800;
+    position:relative;
+    z-index:3;
     color:#64748b;
+    font-weight:800;
 }
 
 .step .circle{
-    width:70px;
-    height:70px;
+    width:72px;
+    height:72px;
+    margin:auto;
+    margin-bottom:12px;
     border-radius:50%;
-    background:#f8fafc;
-    border:3px solid #e5e7eb;
     display:flex;
     align-items:center;
     justify-content:center;
-    margin:0 auto 10px;
-    font-size:26px;
+    background:#fff;
+    border:3px solid #d1d5db;
+    font-size:28px;
+    transition:.2s;
 }
 
 .step.active .circle{
-    background:#dcfce7;
+    background:#22c55e;
+    color:#fff;
     border-color:#22c55e;
-    color:#166534;
+    box-shadow:0 8px 20px rgba(34,197,94,.35);
 }
 
 .step.active{
-    color:#166534;
+    color:#15803d;
 }
 
 .step-date{
     display:block;
-    font-size:12px;
-    color:#64748b;
     margin-top:5px;
-    font-weight:600;
+    font-size:12px;
+    color:#94a3b8;
+    font-weight:700;
 }
 
+/* ---------- PRODUTOS ---------- */
+
 .produto-card{
-    border:1px solid #e5e7eb;
-    border-radius:22px;
-    padding:18px;
-    margin-bottom:15px;
     display:flex;
-    gap:18px;
+    gap:20px;
     align-items:center;
     flex-wrap:wrap;
+    background:#1b1b1b;
+    color:#fff;
+    border-radius:24px;
+    padding:20px;
+    border:2px solid rgba(212,175,55,.25);
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
 }
 
 .produto-card img{
     width:120px;
     height:120px;
     object-fit:cover;
+    background:#fff;
     border-radius:18px;
-    background:#f3f4f6;
 }
 
 .produto-info{
     flex:1;
-    min-width:220px;
 }
+
+.produto-info h5{
+    color:#fff;
+    font-weight:900;
+}
+
+.produto-info p{
+    margin-bottom:6px;
+    color:#f1f5f9;
+}
+
+.produto-info strong{
+    color:#fff;
+}
+
+/* ---------- TOTAL ---------- */
+
+.total-pedido{
+    font-size:48px;
+    font-weight:900;
+    color:#059669;
+}
+
+.total-pedido small{
+    color:#0f172a;
+}
+
+/* ---------- RASTREAMENTO ---------- */
 
 .rastreamento-box{
     background:#0f172a;
     color:#fff;
     border-radius:24px;
-    padding:28px;
+    padding:30px;
+    border:2px solid #d4af37;
 }
 
 .rastreamento-box h3{
     color:#facc15;
+    font-weight:900;
 }
 
+.rastreamento-box .alert{
+    background:#fff8e1;
+    color:#8a6b00;
+    border:none;
+    border-radius:14px;
+    font-weight:700;
+}
+
+/* ---------- MOBILE ---------- */
+
 @media(max-width:900px){
+
     .timeline{
         display:grid;
-        grid-template-columns:1fr;
-        gap:15px;
+        gap:20px;
     }
 
     .timeline::before,
@@ -155,13 +234,15 @@ Pedido #{{ pedido.id }} | WestLooks
         width:100%;
     }
 
-    .pedido-card{
-        padding:24px;
+    .produto-card{
+        text-align:center;
+        justify-content:center;
     }
 
-    .produto-card{
-        align-items:flex-start;
+    .produto-info{
+        width:100%;
     }
+
 }
 </style>
 
@@ -201,9 +282,24 @@ Pedido #{{ pedido.id }} | WestLooks
                     Pedido #{{ pedido.id }}
                 </h1>
 
-                <p class="text-muted">
-                    Acompanhe seu pedido em tempo real
-                </p>
+                <div class="mb-4">
+
+                    <span
+                        style="
+                        display:inline-block;
+                        background:#0f172a;
+                        color:#facc15;
+                        padding:12px 28px;
+                        border-radius:999px;
+                        font-weight:900;
+                        letter-spacing:.5px;
+                        ">
+
+                        📦 Acompanhe seu pedido em tempo real
+
+                    </span>
+
+                </div>
             </div>
 
             <div>
@@ -355,35 +451,59 @@ Pedido #{{ pedido.id }} | WestLooks
 
     <div class="pedido-card">
 
-        <h3 class="fw-bold mb-4">
-            Endereço de Entrega
+        <h3
+            style="
+            font-weight:900;
+            color:#0f172a;
+            margin-bottom:25px;
+            ">
+
+            📍 Endereço de Entrega
+
         </h3>
 
         {% if pedido.cliente.enderecos %}
 
             {% set endereco = pedido.cliente.enderecos[0] %}
 
-            <p class="mb-1">
-                {{ endereco.logradouro }}, {{ endereco.numero }}
-            </p>
+            <div
+                style="
+                background:#0f172a;
+                color:#fff;
+                border:2px solid #d4af37;
+                border-radius:24px;
+                padding:28px;
+                ">
 
-            <p class="mb-1">
-                {{ endereco.bairro }}
-            </p>
+                <p style="margin-bottom:10px;font-size:18px;">
+                    <strong style="color:#facc15;">Rua:</strong>
+                    {{ endereco.logradouro }}, {{ endereco.numero }}
+                </p>
 
-            <p class="mb-1">
-                {{ endereco.cidade }}/{{ endereco.estado }}
-            </p>
+                <p style="margin-bottom:10px;font-size:18px;">
+                    <strong style="color:#facc15;">Bairro:</strong>
+                    {{ endereco.bairro }}
+                </p>
 
-            <p class="mb-0">
-                CEP: {{ endereco.cep }}
-            </p>
+                <p style="margin-bottom:10px;font-size:18px;">
+                    <strong style="color:#facc15;">Cidade:</strong>
+                    {{ endereco.cidade }}/{{ endereco.estado }}
+                </p>
+
+                <p style="margin-bottom:0;font-size:18px;">
+                    <strong style="color:#facc15;">CEP:</strong>
+                    {{ endereco.cep }}
+                </p>
+
+            </div>
 
         {% else %}
 
-            <p class="text-muted">
-                Endereço não informado.
-            </p>
+            <div class="alert alert-warning mb-0">
+
+                Nenhum endereço informado.
+
+            </div>
 
         {% endif %}
 
