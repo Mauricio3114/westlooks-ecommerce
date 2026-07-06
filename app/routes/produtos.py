@@ -31,15 +31,12 @@ def gerar_slug(texto):
 
 
 def moeda_para_decimal(valor):
-    if not valor:
+    if valor is None or valor == "":
         return 0
-
-    valor = valor.replace("R$", "").strip()
-    valor = valor.replace(".", "").replace(",", ".")
 
     try:
         return float(valor)
-    except ValueError:
+    except (ValueError, TypeError):
         return 0
 
 
