@@ -15,29 +15,112 @@ Consultar Pedido | WestLooks
 }
 
 .consulta-card{
-    background:#fff;
+    background:#ffffff;
     border-radius:30px;
     padding:40px;
-    box-shadow:0 15px 40px rgba(0,0,0,.08);
+    border:2px solid rgba(212,175,55,.35);
+    box-shadow:0 18px 45px rgba(0,0,0,.12);
 }
 
+/* TITULOS */
+
 .consulta-card h1{
+    color:#0f172a;
+    font-size:42px;
     font-weight:900;
-    margin-bottom:10px;
+    text-align:center;
+    margin-bottom:12px;
 }
 
 .consulta-card p{
-    color:#64748b;
-    margin-bottom:30px;
+    color:#475569;
+    font-size:18px;
+    text-align:center;
+    margin-bottom:35px;
+    line-height:1.7;
 }
+
+/* LABELS */
+
+.consulta-card label{
+    color:#0f172a;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+/* INPUTS */
+
+.consulta-card input{
+    height:62px;
+    border-radius:16px;
+    border:2px solid #d4af37;
+    font-size:20px;
+    font-weight:700;
+    color:#0f172a;
+    background:#fff;
+}
+
+.consulta-card input:focus{
+    border-color:#d4af37;
+    box-shadow:0 0 0 .2rem rgba(212,175,55,.18);
+}
+
+.consulta-card input::placeholder{
+    color:#94a3b8;
+}
+
+/* BOTÃO */
 
 .btn-west{
     width:100%;
+    height:64px;
     border:none;
-    padding:16px;
-    border-radius:16px;
-    background:#d4af37;
+    border-radius:18px;
+    background:linear-gradient(135deg,#d4af37,#f6e27a);
+    color:#111827 !important;
+    font-size:22px;
     font-weight:900;
+    transition:.25s;
+    box-shadow:0 10px 25px rgba(212,175,55,.35);
+}
+
+.btn-west:hover{
+    transform:translateY(-2px);
+    box-shadow:0 15px 35px rgba(212,175,55,.45);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .consulta-wrap{
+        margin:35px auto;
+        padding:0 14px;
+    }
+
+    .consulta-card{
+        padding:28px;
+        border-radius:24px;
+    }
+
+    .consulta-card h1{
+        font-size:34px;
+    }
+
+    .consulta-card p{
+        font-size:17px;
+    }
+
+    .consulta-card input{
+        height:58px;
+        font-size:18px;
+    }
+
+    .btn-west{
+        height:60px;
+        font-size:20px;
+    }
+
 }
 
 </style>
