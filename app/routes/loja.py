@@ -99,6 +99,7 @@ def buscar():
 
 @loja_bp.route("/categoria/<slug>")
 def categoria(slug):
+
     categoria = Categoria.query.filter_by(
         slug=slug,
         ativo=True
