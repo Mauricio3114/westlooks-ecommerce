@@ -267,10 +267,33 @@
     box-shadow:0 24px 48px rgba(15,23,42,.12);
 }
 
-.categoria-v2 img{
-    height:54px;
-    object-fit:contain;
-    margin-bottom:12px;
+.categoria-img-v2{
+
+    width:82px;
+    height:82px;
+
+    margin:0 auto 14px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:3px solid #d4af37;
+
+    background:#fff;
+
+    box-shadow:
+        0 10px 24px rgba(0,0,0,.20),
+        0 0 0 4px rgba(212,175,55,.15);
+
+    transition:.25s;
+
+}
+
+.categoria-v2:hover .categoria-img-v2{
+
+    transform:scale(1.08);
+
 }
 
 .categoria-v2 .cat-icon{
@@ -1376,9 +1399,20 @@ main,
         <div class="categorias-v2">
             {% for categoria in categorias %}
             <a href="{{ url_for('loja.categoria', slug=categoria.slug) }}" class="categoria-v2 text-decoration-none">
+                {% if categoria.imagem %}
+
+                <img
+                    src="{{ url_for('static', filename='uploads/' ~ categoria.imagem) }}"
+                    class="categoria-img-v2"
+                    alt="{{ categoria.nome }}">
+
+                {% else %}
+
                 <div class="cat-icon">
                     <i class="bi bi-bag"></i>
                 </div>
+
+                {% endif %}
                 <strong>{{ categoria.nome }}</strong>
                 <small>Clássicos do dia a dia</small>
             </a>
