@@ -27,35 +27,13 @@
                             Nome da Categoria
                         </label>
 
-                        <select
+                        <input
+                            type="text"
                             name="nome"
-                            class="form-select form-select-lg"
-                            required>
-
-                            <option value="">Selecione uma linha</option>
-
-                            {% set categorias_padrao = [
-                                "Linha Essential",
-                                "Linha Minimal",
-                                "Linha Sneaker",
-                                "Linha Basic",
-                                "Linha Casual",
-                                "Slip On Confort",
-                                "Slip On",
-                                "Sider",
-                                "Linha Derby",
-                                "Mule"
-                            ] %}
-
-                            {% for nome_padrao in categorias_padrao %}
-                                <option
-                                    value="{{ nome_padrao }}"
-                                    {% if categoria and categoria.nome == nome_padrao %}selected{% endif %}>
-                                    {{ nome_padrao }}
-                                </option>
-                            {% endfor %}
-
-                        </select>
+                            class="form-control form-control-lg"
+                            placeholder="Ex.: Linha Premium, Oxford, Mocassim..."
+                            required
+                            value="{{ categoria.nome if categoria else '' }}">
                     </div>
 
                     <div class="col-md-3">
