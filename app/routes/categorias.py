@@ -185,3 +185,57 @@ def excluir(id):
     return redirect(
         url_for("categorias.listar")
     )
+
+
+from flask import jsonify
+
+
+@categorias_bp.route("/ajax/nova", methods=["POST"])
+@login_required
+def nova_categoria_ajax():
+
+    nome = request.form.get("nome", "").strip()
+
+    if not nome:
+        return jsonify({
+            "sucesso": False,
+            "mensagem": "Informe o nome da categoria."
+        })
+
+    existente = Categoria.query.filter(
+        Categoria.nome.ilike(nome)
+    ).first()
+
+    if existente:
+        return jsonify({
+            "sucesso": True,
+            "id": existente.id,
+            "nome": existente.nome
+        })
+
+    slug = gerar_slug(nome)
+
+    contador = 2
+
+    while Categoria.query.filter_by(slug=slug).first():
+
+        slug = f"{gerar_slug(nome)}-{contador}"
+
+        contador += 1
+
+    categoria = Categoria(
+        nome=nome,
+        slug=slug,
+        ativo=True,
+        destaque=False,
+        ordem=0
+    )
+
+    db.session.add(categoria)
+    db.session.commit()
+
+    return jsonify({
+        "sucesso": True,
+        "id": categoria.id,
+        "nome": categoria.nome
+    })

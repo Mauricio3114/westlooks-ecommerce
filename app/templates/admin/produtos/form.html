@@ -105,6 +105,7 @@
 
                     <button
                         type="button"
+                        id="btnNovaCategoria"
                         class="btn btn-sm btn-warning rounded-pill fw-bold">
 
                         <i class="bi bi-plus-circle"></i>
@@ -547,6 +548,60 @@ new TomSelect("#categoriaSelect",{
     placeholder:"Digite a categoria...",
 
     maxOptions:500
+
+});
+
+</script>
+
+<script>
+
+const selectCategoria = document.querySelector("#categoriaSelect");
+
+const tomCategoria = selectCategoria.tomselect;
+
+document
+.getElementById("btnNovaCategoria")
+.addEventListener("click", async function(){
+
+    const nome = prompt("Digite o nome da nova categoria:");
+
+    if(!nome){
+        return;
+    }
+
+    const dados = new FormData();
+
+    dados.append("nome", nome);
+
+    const resposta = await fetch("/admin/categorias/ajax/nova",{
+
+        method:"POST",
+
+        body:dados
+
+    });
+
+    const json = await resposta.json();
+
+    if(!json.sucesso){
+
+        alert(json.mensagem);
+
+        return;
+
+    }
+
+    tomCategoria.addOption({
+
+        value:json.id,
+
+        text:json.nome
+
+    });
+
+    tomCategoria.addItem(json.id);
+
+    alert("Categoria criada com sucesso!");
 
 });
 
