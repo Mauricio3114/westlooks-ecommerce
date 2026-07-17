@@ -8,17 +8,13 @@ class ProdutoImagem(db.Model):
 
     produto_id = db.Column(
         db.Integer,
-        db.ForeignKey("produtos.id", ondelete="CASCADE"),
+        db.ForeignKey("produtos.id"),
         nullable=False
     )
 
     produto = db.relationship(
         "Produto",
-        backref=db.backref(
-            "imagens",
-            cascade="all, delete-orphan",
-            passive_deletes=True
-        )
+        backref="imagens"
     )
 
     imagem = db.Column(
