@@ -233,6 +233,28 @@ def excluir(id):
 
     produto = Produto.query.get_or_404(id)
 
+    # Exclui todas as imagens do produto
+    imagens = ProdutoImagem.query.filter_by(produto_id=produto.id).all()
+
+    for imagem in imagens:
+
+        try:
+            caminho = os.path.join(
+                current_app.config["UPLOAD_FOLDER"],
+                imagem.imagem
+            )
+
+            if os.path.exists(caminho):
+                os.remove(caminho)
+
+        except Exception:
+            pass
+
+        db.session.delete(imagem)
+
+    db.session.commit()
+
+    # Agora exclui o produto
     db.session.delete(produto)
     db.session.commit()
 
